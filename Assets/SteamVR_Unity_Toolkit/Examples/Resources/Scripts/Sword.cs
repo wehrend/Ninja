@@ -26,13 +26,13 @@ public class Sword : VRTK_InteractableObject
     {
         base.Awake();
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-        Debug.Log("VRTK could be started");
     }
 
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Collision");
+       // if (IsGrabbed())
+       //     Debug.Log("IsGrabbed()");
         if (controllerActions && controllerEvents && IsGrabbed())
         {
             collisionForce = controllerEvents.GetVelocity().magnitude * impactMagnifier;

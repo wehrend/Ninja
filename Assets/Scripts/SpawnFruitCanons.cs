@@ -22,8 +22,8 @@ public class SpawnFruitCanons : MonoBehaviour {
             new WaitForSeconds(Random.Range(0,1));
             FruitCanon canonSpawner = Instantiate<FruitCanon>(canonPrefab);
             canonSpawner.transform.SetParent(rotater, false);
-            Vector2 pos_vec2 = Random.insideUnitCircle.normalized * 2;
-            Vector3 position = new Vector3(pos_vec2.x, 0, pos_vec2.y);
+            //Vector2 pos_vec2 = Random.insideUnitCircle.normalized * 2;
+            Vector3 position = new Vector3(0, 2,3);
             Debug.Log(position.ToString());
             canonSpawner.transform.localPosition = position;
         }

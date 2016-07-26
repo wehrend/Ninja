@@ -2,14 +2,17 @@
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(MeshRenderer))]
 public class Fruit : MonoBehaviour {
 
    public Rigidbody Body {get; private set;}
-   float breakForce=150f;
+   private MeshRenderer renderer;
+   float breakForce=50f;
 
     private void Start()
     {
         Body = GetComponent<Rigidbody>();
+        renderer = Body.GetComponent<MeshRenderer>();
         Body.collisionDetectionMode = CollisionDetectionMode.Continuous;
     }
 
@@ -17,10 +20,14 @@ public class Fruit : MonoBehaviour {
     private void OnCollisionEnter(Collision collision)
     {
         var collisionForce = GetCollisionForce(collision);
+        renderer.material.color = Color.green;
         Debug.Log("Fruit contacted!");
+
         if (collisionForce > 0)
         {
-            Destroy(this.gameObject,5f);
+            renderer.material.color = Color.blue;
+            Destroy(Body.gameObject,1f);
+       
             Debug.Log("Fruit killed!");
         }
     }

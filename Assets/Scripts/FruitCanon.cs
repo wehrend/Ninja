@@ -19,7 +19,6 @@ public class FruitCanon : MonoBehaviour {
 
     void Awake()
     {
-        transform.position = new Vector3(0, 2, 3);
         myTransform = transform;
     }
 

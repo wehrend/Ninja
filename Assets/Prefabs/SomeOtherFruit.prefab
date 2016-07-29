@@ -43,7 +43,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: 34ac34e28aabefd459fcc0a04c64e0df, type: 2}
+  - {fileID: 2100000, guid: f6d3ae8684ed93f4da84aa9ac29bf2fa, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -92,6 +92,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5f5ff8ebc1ca944eb87dcc341be4d71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  breakForce: 50
+  hoverStrenght: 260
+  hoverHeight: 2.5
+  speed: 5
+  target: {fileID: 0}
 --- !u!136 &13651118
 CapsuleCollider:
   m_ObjectHideFlags: 1

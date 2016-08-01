@@ -58,11 +58,15 @@ public class FruitCanon : MonoBehaviour {
         // wait some small time
         yield return new WaitForSeconds(1.0f);
         // get amount of instantiated fruits
-        //activeFruits = FindObjectsOfType(typeof(prefab)) as Fruit[];
-        //int count = activeFruits.Length;
-       // if (count < maxInstances)
-        Instantiate(prefab, position, Quaternion.identity);
-        Debug.Log("Fruit Instantiated");
-
+        activeFruits = FindObjectsOfType(typeof(Fruit)) as Fruit[];
+        int count = activeFruits.Length;
+        if (count < maxInstances)
+        {
+            if(prefab != null)
+                {
+                Instantiate(prefab, position, Quaternion.identity);
+                Debug.Log("Fruit Instantiated");
+                }
+        }        
     }
 }

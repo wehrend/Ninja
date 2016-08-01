@@ -1580,13 +1580,12 @@
         <module-layer name="Editor">
           <extension id="unity3d-child" />
           <extension id="unity3d-csharp-child" unsafe-code="false" language-version-module-name="" language-version-name="" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Bomb.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Fruit.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Fruit.cs.meta" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitCanon.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitCanon.cs.meta" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Lightsabber.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/SpawnFruitCanons.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/SpawnFruitCanons.cs.meta" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitAndBombInstantiator.cs" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/MovingRigidbodyPhysics.cs" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Shield.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_GazeTracker.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_GazeTracker.cs.meta" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_LaserPointer.cs" />
@@ -1683,13 +1682,12 @@
         <module-layer name="Linux (32 bit)">
           <extension id="unity3d-child" />
           <extension id="unity3d-csharp-child" unsafe-code="false" language-version-module-name="" language-version-name="" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Bomb.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Fruit.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Fruit.cs.meta" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitCanon.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitCanon.cs.meta" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Lightsabber.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/SpawnFruitCanons.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/SpawnFruitCanons.cs.meta" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitAndBombInstantiator.cs" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/MovingRigidbodyPhysics.cs" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Shield.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_GazeTracker.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_GazeTracker.cs.meta" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_LaserPointer.cs" />
@@ -1786,13 +1784,12 @@
         <module-layer name="Linux (64 bit)">
           <extension id="unity3d-child" />
           <extension id="unity3d-csharp-child" unsafe-code="false" language-version-module-name="" language-version-name="" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Bomb.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Fruit.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Fruit.cs.meta" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitCanon.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitCanon.cs.meta" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Lightsabber.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/SpawnFruitCanons.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/SpawnFruitCanons.cs.meta" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitAndBombInstantiator.cs" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/MovingRigidbodyPhysics.cs" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Shield.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_GazeTracker.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_GazeTracker.cs.meta" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_LaserPointer.cs" />
@@ -1889,13 +1886,12 @@
         <module-layer name="Linux (any)">
           <extension id="unity3d-child" />
           <extension id="unity3d-csharp-child" unsafe-code="false" language-version-module-name="" language-version-name="" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Bomb.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Fruit.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Fruit.cs.meta" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitCanon.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitCanon.cs.meta" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Lightsabber.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/SpawnFruitCanons.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/SpawnFruitCanons.cs.meta" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitAndBombInstantiator.cs" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/MovingRigidbodyPhysics.cs" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Shield.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_GazeTracker.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_GazeTracker.cs.meta" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_LaserPointer.cs" />
@@ -1992,13 +1988,12 @@
         <module-layer name="MacOS (32 bit)">
           <extension id="unity3d-child" />
           <extension id="unity3d-csharp-child" unsafe-code="false" language-version-module-name="" language-version-name="" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Bomb.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Fruit.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Fruit.cs.meta" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitCanon.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitCanon.cs.meta" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Lightsabber.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/SpawnFruitCanons.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/SpawnFruitCanons.cs.meta" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitAndBombInstantiator.cs" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/MovingRigidbodyPhysics.cs" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Shield.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_GazeTracker.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_GazeTracker.cs.meta" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_LaserPointer.cs" />
@@ -2095,13 +2090,12 @@
         <module-layer name="MacOS (64 bit)">
           <extension id="unity3d-child" />
           <extension id="unity3d-csharp-child" unsafe-code="false" language-version-module-name="" language-version-name="" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Bomb.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Fruit.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Fruit.cs.meta" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitCanon.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitCanon.cs.meta" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Lightsabber.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/SpawnFruitCanons.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/SpawnFruitCanons.cs.meta" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitAndBombInstantiator.cs" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/MovingRigidbodyPhysics.cs" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Shield.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_GazeTracker.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_GazeTracker.cs.meta" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_LaserPointer.cs" />
@@ -2198,13 +2192,12 @@
         <module-layer name="MacOS (any)">
           <extension id="unity3d-child" />
           <extension id="unity3d-csharp-child" unsafe-code="false" language-version-module-name="" language-version-name="" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Bomb.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Fruit.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Fruit.cs.meta" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitCanon.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitCanon.cs.meta" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Lightsabber.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/SpawnFruitCanons.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/SpawnFruitCanons.cs.meta" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitAndBombInstantiator.cs" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/MovingRigidbodyPhysics.cs" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Shield.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_GazeTracker.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_GazeTracker.cs.meta" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_LaserPointer.cs" />
@@ -2301,13 +2294,12 @@
         <module-layer name="Windows (32 bit)">
           <extension id="unity3d-child" />
           <extension id="unity3d-csharp-child" unsafe-code="false" language-version-module-name="" language-version-name="" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Bomb.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Fruit.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Fruit.cs.meta" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitCanon.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitCanon.cs.meta" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Lightsabber.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/SpawnFruitCanons.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/SpawnFruitCanons.cs.meta" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitAndBombInstantiator.cs" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/MovingRigidbodyPhysics.cs" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Shield.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_GazeTracker.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_GazeTracker.cs.meta" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_LaserPointer.cs" />
@@ -2404,13 +2396,12 @@
         <module-layer name="Windows (64 bit)">
           <extension id="unity3d-child" />
           <extension id="unity3d-csharp-child" unsafe-code="false" language-version-module-name="" language-version-name="" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Bomb.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Fruit.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Fruit.cs.meta" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitCanon.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitCanon.cs.meta" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Lightsabber.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/SpawnFruitCanons.cs" />
-          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/SpawnFruitCanons.cs.meta" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/FruitAndBombInstantiator.cs" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/MovingRigidbodyPhysics.cs" />
+          <content url="file://$USER_HOME$/bpn/Ninja/Assets/Scripts/Shield.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_GazeTracker.cs" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_GazeTracker.cs.meta" />
           <content url="file://$USER_HOME$/bpn/Ninja/Assets/SteamVR/Extras/SteamVR_LaserPointer.cs" />

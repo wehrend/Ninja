@@ -34,10 +34,11 @@ public class MovingRigidbodyPhysics : MonoBehaviour {
 
 		}
 		Body.transform.LookAt(target);
-		Sword sword = FindObjectOfType<Sword>();
+		//Sword sword = FindObjectOfType<Sword>();
 		//TODO: We want event mnessaging here
-		if (sword.IsGrabbed())
-			Body.AddRelativeForce(Vector3.forward * speed, ForceMode.Force);
+		//if (sword.IsGrabbed())
+        if (Time.realtimeSinceStartup > 5 )
+	        Body.AddRelativeForce(Vector3.forward * speed, ForceMode.Force);
 
     }
 }

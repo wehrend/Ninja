@@ -15,10 +15,10 @@ public class Bomb : MovingRigidbodyPhysics {
 
         if (Body && collisionForce > 0 )
         {
-            renderer.material.color = Color.red;
+            GetComponent<Renderer>().material.color = Color.red;
             Destroy(Body.gameObject,0.5f);
 
-            Debug.Log("Fruit killed!");
+            Debug.Log("Bomb damaged you!");
         }
     }
 

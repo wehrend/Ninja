@@ -4,6 +4,7 @@ using System.Collections;
 
 using VRTK;
 using System;
+using UnityEngine.Events;
 
 public class Sword : VRTK_InteractableObject
 {
@@ -13,7 +14,7 @@ public class Sword : VRTK_InteractableObject
     private float impactMagnifier = 120f;
     private float collisionForce = 0f;
 
-
+    private GrabbingProxy grabbingProxy;
 
     public float CollisionForce()
     {
@@ -25,12 +26,16 @@ public class Sword : VRTK_InteractableObject
         base.Grabbed(grabbingObject);
         controllerActions = grabbingObject.GetComponent<VRTK_ControllerActions>();
         controllerEvents = grabbingObject.GetComponent<VRTK_ControllerEvents>();
+
+        grabbingProxy.GenerateGrabEvent(grabbingObject);
     }
 
     protected override void Awake()
     {
         base.Awake();
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+
+        grabbingProxy = GetComponent<GrabbingProxy>();
     }
 
 
@@ -42,6 +47,7 @@ public class Sword : VRTK_InteractableObject
         {
             collisionForce = controllerEvents.GetVelocity().magnitude * impactMagnifier;
             controllerActions.TriggerHapticPulse((ushort)collisionForce, 0.5f, 0.01f);
+           // ScoreAndStats.scores += scores;
         }
         else
         {

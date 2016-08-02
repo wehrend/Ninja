@@ -8,12 +8,9 @@ public class FruitAndBombInstantiator : MonoBehaviour {
 
     public float pausetime=5;
     public int angle = 90;
-    public int maxInstances=3;
     public Transform target;
-    public int fruitsLength = 3;
-    public Fruit[] fruits;
-    // public Bomb[] bombs;
-	//public Trojan[] trojan;
+ 
+    public MovingRigidbodyPhysics[] fruitsAndBombs;
     private Fruit[] activeFruits;
     //public Vector3 startPosition = new Vector3(-0.5f,0.5f,-0.5f);
     //public Vector3 endPosition = new Vector3(-0.1f,2f,-0.1f);
@@ -44,7 +41,7 @@ public class FruitAndBombInstantiator : MonoBehaviour {
 
         //Debug.Log("Fire from "+ myTransform.position);
         //choose randomly from fruit prefabs and instantiate canon
-        Fruit prefab = fruits[Random.Range(0, fruitsLength)];
+        MovingRigidbodyPhysics prefab = fruitsAndBombs[Random.Range(0, fruitsAndBombs.Length)];
         prefab.target = target;
         List<float> used_x = new List<float>();
         float x_max = 1.5f*Mathf.Sin(Mathf.Deg2Rad* (angle / 2)) + 1.5f; //1.5 offset of the vive-cube
@@ -60,14 +57,10 @@ public class FruitAndBombInstantiator : MonoBehaviour {
 
         // wait some small time
         yield return new WaitForSeconds(1.0f);
-        // get amount of instantiated fruits
-        activeFruits = FindObjectsOfType(typeof(Fruit)) as Fruit[];
-        int count = activeFruits.Length;
-        if (prefab != null  && (count < maxInstances))
+        if (prefab != null)
         {
             Instantiate(prefab, position, Quaternion.identity);
-            Debug.Log("Fruit Instantiated");
-
+            Debug.Log("Object Instantiated");
         }
     }
 }

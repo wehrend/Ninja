@@ -2,23 +2,21 @@
 using System.Collections;
 using VRTK;
 
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(MeshRenderer))]
 public class Bomb : MovingRigidbodyPhysics {
 
     public float breakForce=50f;
-    public int damagePoints = 50;
+    //let it be one of a mild bomb
+    public int damagePoints = 5;
 
     private void OnCollisionEnter(Collision collision)
     {
-        var collisionForce = GetCollisionForce(collision);
+        var damage= GetCollisionForce(collision);
 
-        if (Body && collisionForce > 0 )
+        if (Body && damage > 0 )
         {
-            GetComponent<Renderer>().material.color = Color.red;
-            Destroy(Body.gameObject,0.5f);
-
-            Debug.Log("Bomb damaged you!");
+            // here we need code
+            //health -= damage;
+            //Debug.Log("Bomb damaged you with" + damage + "damage!\n Your health is only" +health);
         }
     }
 
@@ -26,9 +24,12 @@ public class Bomb : MovingRigidbodyPhysics {
     {
         if ((collision.collider.name.Contains("Sword") && collision.collider.GetComponent<Sword>().CollisionForce() > breakForce))
         {
-            return collision.collider.GetComponent<Sword>().CollisionForce() * 1.2f;
+            return collision.collider.GetComponent<Sword>().CollisionForce() * damagePoints;
         }
-
+        else if (collision.collider.name.Contains("Shield") )
+        {
+            return 0f;
+        }
         return 0f;
     }
 

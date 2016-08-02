@@ -3,6 +3,8 @@ using System.Collections;
 
 public class GameController : MonoBehaviour {
 
+    public float health;
+    public int score;
 
     public void HappenWhenSwordIsGrabbed(GameObject grabbedObject)
     {
@@ -11,11 +13,21 @@ public class GameController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+        health = 1000;
+        score = 0;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	public void OnBombCollision( GameObject BombObject ) {
+
+	   // health -= BombObject.damage;
+
 	}
+
+
+    public void OnFruitCollision( GameObject FruitObject ) {
+
+       // score += FruitObject.bonusPoints;
+
+    }
+
 }

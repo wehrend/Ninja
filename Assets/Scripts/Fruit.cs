@@ -15,7 +15,7 @@ public class Fruit : MovingRigidbodyPhysics {
         {
             GetComponent<Renderer>().material.color = Color.red;
             Destroy(Body.gameObject,0.5f);
-       
+            //score +=bonusPoints;
             Debug.Log("Fruit killed!");
         }
     }

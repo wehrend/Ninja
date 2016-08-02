@@ -10,7 +10,7 @@ public class FruitAndBombInstantiator : MonoBehaviour {
     public int angle = 90;
     public Transform target;
  
-    public MovingRigidbodyPhysics[] fruitsAndBombs;
+    public   MovingRigidbodyPhysics[] fruitsAndBombs;
     private Fruit[] activeFruits;
     //public Vector3 startPosition = new Vector3(-0.5f,0.5f,-0.5f);
     //public Vector3 endPosition = new Vector3(-0.1f,2f,-0.1f);
@@ -60,7 +60,7 @@ public class FruitAndBombInstantiator : MonoBehaviour {
         if (prefab != null)
         {
             Instantiate(prefab, position, Quaternion.identity);
-            Debug.Log("Object Instantiated");
+            Debug.Log("Object "+prefab.transform.name+ " instantiated");
         }
     }
 }

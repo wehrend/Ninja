@@ -17,16 +17,16 @@ public class GameController : MonoBehaviour {
         score = 0;
 	}
 
-	public void OnBombCollision( GameObject BombObject ) {
+	public void issueDamage(float damage ){
 
-	   // health -= BombObject.damage;
+	   health -= damage;
 
 	}
 
 
-    public void OnFruitCollision( GameObject FruitObject ) {
+    public void issueBoni( int bonusPoints) {
 
-       // score += FruitObject.bonusPoints;
+       score += bonusPoints;
 
     }
 

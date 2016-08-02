@@ -15,8 +15,8 @@ public class Bomb : MovingRigidbodyPhysics {
         if (Body && damage > 0 )
         {
             // here we need code
-            //health -= damage;
-            //Debug.Log("Bomb damaged you with" + damage + "damage!\n Your health is only" +health);
+            gameController.issueDamage(damage);
+            Debug.Log("Bomb damaged you with" + damage + "damage!\n" );
         }
     }
 

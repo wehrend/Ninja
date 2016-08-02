@@ -8,15 +8,20 @@ using VRTK;
 public class MovingRigidbodyPhysics : MonoBehaviour {
 
 
+
     public Rigidbody Body {get; private set;}
+    protected GameController gameController;
     private MeshRenderer renderer;
     public float hoverStrenght = 140f;
     public float hoverHeight = 2.5f;
     public float speed = 25f;
     public Transform target;
+
+
     private void Awake()
     {
         Body = GetComponent<Rigidbody>();
+        gameController =  GetComponent<GameController>();
         renderer = Body.GetComponent<MeshRenderer>();
         Body.collisionDetectionMode = CollisionDetectionMode.Continuous;
     }

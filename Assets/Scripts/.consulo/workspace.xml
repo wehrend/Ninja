@@ -5,12 +5,13 @@
     <ignored path=".consulo/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <file path="/FruitCanon.cs" changelist="44a5b325-5e0b-4e18-a946-36f63eeb9def" time="1467758299702" ignored="false" />
-    <file path="/Fruit.cs" changelist="44a5b325-5e0b-4e18-a946-36f63eeb9def" time="1470176143434" ignored="false" />
+    <file path="/Fruit.cs" changelist="44a5b325-5e0b-4e18-a946-36f63eeb9def" time="1470177088003" ignored="false" />
     <file path="/SpawnFruitCanons.cs" changelist="44a5b325-5e0b-4e18-a946-36f63eeb9def" time="1467279201573" ignored="false" />
     <file path="/TrajectoryCurve.cs" changelist="44a5b325-5e0b-4e18-a946-36f63eeb9def" time="1467565902660" ignored="false" />
     <file path="/FruitAndBombInstantiator.cs" changelist="44a5b325-5e0b-4e18-a946-36f63eeb9def" time="1470172241589" ignored="false" />
-    <file path="/Bomb.cs" changelist="44a5b325-5e0b-4e18-a946-36f63eeb9def" time="1470176377218" ignored="false" />
-    <file path="/GameController.cs" changelist="44a5b325-5e0b-4e18-a946-36f63eeb9def" time="1470176431148" ignored="false" />
+    <file path="/Bomb.cs" changelist="44a5b325-5e0b-4e18-a946-36f63eeb9def" time="1470177352977" ignored="false" />
+    <file path="/GameController.cs" changelist="44a5b325-5e0b-4e18-a946-36f63eeb9def" time="1470176977386" ignored="false" />
+    <file path="/MovingRigidbodyPhysics.cs" changelist="44a5b325-5e0b-4e18-a946-36f63eeb9def" time="1470177211102" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,8 +36,8 @@
       <file leaf-file-name="Fruit.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Fruit.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" column="34" selection-start-line="17" selection-start-column="34" selection-end-line="17" selection-end-column="34" />
+            <state relative-caret-position="120">
+              <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -44,11 +45,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GameController.cs" pinned="false" current-in-tab="true">
+      <file leaf-file-name="GameController.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GameController.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="16" column="8" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="8" />
+            <state relative-caret-position="480">
+              <caret line="32" column="1" selection-start-line="32" selection-start-column="1" selection-end-line="32" selection-end-column="1" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -56,11 +57,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Bomb.cs" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Bomb.cs" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Bomb.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" column="14" selection-start-line="18" selection-start-column="14" selection-end-line="18" selection-end-column="14" />
+            <state relative-caret-position="255">
+              <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -86,6 +87,18 @@
             <state relative-caret-position="0">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MovingRigidbodyPhysics.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/MovingRigidbodyPhysics.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="12" column="12" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -139,16 +152,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GrabbingProxy.cs.meta" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/GrabbingProxy.cs.meta">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="IdeDocumentHistory">
@@ -159,9 +162,10 @@
         <option value="$PROJECT_DIR$/FruitCanon.cs" />
         <option value="$PROJECT_DIR$/../SteamVR_Unity_Toolkit/Examples/Resources/Scripts/Sword.cs" />
         <option value="$PROJECT_DIR$/FruitAndBombInstantiator.cs" />
-        <option value="$PROJECT_DIR$/Fruit.cs" />
-        <option value="$PROJECT_DIR$/Bomb.cs" />
         <option value="$PROJECT_DIR$/GameController.cs" />
+        <option value="$PROJECT_DIR$/Fruit.cs" />
+        <option value="$PROJECT_DIR$/MovingRigidbodyPhysics.cs" />
+        <option value="$PROJECT_DIR$/Bomb.cs" />
       </list>
     </option>
   </component>
@@ -352,21 +356,21 @@
       <workItem from="1467668034948" duration="55000" />
       <workItem from="1467746677439" duration="7606000" />
       <workItem from="1470170376948" duration="104000" />
-      <workItem from="1470170591963" duration="6108000" />
+      <workItem from="1470170591963" duration="6808000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27039000" />
+    <option name="totallyTimeSpent" value="27739000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-4" y="-5" width="1928" height="1044" extended-state="6" />
+    <frame x="-4" y="-5" width="1928" height="1044" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24960506" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24960506" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329718" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -614,16 +618,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MovingRigidbodyPhysics.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/GameController.cs.meta">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -678,16 +672,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Bomb.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="14" selection-start-line="18" selection-start-column="14" selection-end-line="18" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../SteamVR_Unity_Toolkit/Scripts/VRTK_InteractableObject.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-495">
@@ -709,10 +693,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/MovingRigidbodyPhysics.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="12" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Fruit.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="34" selection-start-line="17" selection-start-column="34" selection-end-line="17" selection-end-column="34" />
+        <state relative-caret-position="120">
+          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
@@ -721,8 +715,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/GameController.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="8" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="8" />
+        <state relative-caret-position="480">
+          <caret line="32" column="1" selection-start-line="32" selection-start-column="1" selection-end-line="32" selection-end-column="1" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Bomb.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>

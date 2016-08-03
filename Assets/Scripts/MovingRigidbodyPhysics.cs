@@ -44,6 +44,12 @@ public class MovingRigidbodyPhysics : MonoBehaviour {
 		//if (sword.IsGrabbed())
         if (Time.realtimeSinceStartup > 5 )
 	        Body.AddRelativeForce(Vector3.forward * speed, ForceMode.Force);
-
     }
+
+
+     void OnTriggerEnter(Collider enteredCollider)
+     {
+        //should be kill zone 
+        Destroy(Body.gameObject);
+     }
 }

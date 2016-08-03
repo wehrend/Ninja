@@ -21,7 +21,7 @@ public class MovingRigidbodyPhysics : MonoBehaviour {
     private void Awake()
     {
         Body = GetComponent<Rigidbody>();
-        gameController =  GetComponent<GameController>();
+        gameController = FindObjectOfType(typeof(GameController)) as GameController;
         renderer = Body.GetComponent<MeshRenderer>();
         Body.collisionDetectionMode = CollisionDetectionMode.Continuous;
     }

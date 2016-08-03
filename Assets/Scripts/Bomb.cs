@@ -14,8 +14,8 @@ public class Bomb : MovingRigidbodyPhysics {
 
         if (Body && damage > 0 )
         {
-            // here we need code
-            gameController.issueDamage(damage);
+            if (gameController)
+                gameController.issueDamage(damage);
             Debug.Log("Bomb damaged you with" + damage + "damage!\n" );
         }
     }
@@ -24,7 +24,7 @@ public class Bomb : MovingRigidbodyPhysics {
     {
         if ((collision.collider.name.Contains("Sword") && collision.collider.GetComponent<Sword>().CollisionForce() > breakForce))
         {
-            return collision.collider.GetComponent<Sword>().CollisionForce() * damagePoints;
+            return collision.collider.GetComponent<Sword>().CollisionForce() *0.01f* damagePoints;
         }
         else if (collision.collider.name.Contains("Shield") )
         {

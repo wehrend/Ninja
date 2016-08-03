@@ -44,7 +44,7 @@ public class FruitAndBombInstantiator : MonoBehaviour {
         MovingRigidbodyPhysics prefab = fruitsAndBombs[Random.Range(0, fruitsAndBombs.Length)];
         prefab.target = target;
         List<float> used_x = new List<float>();
-        float x_max = 1.5f*Mathf.Sin(Mathf.Deg2Rad* (angle / 2)) + 1.5f; //1.5 offset of the vive-cube
+        float x_max = 2.0f *Mathf.Sin(Mathf.Deg2Rad* (angle / 2)) + 1.5f; //1.5 offset of the vive-cube
         float x = Random.Range(-x_max, x_max);
         while(used_x.Contains(x))
         {

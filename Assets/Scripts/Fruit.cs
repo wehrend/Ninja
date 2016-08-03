@@ -15,7 +15,11 @@ public class Fruit : MovingRigidbodyPhysics {
         {
             GetComponent<Renderer>().material.color = Color.red;
             Destroy(Body.gameObject,0.5f);
-            gameController.issueBoni(bonusPoints);
+            if (gameController)
+            {
+                Debug.Log("Game Controller found");
+            }
+                gameController.issueBoni(bonusPoints);
             Debug.Log("Fruit killed!");
         }
     }

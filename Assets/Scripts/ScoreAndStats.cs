@@ -5,21 +5,33 @@ using System.Collections;
 
 public class ScoreAndStats : MonoBehaviour {
 
+    
     public Text instructionText;
     public Text scoresText;
-    public int scores;
-
+    public Scrollbar healthBar;
+    private float health;
+    private GameController gameController;
+    private int score;
 	// Use this for initialization
-	void Start () {
-        instructionText.text = "Swing the Sword. \n And delete the catch the blue spheres.";
-        scores = 0;
-
-	}
+	void Start() {
+        gameController =  FindObjectOfType(typeof(GameController)) as GameController;
+       
+    }
 	
 	// Update is called once per frame
 	void Update () {
-       instructionText.text = "Swing the Sword. \n And delete the catch the blue spheres.";
-       scoresText.text = "Score:\n" + scores.ToString();
+        if (gameController != null)
+        {
+            instructionText.text = "Swing the Sword.\nCatch the blue spheres, and avoid the black bombs";
+            score = gameController.getScores();
+            scoresText.text = "Score:\n" + score.ToString();
+            health = gameController.getHealth();
+            healthBar.size = health / 1000f;
+        }
+        else
+        {
+            Debug.LogError("GameController not found!");
+        }
 
 
     }

@@ -3,27 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - SideFruitLaunchers
-  - BottomFruitLaunchers
-  - Fruit
-  - FruitDebris
-  - Splatter
-  - PossibleComboTextLocations
-  - ComboCanvas
-  - ComboNumberText
-  - FruitPools
-  - OtherPools
-  - BombOrPowerUp
-  - FreezeEffectGameObject
-  - PineappleTweenIcon
-  - FrenzyEffectGameObject
-  - TwoTimesScoreEffectGameObject
-  - MenuScoreText
-  - MenuLevelText
-  - GameSfx
-  - GameMusic
-  - DojoChanger
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -33,11 +13,11 @@ TagManager:
   - UI
   - 
   - 
-  - SliceCollider
-  - Fruit
-  - FruitDebris
-  - DojoBoundary
-  - BombOrPowerUp
+  - 
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 
@@ -60,16 +40,4 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: OTHER_UI(SPRITERENDERER)
-    uniqueID: 3684501291
-    locked: 0
-  - name: GAME_UI
-    uniqueID: 2218008541
-    locked: 0
-  - name: EVERYTHING_ELSE
-    uniqueID: 3214358777
-    locked: 0
-  - name: DOJOBACKGROUND
-    uniqueID: 582055771
     locked: 0

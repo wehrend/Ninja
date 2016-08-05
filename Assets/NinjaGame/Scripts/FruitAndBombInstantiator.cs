@@ -12,6 +12,7 @@ namespace Assets.NinjaGame.Scripts
 
         public float pausetime = 5;
         public int angle = 90;
+        public float distance = 5.0f;
         public Transform target;
 
         public MovingRigidbodyPhysics[] fruitsAndBombs;
@@ -58,13 +59,15 @@ namespace Assets.NinjaGame.Scripts
             }
 
             float z = Random.Range(8f, 10f);
-            Vector3 position = new Vector3(x, 2f, z);
+            transform.position = (transform.position - target.position).normalized * distance + target.position;
+            //Vector3 position =  new Vector3(x, 2f, z);
+            transform.RotateAround(target.position, Vector3.up, Random.Range(5, 20));
 
             // wait some small time
             yield return new WaitForSeconds(1.0f);
             if (prefab != null)
             {
-                Instantiate(prefab, position, Quaternion.identity);
+                Instantiate(prefab, transform.position, Quaternion.identity);
                 Debug.Log("Object " + prefab.transform.name + " instantiated");
             }
         }

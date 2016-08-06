@@ -18,7 +18,7 @@ namespace Assets.NinjaGame.Scripts
         public float hoverStrenght = 140f;
         public float hoverHeight = 2.5f;
         public float speed = 25f;
-        public Transform target;
+        public Vector3 target;
 
 
         private void Awake()
@@ -27,10 +27,18 @@ namespace Assets.NinjaGame.Scripts
             gameController = FindObjectOfType(typeof(GameController)) as GameController;
             renderer = Body.GetComponent<MeshRenderer>();
             Body.collisionDetectionMode = CollisionDetectionMode.Continuous;
+           
         }
+
+        void Start()
+        {
+            target = -transform.position;
+        }
+
 
         void FixedUpdate()
         {
+
             Ray ray = new Ray(Body.transform.position, -transform.up);
             RaycastHit hit;
             // Check if we are over floor right now.
@@ -41,6 +49,7 @@ namespace Assets.NinjaGame.Scripts
                 Body.AddForce(appliedHovering, ForceMode.Acceleration);
 
             }
+            
             Body.transform.LookAt(target);
             //Sword sword = FindObjectOfType<Sword>();
             //TODO: We want event mnessaging here
@@ -48,7 +57,6 @@ namespace Assets.NinjaGame.Scripts
             if (Time.realtimeSinceStartup > 5)
                 Body.AddRelativeForce(Vector3.forward * speed, ForceMode.Force);
         }
-
 
         void OnTriggerEnter(Collider enteredCollider)
         {

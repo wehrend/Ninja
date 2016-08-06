@@ -7,10 +7,10 @@ namespace Assets.NinjaGame.Scripts
 {
     [Serializable]
     public class MovingRigidbody : MonoBehaviour {
-        public MovingRigidbodyPhysics prefab;
+        public MovingRigidbodyPhysics which_prefab;
         public Vector3 startPosition;
         public Vector3 startRotation;
-        public  startTime;
+        public float startTime;
         public AnimationCurve velocity;
     }
 }

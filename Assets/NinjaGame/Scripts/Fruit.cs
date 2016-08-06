@@ -28,6 +28,7 @@ namespace Assets.NinjaGame.Scripts
             }
         }
 
+
         private float GetCollisionForce(Collision collision)
         {
             if ((collision.collider.name.Contains("Sword") && collision.collider.GetComponent<Sword>().CollisionForce() > breakForce))

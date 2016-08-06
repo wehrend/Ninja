@@ -53,7 +53,7 @@ namespace Assets.NinjaGame.Scripts
             Body.transform.LookAt(target);
             //Sword sword = FindObjectOfType<Sword>();
             //TODO: We want event mnessaging here
-            //if (sword.IsGrabbed())
+            //if (sword.IsGrabbed()) 
             if (Time.realtimeSinceStartup > 5)
                 Body.AddRelativeForce(Vector3.forward * speed, ForceMode.Force);
         }

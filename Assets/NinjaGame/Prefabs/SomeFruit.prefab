@@ -98,7 +98,7 @@ MonoBehaviour:
   hoverStrenght: 180
   hoverHeight: 2.5
   speed: 3
-  target: {fileID: 0}
+  target: {x: 0, y: 0, z: 0}
   breakForce: 50
   bonusPoints: 50
 --- !u!135 &13578222

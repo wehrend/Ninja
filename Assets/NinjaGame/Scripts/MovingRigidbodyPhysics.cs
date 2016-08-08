@@ -15,10 +15,14 @@ namespace Assets.NinjaGame.Scripts
         public Rigidbody Body { get; private set; }
         protected GameController gameController;
         private MeshRenderer renderer;
+        public float distance;
+        public Vector3 startPoint;
         public float hoverStrenght = 140f;
         public float hoverHeight = 2.5f;
-        public float speed = 25f;
+        public float speed = Random.Range(1,20);
         public Vector3 target;
+        //floor is layermask 8
+        public int layermask = 1 << 8;
 
 
         private void Awake()
@@ -33,6 +37,7 @@ namespace Assets.NinjaGame.Scripts
         void Start()
         {
             target = -transform.position;
+            target.y = -target.y;
         }
 
 
@@ -42,14 +47,19 @@ namespace Assets.NinjaGame.Scripts
             Ray ray = new Ray(Body.transform.position, -transform.up);
             RaycastHit hit;
             // Check if we are over floor right now.
-            if (Physics.Raycast(ray, out hit, hoverHeight))
+            if (Physics.Raycast(ray, out hit, hoverHeight,layermask))
             {
                 float propHeight = (hoverHeight - hit.distance) / hoverHeight;
                 Vector3 appliedHovering = Vector3.up * propHeight * hoverStrenght;
                 Body.AddForce(appliedHovering, ForceMode.Acceleration);
 
             }
-            
+            // startpoint is signinverted of target 
+            Vector3 currentDistance = (transform.position - startPoint);
+            //Distance is the radius 
+            if (currentDistance.magnitude > 1.8f * distance)
+                DestroyObject(Body.gameObject, 0.01f);
+
             Body.transform.LookAt(target);
             //Sword sword = FindObjectOfType<Sword>();
             //TODO: We want event mnessaging here

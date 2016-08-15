@@ -51,13 +51,13 @@ namespace Assets.NinjaGame.Scripts
             float currentAngle = Random.Range(-angle / 2, angle / 2);
             transform.RotateAround(center, Vector3.up, currentAngle );
            // Debug.Log("TransformPosition:" + transform.position + " Target.Position " + target+ " from angle "+ currentAngle );
-            prefab.distance = SpawnerDistance;
-            prefab.speed = speed;
-            prefab.startPoint = transform.position;
             // wait some small time
             yield return new WaitForSeconds(1.0f);
             if (prefab != null)
             {
+                prefab.distance = SpawnerDistance;
+                prefab.speed = speed;
+                prefab.startPoint = transform.position;
                 Instantiate(prefab, transform.position, Quaternion.identity);
 
                 //Debug.Log("Object " + prefab.transform.name + " instantiated");

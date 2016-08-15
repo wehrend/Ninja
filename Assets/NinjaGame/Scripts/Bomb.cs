@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+//using UnityStandardAssets.Effects;
 using VRTK;
 
 namespace Assets.NinjaGame.Scripts
@@ -11,6 +12,25 @@ namespace Assets.NinjaGame.Scripts
         public float breakForce = 50f;
         //let it be one of a mild bomb
         public int damagePoints = 5;
+        public float explosionMultiplier = 0.3f;
+
+
+        void Start()
+        {
+
+         /* var systems = GetComponentsInChildren<ParticleSystem>();
+            foreach (ParticleSystem system in systems)
+            {
+                system.startSize *= explosionMultiplier;
+                system.startSpeed *= explosionMultiplier;
+                system.startLifetime *= Mathf.Lerp(explosionMultiplier, 1, 0.5f);
+                system.Clear();
+                system.Play();
+            }*/
+        }
+
+
+
 
         private void OnCollisionEnter(Collision collision)
         {
@@ -36,6 +56,7 @@ namespace Assets.NinjaGame.Scripts
             }
             return 0f;
         }
+
 
         /* void OnTriggerEnter(Collider enteredCollider)
          {

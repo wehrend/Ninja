@@ -19,7 +19,7 @@ namespace Assets.NinjaGame.Scripts
         public Vector3 startPoint;
         public float hoverStrenght = 140f;
         public float hoverHeight = 2.5f;
-        public float speed = Random.Range(1,20);
+        public float speed = 5.0f;//Random.Range(1,20);
         public Vector3 target;
         //floor is layermask 8
         public int layermask = 1 << 8;

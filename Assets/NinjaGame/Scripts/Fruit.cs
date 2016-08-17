@@ -35,6 +35,11 @@ namespace Assets.NinjaGame.Scripts
             {
                 return collision.collider.GetComponent<Sword>().CollisionForce() * 1.2f;
             }
+            else if ((collision.collider.name.Contains("RigidbodyContainer") ))
+            {
+                Debug.Log("Hands collision");
+                return 50 * 1.2f;
+            }
 
             return 0f;
         }

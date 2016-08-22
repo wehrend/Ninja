@@ -14,8 +14,8 @@
 namespace VRTK
 {
     using UnityEngine;
-    using System.Collections;
 
+    [RequireComponent(typeof(VRTK_InteractTouch)), RequireComponent(typeof(VRTK_ControllerEvents))]
     public class VRTK_InteractUse : MonoBehaviour
     {
         public bool hideControllerOnUse = false;
@@ -24,20 +24,25 @@ namespace VRTK
         public event ObjectInteractEventHandler ControllerUseInteractableObject;
         public event ObjectInteractEventHandler ControllerUnuseInteractableObject;
 
-        GameObject usingObject = null;
-        VRTK_InteractTouch interactTouch;
-        VRTK_ControllerActions controllerActions;
+        private GameObject usingObject = null;
+        private VRTK_InteractTouch interactTouch;
+        private VRTK_ControllerActions controllerActions;
+        private bool updatedHideControllerOnUse = false;
 
         public virtual void OnControllerUseInteractableObject(ObjectInteractEventArgs e)
         {
             if (ControllerUseInteractableObject != null)
+            {
                 ControllerUseInteractableObject(this, e);
+            }
         }
 
         public virtual void OnControllerUnuseInteractableObject(ObjectInteractEventArgs e)
         {
             if (ControllerUnuseInteractableObject != null)
+            {
                 ControllerUnuseInteractableObject(this, e);
+            }
         }
 
         public GameObject GetUsingObject()
@@ -53,6 +58,14 @@ namespace VRTK
             }
         }
 
+        public void ForceResetUsing()
+        {
+            if (usingObject != null)
+            {
+                UnuseInteractedObject(false);
+            }
+        }
+
         private void Awake()
         {
             if (GetComponent<VRTK_InteractTouch>() == null)
@@ -65,7 +78,7 @@ namespace VRTK
             controllerActions = GetComponent<VRTK_ControllerActions>();
         }
 
-        private void Start()
+        private void OnEnable()
         {
             if (GetComponent<VRTK_ControllerEvents>() == null)
             {
@@ -75,6 +88,13 @@ namespace VRTK
 
             GetComponent<VRTK_ControllerEvents>().AliasUseOn += new ControllerInteractionEventHandler(DoStartUseObject);
             GetComponent<VRTK_ControllerEvents>().AliasUseOff += new ControllerInteractionEventHandler(DoStopUseObject);
+        }
+
+        private void OnDisable()
+        {
+            ForceStopUsing();
+            GetComponent<VRTK_ControllerEvents>().AliasUseOn -= new ControllerInteractionEventHandler(DoStartUseObject);
+            GetComponent<VRTK_ControllerEvents>().AliasUseOff -= new ControllerInteractionEventHandler(DoStopUseObject);
         }
 
         private bool IsObjectUsable(GameObject obj)
@@ -111,16 +131,17 @@ namespace VRTK
                 usingObject = touchedObject;
                 var usingObjectScript = usingObject.GetComponent<VRTK_InteractableObject>();
 
-                if (!usingObjectScript.IsValidInteractableController(this.gameObject, usingObjectScript.allowedUseControllers))
+                if (!usingObjectScript.IsValidInteractableController(gameObject, usingObjectScript.allowedUseControllers))
                 {
                     usingObject = null;
                     return;
                 }
 
+                updatedHideControllerOnUse = usingObjectScript.CheckHideMode(hideControllerOnUse, usingObjectScript.hideControllerOnUse);
                 OnControllerUseInteractableObject(interactTouch.SetControllerInteractEvent(usingObject));
-                usingObjectScript.StartUsing(this.gameObject);
+                usingObjectScript.StartUsing(gameObject);
 
-                if (hideControllerOnUse)
+                if (updatedHideControllerOnUse)
                 {
                     Invoke("HideController", hideControllerDelay);
                 }
@@ -143,26 +164,32 @@ namespace VRTK
             }
         }
 
-        private void UnuseInteractedObject()
+        private void UnuseInteractedObject(bool completeStop)
         {
             if (usingObject != null)
             {
                 OnControllerUnuseInteractableObject(interactTouch.SetControllerInteractEvent(usingObject));
-                usingObject.GetComponent<VRTK_InteractableObject>().StopUsing(this.gameObject);
-                if (hideControllerOnUse)
+                if (completeStop)
+                {
+                    usingObject.GetComponent<VRTK_InteractableObject>().StopUsing(gameObject);
+                }
+                if (updatedHideControllerOnUse)
                 {
                     controllerActions.ToggleControllerModel(true, usingObject);
                 }
-                usingObject.GetComponent<VRTK_InteractableObject>().ToggleHighlight(false);
+                if (completeStop)
+                {
+                    usingObject.GetComponent<VRTK_InteractableObject>().ToggleHighlight(false);
+                }
                 usingObject = null;
             }
         }
 
         private GameObject GetFromGrab()
         {
-            if (this.GetComponent<VRTK_InteractGrab>())
+            if (GetComponent<VRTK_InteractGrab>())
             {
-                return this.GetComponent<VRTK_InteractGrab>().GetGrabbedObject();
+                return GetComponent<VRTK_InteractGrab>().GetGrabbedObject();
             }
             return null;
         }
@@ -170,7 +197,7 @@ namespace VRTK
         private void StopUsing()
         {
             SetObjectUsingState(usingObject, 0);
-            UnuseInteractedObject();
+            UnuseInteractedObject(true);
         }
 
         private void DoStartUseObject(object sender, ControllerInteractionEventArgs e)
@@ -183,6 +210,13 @@ namespace VRTK
 
             if (touchedObject != null && interactTouch.IsObjectInteractable(touchedObject))
             {
+                var interactableObjectScript = touchedObject.GetComponent<VRTK_InteractableObject>();
+
+                if (interactableObjectScript.useOnlyIfGrabbed && !interactableObjectScript.IsGrabbed())
+                {
+                    return;
+                }
+
                 UseInteractedObject(touchedObject);
                 if (usingObject && !IsObjectHoldOnUse(usingObject))
                 {

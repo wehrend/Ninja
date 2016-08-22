@@ -4,11 +4,6 @@
 
     public class VRTK_Slider : VRTK_Control
     {
-        public enum Direction
-        {
-            autodetect, x, y, z
-        }
-
         public Direction direction = Direction.autodetect;
 
         public float min = 0f;
@@ -27,9 +22,13 @@
         private Rigidbody rb;
         private VRTK_InteractableObject io;
 
-        public override void OnDrawGizmos()
+        protected override void OnDrawGizmos()
         {
             base.OnDrawGizmos();
+            if (!enabled || !setupSuccessful)
+            {
+                return;
+            }
 
             // axis and min/max
             Vector3 center = (direction == Direction.autodetect) ? bounds.center : transform.position;
@@ -74,6 +73,11 @@
             SetConstraints(finalDirection);
 
             return true;
+        }
+
+        protected override ControlValueRange RegisterValueRange()
+        {
+            return new ControlValueRange() { controlMin = min, controlMax = max };
         }
 
         protected override void HandleUpdate()

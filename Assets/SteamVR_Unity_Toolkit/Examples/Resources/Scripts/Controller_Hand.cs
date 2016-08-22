@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using VRTK;
 
 public class Controller_Hand : MonoBehaviour
@@ -22,20 +21,21 @@ public class Controller_Hand : MonoBehaviour
 
     private void Start()
     {
-        this.GetComponentInParent<VRTK_ControllerEvents>().AliasGrabOn += new ControllerInteractionEventHandler(DoGrabOn);
-        this.GetComponentInParent<VRTK_ControllerEvents>().AliasGrabOff += new ControllerInteractionEventHandler(DoGrabOff);
-        this.GetComponentInParent<VRTK_ControllerEvents>().AliasUseOn += new ControllerInteractionEventHandler(DoUseOn);
-        this.GetComponentInParent<VRTK_ControllerEvents>().AliasUseOff += new ControllerInteractionEventHandler(DoUseOff);
+        GetComponentInParent<VRTK_ControllerEvents>().AliasGrabOn += new ControllerInteractionEventHandler(DoGrabOn);
+        GetComponentInParent<VRTK_ControllerEvents>().AliasGrabOff += new ControllerInteractionEventHandler(DoGrabOff);
+        GetComponentInParent<VRTK_ControllerEvents>().AliasUseOn += new ControllerInteractionEventHandler(DoUseOn);
+        GetComponentInParent<VRTK_ControllerEvents>().AliasUseOff += new ControllerInteractionEventHandler(DoUseOff);
 
-        pointerFinger = this.transform.Find("Container/PointerFingerContainer");
-        gripFingers = this.transform.Find("Container/GripFingerContainer");
+        var handContainer = "ModelPieces";
+        pointerFinger = transform.Find(handContainer + "/PointerFingerContainer");
+        gripFingers = transform.Find(handContainer + "/GripFingerContainer");
 
         if (hand == Hands.Left)
         {
             InversePosition(pointerFinger);
             InversePosition(gripFingers);
-            InversePosition(this.transform.Find("Container/Palm"));
-            InversePosition(this.transform.Find("Container/Thumb"));
+            InversePosition(transform.Find(handContainer + "/Palm"));
+            InversePosition(transform.Find(handContainer + "/Thumb"));
         }
 
         originalPointerRotation = pointerFinger.localEulerAngles.y;

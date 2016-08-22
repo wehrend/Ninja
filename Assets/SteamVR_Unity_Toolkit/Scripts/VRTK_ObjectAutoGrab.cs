@@ -5,53 +5,39 @@
 
     public class VRTK_ObjectAutoGrab : MonoBehaviour
     {
-        public GameObject objectToGrab;
+        public VRTK_InteractableObject objectToGrab;
         public bool cloneGrabbedObject;
 
         private VRTK_InteractGrab controller;
-        private float initGrabCooldown;
-        private bool initGrab;
 
-        private void Start()
+        private IEnumerator Start()
         {
-            controller = this.GetComponent<VRTK_InteractGrab>();
-            initGrab = false;
-            initGrabCooldown = 0.5f;
-
+            controller = GetComponent<VRTK_InteractGrab>();
             if (!controller)
             {
                 Debug.LogError("The VRTK_InteractGrab script is required to be attached to the controller along with this script.");
+                yield break;
             }
 
-            if (!objectToGrab || !objectToGrab.GetComponent<VRTK_InteractableObject>())
+            if (!objectToGrab)
             {
-                Debug.LogError("The objectToGrab Game Object must have the VRTK_InteractableObject script applied to it.");
+                Debug.LogError("You have to assign an object that should be grabbed.");
+                yield break;
             }
-        }
 
-        private void InitAutoGrab()
-        {
-            var grabbableObject = objectToGrab;
+            while (controller.controllerAttachPoint == null)
+            {
+                yield return true;
+            }
+
+            VRTK_InteractableObject grabbableObject = objectToGrab;
             if (cloneGrabbedObject)
             {
                 grabbableObject = Instantiate(objectToGrab);
             }
-            controller.GetComponent<VRTK_InteractTouch>().ForceTouch(grabbableObject);
+            controller.GetComponent<VRTK_InteractTouch>().ForceStopTouching();
+            controller.GetComponent<VRTK_InteractTouch>().ForceTouch(grabbableObject.gameObject);
             controller.AttemptGrab();
-        }
-
-        private void Update()
-        {
-            //Give the SteamVR controllers a bit of time to initialise before grabbing
-            if (initGrabCooldown <= 0 && !initGrab)
-            {
-                initGrab = true;
-                InitAutoGrab();
-            }
-            else
-            {
-                initGrabCooldown -= Time.deltaTime;
-            }
         }
     }
 }

@@ -14,24 +14,6 @@ namespace Assets.NinjaGame.Scripts
         public int damagePoints = 5;
         public float explosionMultiplier = 0.3f;
 
-
-        void Start()
-        {
-
-         /* var systems = GetComponentsInChildren<ParticleSystem>();
-            foreach (ParticleSystem system in systems)
-            {
-                system.startSize *= explosionMultiplier;
-                system.startSpeed *= explosionMultiplier;
-                system.startLifetime *= Mathf.Lerp(explosionMultiplier, 1, 0.5f);
-                system.Clear();
-                system.Play();
-            }*/
-        }
-
-
-
-
         private void OnCollisionEnter(Collision collision)
         {
             var damage = GetCollisionForce(collision);

@@ -5,7 +5,7 @@ using System.Collections;
 using VRTK;
 using System;
 using UnityEngine.Events;
-using Assets.LSL4Unity.Scripts;
+//using Assets.LSL4Unity.Scripts;
 
 namespace Assets.NinjaGame.Scripts
 {
@@ -14,7 +14,7 @@ namespace Assets.NinjaGame.Scripts
     {
         private VRTK_ControllerActions controllerActions;
         private VRTK_ControllerEvents controllerEvents;
-        public LSLMarkerStream markerStream;
+        //public LSLMarkerStream markerStream;
 
         private float impactMagnifier = 120f;
         private float collisionForce = 0f;
@@ -46,7 +46,7 @@ namespace Assets.NinjaGame.Scripts
 
         private void OnCollisionEnter(Collision collision)
         {
-            markerStream.Write("Collision with Object");
+            //markerStream.Write("Collision with Object");
             
             // if (IsGrabbed())
             //     Debug.Log("IsGrabbed()");

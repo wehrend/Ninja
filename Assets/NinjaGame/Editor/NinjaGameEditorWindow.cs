@@ -11,11 +11,14 @@ namespace Assets.NinjaGame.Editor
 {
     public class NinjaGameEditorWindow : EditorWindow
     {
-        public string[] controller; //= new string[] { "Vive controller_ Sword", "Hand(s)", };
-        public int index = 0;
+        public List<String> controller; //= new string[] { "Vive controller_ Sword", "Hand(s)", };
+        public List<String> levels;
+        public int index =0;
+        public int controllablesIndex=0;
+        public int levelsIndex = 0;
         public bool groupEnabled;
         public Object[] prefabs;
-        public Object[] levels;
+
         [MenuItem("NinjaGame/NinjaGame Configuration")]
         static void Init()
         {
@@ -32,18 +35,21 @@ namespace Assets.NinjaGame.Editor
 
 
             FindAvailablePrefabsOfType();
-            FindAvailableLevels();
+            levels =FindAvailableLevels();
 
             bool prefabchoosen =true;
             GUILayout.Label("Ninja Game Configuration", EditorStyles.boldLabel);
-            index = EditorGUILayout.Popup(index, controller);
+            GUILayout.Label("Available controller(s)", EditorStyles.boldLabel);
+            index= EditorGUILayout.Popup(index, controller.ToArray());
 
-            //index = EditorGUILayout.Popup(index, level);
+
+            GUILayout.Label("Choose Level", EditorStyles.boldLabel);
+            levelsIndex = EditorGUILayout.Popup(levelsIndex, levels.ToArray());
             GUILayout.Label("Available Fruits and Bombs (Prefabs)", EditorStyles.boldLabel);
             foreach (var prefab in prefabs)
             {
 
-                Debug.Log(prefab.name);
+               //Debug.Log(prefab.name);
 
                 EditorGUILayout.Toggle(prefab.name, prefabchoosen);
             }
@@ -61,7 +67,7 @@ namespace Assets.NinjaGame.Editor
         * We want find everything what is controllable / interactable via the vive controller
         * This may be direct (Controller_Hand,SteamVR_Model) or indirect (Sword,Lightsaber)
         */
-        string[] FindControllers()
+        List<String> FindControllers()
         {
             Object[] controllableObjects;
             List<String> controlls = new List<String>();
@@ -72,8 +78,8 @@ namespace Assets.NinjaGame.Editor
                 //Debug.Log("Controllables:"+controllables.name);
                 controlls.Add(controllables.name);
             }
-            String[] results = new String[controlls.Count];
-            return results= controlls.ToArray();
+
+            return controlls;
         }
 
         /*
@@ -91,20 +97,33 @@ namespace Assets.NinjaGame.Editor
         /*
         * Lastly, we want find any levels (gameobjects childing or otherwise involving FruitsAndBombsSpawner )
         */
-        void FindAvailableLevels()
+        List<String> FindAvailableLevels()
         {
-            levels = Resources.FindObjectsOfTypeAll(typeof(FruitAndBombSpawner));
-            foreach (var level in levels)
+            Object[] levelObjects;
+            List<String> levelsList = new List<String>();
+            levelObjects = Resources.FindObjectsOfTypeAll(typeof(Level) );
+
+            foreach ( var level in levelObjects)
             {
-                Debug.Log("Controllables:"+level.name);
-                //level.Add(level.name);
+                //var levelPrefab= PrefabUtility.FindPrefabRoot(level);
+
+                //Debug.Log("Level:"+ level.name );
+                levelsList.Add(level.name);
+
             }
+            return levelsList;
         }
 
 
        void DoSomething()
        {
-            Debug.Log("choosen prefab" + index);
+           //Activate choosen level and controllers
+           Debug.Log("Choosen Controller(s): " +  controller[controllablesIndex]);
+           GameObject.Find(controller[controllablesIndex]).active =true;
+           Debug.Log("Choosen Level: " +  levels[levelsIndex]);
+           GameObject.Find(controller[controllablesIndex]).active=true;
+
+
        }
     
     }

@@ -9,6 +9,7 @@ using VRTK;
 
 namespace Assets.NinjaGame.Editor
 {
+    [InitializeOnLoad]
     public class NinjaGameEditorWindow : EditorWindow
     {
         public List<String> controller; //= new string[] { "Vive controller_ Sword", "Hand(s)", };
@@ -19,6 +20,7 @@ namespace Assets.NinjaGame.Editor
         public bool groupEnabled;
         public Object[] prefabs;
 
+     
         [MenuItem("NinjaGame/NinjaGame Configuration")]
         static void Init()
         {
@@ -31,10 +33,8 @@ namespace Assets.NinjaGame.Editor
 
         void OnGUI()
         {
-            controller=FindControllers();
-
-
-            FindAvailablePrefabsOfType();
+            
+            controller =FindControllers();
             levels =FindAvailableLevels();
 
             bool prefabchoosen =true;
@@ -43,8 +43,11 @@ namespace Assets.NinjaGame.Editor
             index= EditorGUILayout.Popup(index, controller.ToArray());
 
 
-            GUILayout.Label("Choose Level", EditorStyles.boldLabel);
+            GUILayout.Label("Choose (start) level from availables", EditorStyles.boldLabel);
             levelsIndex = EditorGUILayout.Popup(levelsIndex, levels.ToArray());
+
+            groupEnabled = EditorGUILayout.BeginToggleGroup("Optional Settings", groupEnabled);
+            FindAvailablePrefabsOfType();
             GUILayout.Label("Available Fruits and Bombs (Prefabs)", EditorStyles.boldLabel);
             foreach (var prefab in prefabs)
             {
@@ -55,10 +58,10 @@ namespace Assets.NinjaGame.Editor
             }
 
 
-            groupEnabled = EditorGUILayout.BeginToggleGroup("Optional Settings", groupEnabled);
+         
             EditorGUILayout.EndToggleGroup();
             if (GUILayout.Button("Ok"))
-                DoSomething();
+                LoadThings();
         }
 
 
@@ -71,14 +74,14 @@ namespace Assets.NinjaGame.Editor
         {
             Object[] controllableObjects;
             List<String> controlls = new List<String>();
-
+            Resources.LoadAll("");
             controllableObjects = Resources.FindObjectsOfTypeAll(typeof(VRTK_InteractableObject));
             foreach (var controllables in controllableObjects)
             {
                 //Debug.Log("Controllables:"+controllables.name);
                 controlls.Add(controllables.name);
             }
-
+          
             return controlls;
         }
 
@@ -101,6 +104,7 @@ namespace Assets.NinjaGame.Editor
         {
             Object[] levelObjects;
             List<String> levelsList = new List<String>();
+            Resources.LoadAll("");
             levelObjects = Resources.FindObjectsOfTypeAll(typeof(Level) );
 
             foreach ( var level in levelObjects)
@@ -115,16 +119,17 @@ namespace Assets.NinjaGame.Editor
         }
 
 
-       void DoSomething()
+       void LoadThings()
        {
            //Activate choosen level and controllers
            Debug.Log("Choosen Controller(s): " +  controller[controllablesIndex]);
-           GameObject.Find(controller[controllablesIndex]).active =true;
+           Instantiate(GameObject.Find(controller[controllablesIndex]));
            Debug.Log("Choosen Level: " +  levels[levelsIndex]);
-           GameObject.Find(controller[controllablesIndex]).active=true;
+           Instantiate(GameObject.Find(levels[levelsIndex]));
+           Debug.Log("Unloading unused assets.");
+            //Resources.UnloadUnusedAssets();
 
-
-       }
+        }
     
     }
 

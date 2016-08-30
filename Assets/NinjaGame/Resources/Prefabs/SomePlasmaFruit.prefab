@@ -107,11 +107,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5f5ff8ebc1ca944eb87dcc341be4d71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distance: 5
-  startPoint: {x: -1.5111841, y: 2.6470907, z: 4.722033}
-  hoverStrenght: 180
-  hoverHeight: 2.5
-  speed: 8.49095
+  distance: 7
+  startPoint: {x: 2.4028811, y: 2.9059272, z: 6.511947}
+  hoverStrenght: 160
+  hoverHeight: 1.9
+  speed: 9.259417
   target: {x: 0, y: 0, z: 0}
   layermask: 256
   breakForce: 50

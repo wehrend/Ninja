@@ -14,7 +14,7 @@ namespace Assets.NinjaGame.Scripts
 
         public Rigidbody Body { get; private set; }
         protected GameController gameController;
-        private MeshRenderer renderer;
+        //private MeshRenderer renderer;
         public float distance;
         public Vector3 startPoint;
         public float hoverStrenght = 140f;
@@ -29,7 +29,7 @@ namespace Assets.NinjaGame.Scripts
         {
             Body = GetComponent<Rigidbody>();
             gameController = FindObjectOfType(typeof(GameController)) as GameController;
-            renderer = Body.GetComponent<MeshRenderer>();
+            //renderer = Body.GetComponent<MeshRenderer>();
             Body.collisionDetectionMode = CollisionDetectionMode.Continuous;
            
         }
@@ -56,8 +56,8 @@ namespace Assets.NinjaGame.Scripts
             }
             // startpoint is signinverted of target 
             Vector3 currentDistance = (transform.position - startPoint);
-            //Distance is the radius 
-            if (currentDistance.magnitude > 1.8f * distance)
+            //Destroy if we have passed the subject. Distance is the radius 
+            if (currentDistance.magnitude > 1.74f * distance)
                 DestroyObject(Body.gameObject, 0.01f);
 
             Body.transform.LookAt(target);

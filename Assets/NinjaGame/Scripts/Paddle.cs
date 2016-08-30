@@ -10,7 +10,7 @@ using UnityEngine.Events;
 namespace Assets.NinjaGame.Scripts
 {
 
-    public class Sword : VRTK_InteractableObject
+    public class Paddle : VRTK_InteractableObject
     {
         private VRTK_ControllerActions controllerActions;
         private VRTK_ControllerEvents controllerEvents;
@@ -18,10 +18,10 @@ namespace Assets.NinjaGame.Scripts
 
         private float impactMagnifier = 120f;
         private float collisionForce = 0f;
-        public ushort forceFeedbackIntensity = 3;
-        public float forceFeedbackDuration = 0.5f;
-        //private GrabbingProxy grabbingProxy;
 
+        //private GrabbingProxy grabbingProxy;
+        public ushort forceFeedbackIntensity= 3;
+        public float forceFeedbackDuration = 0.5f;
         public float CollisionForce()
         {
             return collisionForce;
@@ -41,7 +41,7 @@ namespace Assets.NinjaGame.Scripts
             base.Awake();
             rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
 
-            //grabbingProxy = GetComponent<GrabbingProxy>();
+           // grabbingProxy = GetComponent<GrabbingProxy>();
         }
 
 
@@ -54,7 +54,7 @@ namespace Assets.NinjaGame.Scripts
             if (controllerActions && controllerEvents && IsGrabbed())
             {
                 collisionForce = controllerEvents.GetVelocity().magnitude * impactMagnifier;
-                controllerActions.TriggerHapticPulse((ushort) (collisionForce * forceFeedbackIntensity), forceFeedbackDuration, 0.01f);
+                controllerActions.TriggerHapticPulse( (ushort) ( collisionForce*forceFeedbackIntensity), forceFeedbackDuration, 0.01f);
                 // ScoreAndStats.scores += scores;
             }
             else

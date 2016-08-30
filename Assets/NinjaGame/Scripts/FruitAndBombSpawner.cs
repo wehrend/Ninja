@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Random= UnityEngine.Random;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Assets.NinjaGame.Scripts

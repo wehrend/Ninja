@@ -169,10 +169,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distance: 10
-  startPoint: {x: 9.8819, y: 3.2941813, z: 0.82045794}
-  hoverStrenght: 180
-  hoverHeight: 2.5
-  speed: 8.079337
+  startPoint: {x: -7.1633477, y: 3.2941813, z: -6.856496}
+  hoverStrenght: 160
+  hoverHeight: 1.8
+  speed: 9.734247
   target: {x: 0, y: 0, z: 0}
   layermask: 256
   breakForce: 50

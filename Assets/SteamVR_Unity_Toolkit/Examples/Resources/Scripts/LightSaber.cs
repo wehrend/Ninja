@@ -15,6 +15,7 @@ public class LightSaber : VRTK_InteractableObject
 
     public override void StartUsing(GameObject usingObject)
     {
+        Debug.Log("Start using");
         base.StartUsing(usingObject);
         beamExtendSpeed = 5f;
         bladePhaseColors = new Color[2] { Color.blue, Color.cyan };
@@ -24,6 +25,7 @@ public class LightSaber : VRTK_InteractableObject
 
     public override void StopUsing(GameObject usingObject)
     {
+        Debug.Log("Stop using");
         base.StopUsing(usingObject);
         beamExtendSpeed = -5f;
     }

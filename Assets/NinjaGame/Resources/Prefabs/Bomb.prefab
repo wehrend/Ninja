@@ -96,14 +96,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distance: 5
-  startPoint: {x: -3.3652155, y: 2.6470907, z: 3.6409607}
-  hoverStrenght: 180
-  hoverHeight: 2.5
-  speed: 5.1865788
+  startPoint: {x: 3.3338108, y: 2.647091, z: 3.6697378}
+  hoverStrenght: 160
+  hoverHeight: 2
+  speed: 7.552718
   target: {x: 0, y: 0, z: 0}
   layermask: 256
   breakForce: 50
   damagePoints: 50
+  explosionMultiplier: 0.3
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

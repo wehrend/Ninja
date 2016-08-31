@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using VRTK;
 
 namespace Assets.NinjaGame.Scripts
 {
     public class GameController : MonoBehaviour
     {
 
-        public float health;
+        public int health;
         public int score;
-
         public void HappenWhenSwordIsGrabbed(GameObject grabbedObject)
         {
             Debug.Log("Object has been grabbed");
@@ -17,14 +17,15 @@ namespace Assets.NinjaGame.Scripts
         // Use this for initialization
         void Start()
         {
-            health = 1000f;
+            health = 1000;
             score = 0;
         }
 
-        public void issueDamage(float damage)
+        public void issueDamage(int damage)
         {
             health -= damage;
         }
+
 
 
         public void issueBoni(int bonusPoints)
@@ -37,7 +38,7 @@ namespace Assets.NinjaGame.Scripts
             return score;
         }
 
-        public float getHealth()
+        public int getHealth()
         {
             return health;
         }

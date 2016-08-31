@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
+
 using System.Collections;
 
 namespace Assets.NinjaGame.Scripts
@@ -12,14 +14,13 @@ namespace Assets.NinjaGame.Scripts
         public Text instructionText;
         public Text scoresText;
         public Scrollbar healthBar;
-        private float health;
+        private int health;
         private GameController gameController;
         private int score;
         // Use this for initialization
         void Start()
         {
             gameController = FindObjectOfType(typeof(GameController)) as GameController;
-
         }
 
         // Update is called once per frame
@@ -29,9 +30,15 @@ namespace Assets.NinjaGame.Scripts
             {
                 instructionText.text = "Swing the Sword.\nCatch the blue spheres, and avoid the black bombs";
                 score = gameController.getScores();
-                scoresText.text = "Score:\n" + score.ToString();
                 health = gameController.getHealth();
-                healthBar.size = health / 1000f;
+                scoresText.text = "Score:\n" + score.ToString()+ "\n Health:\n"+health.ToString();
+               // healthBar.size = health / 10;
+                if (health < 5)
+                {
+                    score = 0;
+                    instructionText.color = Color.red;
+                    instructionText.text = "Game Over!";
+                }
             }
             else
             {

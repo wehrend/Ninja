@@ -11,12 +11,12 @@ namespace Assets.NinjaGame.Scripts
 
         public float breakForce = 50f;
         //let it be one of a mild bomb
-        public int damagePoints = 5;
+        public int damagePoints = 4;
         public float explosionMultiplier = 0.3f;
 
         private void OnCollisionEnter(Collision collision)
         {
-            var damage = GetCollisionForce(collision);
+            int damage =  GetCollisionForce(collision);
 
             if (Body && damage > 0)
             {
@@ -24,19 +24,21 @@ namespace Assets.NinjaGame.Scripts
                     gameController.issueDamage(damage);
                 Debug.Log("Bomb damaged you with" + damage + "damage!\n");
             }
+            Destroy(Body.gameObject);
         }
 
-        private float GetCollisionForce(Collision collision)
+        private int GetCollisionForce(Collision collision)
         {
             if ((collision.collider.name.Contains("Sword") && collision.collider.GetComponent<Sword>().CollisionForce() > breakForce))
             {
-                return collision.collider.GetComponent<Sword>().CollisionForce() * 0.01f * damagePoints;
+                return (int)(collision.collider.GetComponent<Sword>().CollisionForce()/20) * damagePoints;
             }
-            else if (collision.collider.name.Contains("Shield"))
+            else if ((collision.collider.name.Contains("Paddle") && collision.collider.GetComponent<Paddle>().CollisionForce() > breakForce))
             {
-                return 0f;
+                return (int)( collision.collider.GetComponent<Paddle>().CollisionForce()/20) * damagePoints;
             }
-            return 0f;
+
+            return 0;
         }
 
 

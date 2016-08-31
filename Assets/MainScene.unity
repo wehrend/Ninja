@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18053626, g: 0.22601849, b: 0.30718803, a: 1}
+  m_IndirectSpecularColor: {r: 0.18053585, g: 0.2260178, b: 0.30718696, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -436,6 +436,22 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f3a320b69dc4d504c976c272181cc478, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &290843484 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1000010998876850, guid: f3a320b69dc4d504c976c272181cc478,
+    type: 2}
+  m_PrefabInternal: {fileID: 290843483}
+--- !u!114 &290843485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 290843484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99df8a1cbbc5d49b38b5199fd1b90766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &305857106
 GameObject:
   m_ObjectHideFlags: 0
@@ -922,6 +938,34 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1 &1049668244
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 1302204162}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1049668245}
+  m_Layer: 0
+  m_Name: Missing Prefab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1049668245
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 1302204162}
+  m_GameObject: {fileID: 1049668244}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
 --- !u!1 &1065037708
 GameObject:
   m_ObjectHideFlags: 0
@@ -984,7 +1028,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
 --- !u!1 &1103410125
 GameObject:
   m_ObjectHideFlags: 0
@@ -994,6 +1038,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1103410127}
   - 114: {fileID: 1103410126}
+  - 114: {fileID: 1103410128}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -1012,7 +1057,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab9ff13b5140b3e4dab5d99a8c4d79af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
+  health: 1000
   score: 0
 --- !u!4 &1103410127
 Transform:
@@ -1027,6 +1072,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 7
+--- !u!114 &1103410128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1103410125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7628d50b80c63402da5519c8f8267c65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1147126818
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,8 +21,18 @@ namespace Assets.NinjaGame.Scripts
             //private GrabbingProxy grabbingProxy;
 
 
+          /*  public override void Start()
+            {
+                base.Start();
+                GetComponent<VRTK_ControllerEvents>().AliasGrabOn() += new ControllerInteractionEventHandler(GrabWeapon);
+                GetComponent<VRTK_ControllerEvents>().AliasGrabOff() += new ControllerInteractionEventHandler(UngrabWeapon);
+                GetComponent<VRTK_ControllerEvents>().AliasUseOn() += new ControllerInteractionEventHandler(UseWeapon);
+                GetComponent<VRTK_ControllerEvents>().AliasUseOff() += new ControllerInteractionEventHandler(DeUseWeapon);
+            }*/
 
-        public float CollisionForce()
+
+
+            public float CollisionForce()
             {
                 return collisionForce;
             }

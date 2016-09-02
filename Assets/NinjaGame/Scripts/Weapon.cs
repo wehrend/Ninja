@@ -13,6 +13,8 @@ namespace Assets.NinjaGame.Scripts
             private VRTK_ControllerEvents controllerEvents;
             //public LSLMarkerStream markerStream;
             private GameController gameController;
+            public NinjaGameEventController ninjaGameEvent;
+            public NinjaGameEventArgs eve;
             private float impactMagnifier = 120f;
             private float collisionForce = 0f;
             public ushort forceFeedbackIntensity = 3;
@@ -21,14 +23,16 @@ namespace Assets.NinjaGame.Scripts
             //private GrabbingProxy grabbingProxy;
 
 
-          /*  public override void Start()
+           /* public override void Start()
             {
                 base.Start();
-                GetComponent<VRTK_ControllerEvents>().AliasGrabOn() += new ControllerInteractionEventHandler(GrabWeapon);
-                GetComponent<VRTK_ControllerEvents>().AliasGrabOff() += new ControllerInteractionEventHandler(UngrabWeapon);
-                GetComponent<VRTK_ControllerEvents>().AliasUseOn() += new ControllerInteractionEventHandler(UseWeapon);
-                GetComponent<VRTK_ControllerEvents>().AliasUseOff() += new ControllerInteractionEventHandler(DeUseWeapon);
-            }*/
+               // ninjaGameEvent.StartGame += Start;
+               // ninjaGameEvent.GameOver += GameOver;
+            //GetComponent<VRTK_ControllerEvents>().AliasGrabOn() += new ControllerInteractionEventHandler(GrabWeapon);
+            //GetComponent<VRTK_ControllerEvents>().AliasGrabOff() += new ControllerInteractionEventHandler(UngrabWeapon);
+            //GetComponent<VRTK_ControllerEvents>().AliasUseOn() += new ControllerInteractionEventHandler(UseWeapon);
+            //GetComponent<VRTK_ControllerEvents>().AliasUseOff() += new ControllerInteractionEventHandler(DeUseWeapon);
+        }*/
 
 
 
@@ -42,11 +46,19 @@ namespace Assets.NinjaGame.Scripts
                 base.Grabbed(grabbingObject);
                 controllerActions = grabbingObject.GetComponent<VRTK_ControllerActions>();
                 controllerEvents = grabbingObject.GetComponent<VRTK_ControllerEvents>();
-
-                // grabbingProxy.GenerateGrabEvent(grabbingObject);
+                controllerActions.SetControllerOpacity(0.0f);
+               
             }
 
-            protected override void Awake()
+        public override void Ungrabbed(GameObject grabbingObject)
+        {
+            base.Ungrabbed(grabbingObject);
+            controllerActions = grabbingObject.GetComponent<VRTK_ControllerActions>();
+            controllerEvents = grabbingObject.GetComponent<VRTK_ControllerEvents>();
+            controllerActions.SetControllerOpacity(1f);
+        }
+
+        protected override void Awake()
             {
                 base.Awake();
                 gameController = FindObjectOfType(typeof(GameController)) as GameController;
@@ -55,14 +67,16 @@ namespace Assets.NinjaGame.Scripts
                 //grabbingProxy = GetComponent<GrabbingProxy>();
             }
 
-            protected override void Update()
+           /* protected override void Update()
             {
                 base.Update();
+            if (ninjaGameEvent != null)
+            {
                 if (gameController.getHealth() < 3)
-                    GameOver();
-
-
+                    ninjaGameEvent.TriggerGameOver(eve);
             }
+
+            }*/
 
         private void OnCollisionEnter(Collision collision)
             {
@@ -83,12 +97,6 @@ namespace Assets.NinjaGame.Scripts
                 {
                     collisionForce = collision.relativeVelocity.magnitude * impactMagnifier;
                 }
-            }
-
-            public void GameOver()
-            {
-                Debug.Log("Game Over!");
-                //this.Ungrabbed(grabbingObject);
             }
 
         }

@@ -15,11 +15,13 @@ namespace Assets.NinjaGame.Scripts
         public float SpawnerDistance = 0.5f;
         public Vector3 center;
         public Vector3 target;
-
+        public bool gamePlaying;
         public MovingRigidbodyPhysics[] fruitsAndBombs;
+        public NinjaGameEventController ninjaGameEvent;
 
         void Start()
         {
+            gamePlaying = true;
             speed = Random.Range(3f, 20.0f);
             StartCoroutine(FireDelay());
         }
@@ -29,7 +31,7 @@ namespace Assets.NinjaGame.Scripts
         IEnumerator FireDelay()
         {
             // As long as the Game is playing, later conditional
-            while (true)
+            while (gamePlaying)
             {
                 StartCoroutine(FireFruit());
                 yield return new WaitForSeconds(pausetime);
@@ -48,8 +50,8 @@ namespace Assets.NinjaGame.Scripts
             center = new Vector3(0, 2.0f, 0);
             transform.position = (transform.position - center).normalized * SpawnerDistance + center;
             float currentAngle = Random.Range(-angle / 2, angle / 2);
-            transform.RotateAround(center, Vector3.up, currentAngle );
-           // Debug.Log("TransformPosition:" + transform.position + " Target.Position " + target+ " from angle "+ currentAngle );
+            transform.RotateAround(center, Vector3.up, currentAngle);
+            // Debug.Log("TransformPosition:" + transform.position + " Target.Position " + target+ " from angle "+ currentAngle );
             // wait some small time
             yield return new WaitForSeconds(1.0f);
             if (prefab != null)

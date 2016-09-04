@@ -17,17 +17,45 @@ namespace Assets.NinjaGame.Scripts {
 
 	public class NinjaGameEventController : MonoBehaviour {
 
+
         public event NinjaGameEventHandler CollisionWithFruit;
         public event NinjaGameEventHandler CollisionWithBomb;
         public event NinjaGameEventHandler UpdateScore;
         public event NinjaGameEventHandler UpdateHealth;
         public event NinjaGameEventHandler StartGame;
-        public event NinjaGameEventHandler EndGame;
+        public event NinjaGameEventHandler GameOver;
 
 
-		// Update is called once per frame
-		void Update() {
+        public void TriggerUpdateHealth(NinjaGameEventArgs eve)
+        {
+            if (UpdateHealth != null)
+            {
+                UpdateHealth(this, eve);
+            }
+        }
 
-		}
-	}
+        public void TriggerUpdateScore(NinjaGameEventArgs eve)
+        {
+            if (UpdateScore != null)
+            {
+                UpdateScore(this, eve);
+            }
+        }
+
+        public void TriggerStartGame(NinjaGameEventArgs eve)
+        {
+            if (StartGame != null)
+            {
+                StartGame(this, eve);
+            }
+        }
+
+        public void TriggerGameOver(NinjaGameEventArgs eve)
+        {
+            if (GameOver != null)
+            {
+                GameOver(this, eve);
+            }
+        }
+    }
 }

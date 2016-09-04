@@ -61,11 +61,20 @@ namespace Assets.NinjaGame.Scripts
                 //healthBar.size = health / 10;
                 if (health < 5)
                 {
-                    score = 0;
-                    instructionText.color = Color.red;
+	                instructionText.color = Color.grey;
                     
-                    instructionText.text = "\n\n\n\n\t\t\t Game Over!";
+	                instructionText.text = "You are going to die immediately...";
+	                
+                }else if (health < 0)
+                {
+                	score = 0;
+                	instructionText.color = Color.red;
+                	instructionText.text = "Game Over!";
+                	scoresText.text = "Score:\n" + score.ToString() + "\n Health:\n" + health.ToString();
                 }
+	                
+	                
+	            
             }
             else
             {

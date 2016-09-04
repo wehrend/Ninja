@@ -9,8 +9,8 @@ namespace Assets.NinjaGame.Scripts
         /// <summary>
         /// we need the light for game over setting
         /// </summary>
-        public Light light; 
-        public int health;
+	    public Light light; 
+	    public int health;
         public int score;
         public bool gamePlaying;
         public NinjaGameEventController con;
@@ -24,7 +24,7 @@ namespace Assets.NinjaGame.Scripts
         void Start()
         {
 
-            health = 1000;
+	        health = 5;//1000;
             score = 0;
             
             con = GetComponent<NinjaGameEventController>();

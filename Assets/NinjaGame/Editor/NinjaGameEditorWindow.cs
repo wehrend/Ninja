@@ -4,12 +4,13 @@ using System;
 using Object = UnityEngine.Object;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Assets.NinjaGame.Editor;
 using Assets.NinjaGame.Scripts;
 using VRTK;
 
 namespace Assets.NinjaGame.Editor
 {
-    [InitializeOnLoad]
     public class NinjaGameEditorWindow : EditorWindow
     {
         public List<String> controller; //= new string[] { "Vive controller_ Sword", "Hand(s)", };
@@ -19,25 +20,40 @@ namespace Assets.NinjaGame.Editor
         public int levelsIndex = 0;
         public bool groupEnabled;
         public Object[] prefabs;
-
+	    
+	    private NinjaGameEditorState state;
+	    
      
         [MenuItem("NinjaGame/NinjaGame Configuration")]
-        static void Init()
+	    static void OpenConfigWindow()
         {
             // Get existing open window or if none, make a new one:
-            NinjaGameEditorWindow window = (NinjaGameEditorWindow)EditorWindow.GetWindow(typeof(NinjaGameEditorWindow));
-            window.Show();
+	        NinjaGameEditorWindow window = (NinjaGameEditorWindow)EditorWindow.GetWindow(typeof(NinjaGameEditorWindow));
+	        window.Setup();
+	        window.ShowUtility();
+	        
         }
-
+	    
+	    void Setup()
+	    {
+		    controller =FindControllers();
+		    levels =FindAvailableLevels();
+		    var states = Resources.FindObjectsOfTypeAll<NinjaGameEditorState>();
+		    
+		    if (states != null && !states.Any())
+			    state = ScriptableObject.CreateInstance<NinjaGameEditorState>();
+		    else 
+		    	state = states.First();
+	    }
+	    
+	    
 
 
         void OnGUI()
         {
             
-            controller =FindControllers();
-            levels =FindAvailableLevels();
+         
 
-            bool prefabchoosen =true;
             GUILayout.Label("Ninja Game Configuration", EditorStyles.boldLabel);
             GUILayout.Label("Available controller(s)", EditorStyles.boldLabel);
             index= EditorGUILayout.Popup(index, controller.ToArray());
@@ -47,24 +63,33 @@ namespace Assets.NinjaGame.Editor
             levelsIndex = EditorGUILayout.Popup(levelsIndex, levels.ToArray());
 
             groupEnabled = EditorGUILayout.BeginToggleGroup("Optional Settings", groupEnabled);
-            FindAvailablePrefabsOfType();
-            GUILayout.Label("Available Fruits and Bombs (Prefabs)", EditorStyles.boldLabel);
-            foreach (var prefab in prefabs)
-            {
 
-               //Debug.Log(prefab.name);
-
-                EditorGUILayout.Toggle(prefab.name, prefabchoosen);
-            }
-
-
+	        GUILayout.Label("Available Fruits and Bombs (Prefabs)", EditorStyles.boldLabel);
+	        //if (state != null)
+	        //{
+	        	foreach (var item in state.selectablePrefabs)
+    	        {
+	
+		        	Debug.Log(item.referenceToPrefab.name);
+		        	item.isSelected= GUILayout.Toggle(item.isSelected, item.referenceToPrefab.name);
+            	}
+        //}
+	        GUILayout.Space(20f);
          
             EditorGUILayout.EndToggleGroup();
             if (GUILayout.Button("Ok"))
                 LoadThings();
         }
 
-
+	    void OnDestroy()
+	    {
+		    var states = Resources.FindObjectsOfTypeAll<NinjaGameEditorState>();
+		    
+		    foreach (var item in states)
+		    {
+			    DestroyImmediate(item);
+		    }
+	    }
 
         /*
         * We want find everything what is controllable / interactable via the vive controller
@@ -89,12 +114,12 @@ namespace Assets.NinjaGame.Editor
         * Also we want to find any prefabs which are moving rigidbodys
         */
 
-        void FindAvailablePrefabsOfType()
+	    /* void FindAvailablePrefabsOfType()
         {
            //An array of objects whose class is type or is derived from type
            prefabs= Resources.FindObjectsOfTypeAll(typeof(MovingRigidbodyPhysics));
 
-        }
+        }*/
 
 
         /*

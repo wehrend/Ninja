@@ -24,7 +24,7 @@ namespace Assets.NinjaGame.Scripts
         void Start()
         {
 
-	        health = 5;//1000;
+	        health = 1000;
             score = 0;
             
             con = GetComponent<NinjaGameEventController>();
@@ -75,12 +75,7 @@ namespace Assets.NinjaGame.Scripts
             light.enabled = false;
         }
 
-        void Update()
-        {
-            if (health < 3)
-                GetComponent<NinjaGameEventController>().TriggerGameOver(eve);
-
-        }
+ 
 
   
 
@@ -90,8 +85,15 @@ namespace Assets.NinjaGame.Scripts
         // classic system
         public void issueDamage(int damage)
         {
-            health -= damage;
+            if (health > damage)
+                health -= damage;
+            else
+            {
+                health = 0;
+                con.OnGameOver(eve);
+            }
         }
+
 
         public void issueBoni(int bonusPoints)
         {

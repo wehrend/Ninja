@@ -26,7 +26,7 @@ namespace Assets.NinjaGame.Scripts {
         public event NinjaGameEventHandler GameOver;
 
 
-        public void TriggerUpdateHealth(NinjaGameEventArgs eve)
+        public void OnUpdateHealth(NinjaGameEventArgs eve)
         {
             if (UpdateHealth != null)
             {
@@ -34,7 +34,7 @@ namespace Assets.NinjaGame.Scripts {
             }
         }
 
-        public void TriggerUpdateScore(NinjaGameEventArgs eve)
+        public void OnUpdateScore(NinjaGameEventArgs eve)
         {
             if (UpdateScore != null)
             {
@@ -42,7 +42,7 @@ namespace Assets.NinjaGame.Scripts {
             }
         }
 
-        public void TriggerStartGame(NinjaGameEventArgs eve)
+        public void OnStartGame(NinjaGameEventArgs eve)
         {
             if (StartGame != null)
             {
@@ -50,7 +50,7 @@ namespace Assets.NinjaGame.Scripts {
             }
         }
 
-        public void TriggerGameOver(NinjaGameEventArgs eve)
+        public void OnGameOver(NinjaGameEventArgs eve)
         {
             if (GameOver != null)
             {

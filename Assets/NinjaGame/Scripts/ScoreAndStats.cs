@@ -16,18 +16,17 @@ namespace Assets.NinjaGame.Scripts
         public Scrollbar healthBar;
         private int health;
         private GameController gameController;
-        //public NinjaGameEventController ninjaGameEvent;
-        //public NinjaGameEventArgs eve;
+        public NinjaGameEventController ninjaGameEvent;
+        public NinjaGameEventArgs eve;
         private int score;
         // Use this for initialization
         void Start()
         {
-            /*ninjaGameEvent = GetComponent<NinjaGameEventController>();
+            ninjaGameEvent = GetComponent<NinjaGameEventController>();
             if (ninjaGameEvent != null)
             {
-                ninjaGameEvent.UpdateHealth += new NinjaGameEventHandler(UpdateHealth);
-                ninjaGameEvent.UpdateHealth += new NinjaGameEventHandler(UpdateScore);
-            }*/
+                ninjaGameEvent.GameOver += new NinjaGameEventHandler(gameOver);
+            }
             gameController = FindObjectOfType(typeof(GameController)) as GameController;
         }
 
@@ -57,30 +56,23 @@ namespace Assets.NinjaGame.Scripts
                 instructionText.text = "Swing the Sword.\nCatch the blue spheres, and avoid the black bombs";
                 score = gameController.getScores();
                 health = gameController.getHealth();
-                scoresText.text = "Score:\n" + score.ToString() + "\n Health:\n" + health.ToString();
-                //healthBar.size = health / 10;
-                if (health < 5)
-                {
-	                instructionText.color = Color.grey;
-                    
-	                instructionText.text = "You are going to die immediately...";
-	                
-                }else if (health < 0)
-                {
-                	score = 0;
-                	instructionText.color = Color.red;
-                	instructionText.text = "Game Over!";
-                	scoresText.text = "Score:\n" + score.ToString() + "\n Health:\n" + health.ToString();
-                }
-	                
-	                
-	            
+                scoresText.text = "Score:\n" + score.ToString();//+ "\n Health:\n" + health.ToString();
+                healthBar.size = (float) health / 1000f;
+	                            
             }
             else
             {
                 Debug.LogError("GameController not found!");
             }
 
+        }
+
+        void gameOver(object sender, NinjaGameEventArgs eve)
+        {
+            health = 0;
+            instructionText.color = Color.red;
+            instructionText.text = "Game Over!";
+            scoresText.text = "Score:\n" + score.ToString(); //+ "\n Health:\n" + health.ToString();
         }
     }
 }

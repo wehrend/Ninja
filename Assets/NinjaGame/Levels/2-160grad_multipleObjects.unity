@@ -761,50 +761,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 645413a00f7bd0242bbd6d0e5eb6f439, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &796260909 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 191234, guid: 16ac3dad9343f9d4e80a174776825923, type: 2}
-  m_PrefabInternal: {fileID: 415945007}
---- !u!114 &796260910
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 796260909}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9851ba2bbbb2247f89c6fcfd41ad4ab9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelsList: []
---- !u!1 &872844233
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 1302204162}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 872844234}
-  m_Layer: 0
-  m_Name: Missing Prefab
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &872844234
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 1302204162}
-  m_GameObject: {fileID: 872844233}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
 --- !u!1 &898512836
 GameObject:
   m_ObjectHideFlags: 0
@@ -1106,9 +1062,9 @@ MonoBehaviour:
   startHeight: 2
   gamePlaying: 0
   fruitsAndBombs:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 114000012687851636, guid: 7c479e5d0c751f146ae5080ef567ef51, type: 2}
+  - {fileID: 114000012687851636, guid: 7c479e5d0c751f146ae5080ef567ef51, type: 2}
+  - {fileID: 114000012206532324, guid: a3a1074208de4564ca5db2640c08f54b, type: 2}
   ninjaGameEvent: {fileID: 0}
 --- !u!1 &1252186249
 GameObject:
@@ -1604,7 +1560,7 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1682690497}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e11f58910464140efad462596679a111, type: 3}
   m_Name: 
@@ -1677,9 +1633,9 @@ MonoBehaviour:
   startHeight: 2
   gamePlaying: 0
   fruitsAndBombs:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 114000012687851636, guid: 7c479e5d0c751f146ae5080ef567ef51, type: 2}
+  - {fileID: 114000012687851636, guid: 7c479e5d0c751f146ae5080ef567ef51, type: 2}
+  - {fileID: 114000012206532324, guid: a3a1074208de4564ca5db2640c08f54b, type: 2}
   ninjaGameEvent: {fileID: 0}
 --- !u!1 &1708542304
 GameObject:

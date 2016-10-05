@@ -1,10 +1,11 @@
-    using UnityEngine;
+﻿    using UnityEngine;
     using UnityEngine.SceneManagement;
     using UnityEditor;
     using System.Linq;
     using System.Collections.Generic;
     using System.IO;
-using Assets.NinjaGame.Scripts;
+    using System.Globalization;
+	using Assets.NinjaGame.Scripts;
    
 //fixme: Namespaces
 
@@ -85,45 +86,74 @@ using Assets.NinjaGame.Scripts;
             float minAngleValue = 45f;
             float maxAngleValue = 160f;
             float minAngleLimit = 0f;
-            float maxAngleLimit = 360f;
+	        float maxAngleLimit = 360f;
+	        
+	        float minDistanceValue = 2.5f;
+	        float maxDistanceValue = 15f;
+	        float minDistanceLimit = 1f;
+	        float maxDistanceLimit = 50f;
 
         void OnEnable()
         {
-            levelScenes = GetLevelScenes();
+	        levelScenes = GetLevelScenes();
+		        
             listToDisplay = levelScenes.Select(s => s.guiContent).ToArray();
-
         }
 
         void OnGUI()
         {
+	        if (Application.isPlaying )
+	        {
+	            var spawnerPrefabs = FindFruitAndBombSpawnerInstances(); //GetSpawnerPrefabsOfScene(selectedScene);
+	            Debug.Log(spawnerPrefabs.Count());
+		        //spawnersToDisplay = new GUIContent("test");
+	            // Debug.Log("SpawnerPrefabs count:"+spawnerPrefabs.Count());
+	            
+		        EditorGUILayout.HelpBox(HelpBoxText, MessageType.Info);
+		        float maxFloatWidth = GUI.skin.textField.CalcSize(new GUIContent(1.6f.ToString(CultureInfo.InvariantCulture))).x;
+		        	
+	            	selectedLevelIndex = EditorGUILayout.Popup(new GUIContent("Available Scenes"), selectedLevelIndex, listToDisplay);
+		        selectedScene = levelScenes[selectedLevelIndex].Name;
+		        
+		        EditorGUILayout.BeginHorizontal();
+		        EditorGUILayout.LabelField(minSpeedLimit.ToString(),GUILayout.MaxWidth(maxFloatWidth));
+		        EditorGUILayout.MinMaxSlider(new GUIContent("Speed"), ref minSpeedValue, ref maxSpeedValue, minSpeedLimit, maxSpeedLimit);
+		        EditorGUILayout.LabelField(maxSpeedLimit.ToString(),GUILayout.MaxWidth(maxFloatWidth));
+		        
+		        EditorGUILayout.EndHorizontal();
+		        advancedMode=EditorGUILayout.BeginToggleGroup("Change fixed distance and angle",advancedMode);
+		
+			        	
+			    	// selectedSpawnerIndex=EditorGUILayout.Popup(new GUIContent("Select Spawner"), selectedSpawnerIndex, spawnersToDisplay);
+		        	//     var selectedSpawner = spawnerPrefabs[selectedSpawnerIndex];
+		
+		        	EditorGUILayout.HelpBox(AdvancedModeText, MessageType.Error);
+		        EditorGUILayout.BeginHorizontal();
+		        EditorGUILayout.LabelField(minAngleLimit.ToString()+"°",GUILayout.MaxWidth(maxFloatWidth));
+		        EditorGUILayout.MinMaxSlider(new GUIContent("Angle"), ref minAngleValue, ref maxAngleValue, minAngleLimit, maxAngleLimit);
+		        EditorGUILayout.LabelField(maxAngleLimit.ToString()+"°",GUILayout.MaxWidth(maxFloatWidth));
+		        EditorGUILayout.EndHorizontal();
+		        EditorGUILayout.BeginHorizontal();
+		        EditorGUILayout.LabelField(minDistanceLimit.ToString(),GUILayout.MaxWidth(maxFloatWidth));
+		        EditorGUILayout.MinMaxSlider(new GUIContent("Distance"), ref minDistanceValue, ref maxDistanceValue, minDistanceLimit, maxDistanceLimit);   
+		        EditorGUILayout.LabelField(maxDistanceLimit.ToString(),GUILayout.MaxWidth(maxFloatWidth));
+		        EditorGUILayout.EndHorizontal();	
+		                EditorGUILayout.EndToggleGroup();
 
-            var spawnerPrefabs = FindFruitAndBombSpawnerInstances(); //GetSpawnerPrefabsOfScene(selectedScene);
-            Debug.Log(spawnerPrefabs.Count());
-            spawnersToDisplay = new GUIContent("test");
-            // Debug.Log("SpawnerPrefabs count:"+spawnerPrefabs.Count());
-            
-            EditorGUILayout.HelpBox(HelpBoxText, MessageType.Info);
-            selectedLevelIndex = EditorGUILayout.Popup(new GUIContent("Available Scenes"), selectedLevelIndex, listToDisplay);
-            selectedScene = levelScenes[selectedLevelIndex].Name;
-            //EditorGUILayout.MinMaxSlider(new GUIContent("Speed"), ref minSpeedValue, ref maxSpeedValue, minSpeedLimit, maxSpeedLimit);
-            advancedMode=EditorGUILayout.BeginToggleGroup("Change fixed distance and angle",advancedMode);
-                selectedSpawnerIndex=EditorGUILayout.Popup(new GUIContent("Select Spawner"), selectedSpawnerIndex, spawnersToDisplay);
-                var selectedSpawner = spawnerPrefabs[selectedSpawnerIndex];
-
-                EditorGUILayout.HelpBox(AdvancedModeText, MessageType.Error);
-                EditorGUILayout.MinMaxSlider(new GUIContent("Angle"), ref minAngleValue, ref maxAngleValue, minAngleLimit, maxAngleLimit);
-                          
-                EditorGUILayout.EndToggleGroup();
-
-                if (GUI.Button(new Rect(position.width - 125, position.height - 35, 120, 30), new GUIContent("Load Level"))
-                    && SceneManager.GetActiveScene().name != selectedScene)
-                {
-                    Debug.Log("Loaded level:" + selectedScene);
-                    SceneManager.LoadScene(selectedScene);
-                }
-               
-
-            }
+		        	if (selectedScene!=null) {
+			                if (GUI.Button(new Rect(position.width - 125, position.height - 35, 120, 30), new GUIContent("Load Level"))
+				                && SceneManager.GetActiveScene().name != selectedScene)
+			                {
+			                    Debug.Log("Loaded level:" + selectedScene);
+			                    SceneManager.LoadScene(selectedScene);
+			                }
+		        		}
+	               
+	        } else{
+	        	
+	        	EditorGUILayout.HelpBox("Ninja Game not running, please press play button to configure Ninja Game.\n", MessageType.Error);
+	        }
+	       }
         }
 
         internal class GuiContainerForScenes

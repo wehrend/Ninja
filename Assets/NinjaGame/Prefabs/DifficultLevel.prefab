@@ -9,49 +9,48 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1000011816278454}
+  m_RootGameObject: {fileID: 1000010812007026}
   m_IsPrefabParent: 1
---- !u!1 &1000011816278454
+--- !u!1 &1000010812007026
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 4000012722167266}
-  - 114: {fileID: 114000013328347324}
+  - 4: {fileID: 4000010072846274}
   m_Layer: 0
-  m_Name: Level 2 - 160grad_multipleObjects
+  m_Name: DifficultLevel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1000012300648164
+--- !u!1 &1000012495440658
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 4000013981087784}
-  - 114: {fileID: 114000013303847598}
+  - 4: {fileID: 4000012136497812}
+  - 114: {fileID: 114000011941112362}
   m_Layer: 0
-  m_Name: FruitAndBombInstantiator
+  m_Name: FruitAndBombInstantiator (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1000012554952026
+--- !u!1 &1000012844519752
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 4000010032016756}
-  - 114: {fileID: 114000012998398344}
+  - 4: {fileID: 4000014017117504}
+  - 114: {fileID: 114000011970332584}
   m_Layer: 0
   m_Name: FruitAndBombInstantiator (1)
   m_TagString: Untagged
@@ -59,101 +58,152 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4000010032016756
+--- !u!1 &1000013616438504
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 4000012741523684}
+  - 114: {fileID: 114000013646722128}
+  m_Layer: 0
+  m_Name: FruitAndBombInstantiator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4000010072846274
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012554952026}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children: []
-  m_Father: {fileID: 4000012722167266}
-  m_RootOrder: 1
---- !u!4 &4000012722167266
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011816278454}
+  m_GameObject: {fileID: 1000010812007026}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.199997, y: 3.03, z: 7.799999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 4000013981087784}
-  - {fileID: 4000010032016756}
+  - {fileID: 4000012741523684}
+  - {fileID: 4000014017117504}
+  - {fileID: 4000012136497812}
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!4 &4000013981087784
+--- !u!4 &4000012136497812
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012300648164}
+  m_GameObject: {fileID: 1000012495440658}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
-  m_Father: {fileID: 4000012722167266}
+  m_Father: {fileID: 4000010072846274}
+  m_RootOrder: 2
+--- !u!4 &4000012741523684
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013616438504}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 4000010072846274}
   m_RootOrder: 0
---- !u!114 &114000012998398344
+--- !u!4 &4000014017117504
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012844519752}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 4000010072846274}
+  m_RootOrder: 1
+--- !u!114 &114000011941112362
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012554952026}
+  m_GameObject: {fileID: 1000012495440658}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8dadaf6da0c154a918bd9cff44b4c668, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pausetime: 5
-  angle: 160
-  speed: 3
-  SpawnerDistance: 8
+  pausetime: 1
+  angle: 120
+  speed: 5
+  SpawnerDistance: 10
   center: {x: 0, y: 0, z: 0}
   target: {x: 0, y: 0, z: 0}
+  startHeight: 2
   gamePlaying: 0
   fruitsAndBombs:
   - {fileID: 114000012687851636, guid: 7c479e5d0c751f146ae5080ef567ef51, type: 2}
   - {fileID: 114000012687851636, guid: 7c479e5d0c751f146ae5080ef567ef51, type: 2}
   - {fileID: 114000012206532324, guid: a3a1074208de4564ca5db2640c08f54b, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
   ninjaGameEvent: {fileID: 0}
---- !u!114 &114000013303847598
+--- !u!114 &114000011970332584
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012300648164}
+  m_GameObject: {fileID: 1000012844519752}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8dadaf6da0c154a918bd9cff44b4c668, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pausetime: 5
-  angle: 160
-  speed: 3
-  SpawnerDistance: 8
+  pausetime: 3
+  angle: 120
+  speed: 6
+  SpawnerDistance: 7
   center: {x: 0, y: 0, z: 0}
   target: {x: 0, y: 0, z: 0}
+  startHeight: 2
   gamePlaying: 0
   fruitsAndBombs:
   - {fileID: 114000012687851636, guid: 7c479e5d0c751f146ae5080ef567ef51, type: 2}
   - {fileID: 114000012687851636, guid: 7c479e5d0c751f146ae5080ef567ef51, type: 2}
   - {fileID: 114000012206532324, guid: a3a1074208de4564ca5db2640c08f54b, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
   ninjaGameEvent: {fileID: 0}
---- !u!114 &114000013328347324
+--- !u!114 &114000013646722128
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011816278454}
+  m_GameObject: {fileID: 1000013616438504}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e11f58910464140efad462596679a111, type: 3}
+  m_Script: {fileID: 11500000, guid: 8dadaf6da0c154a918bd9cff44b4c668, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pausetime: 1
+  angle: 90
+  speed: 3
+  SpawnerDistance: 5
+  center: {x: 0, y: 0, z: 0}
+  target: {x: 0, y: 0, z: 0}
+  startHeight: 2
+  gamePlaying: 0
+  fruitsAndBombs:
+  - {fileID: 114000012687851636, guid: 7c479e5d0c751f146ae5080ef567ef51, type: 2}
+  - {fileID: 114000012687851636, guid: 7c479e5d0c751f146ae5080ef567ef51, type: 2}
+  - {fileID: 114000012206532324, guid: a3a1074208de4564ca5db2640c08f54b, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  ninjaGameEvent: {fileID: 0}

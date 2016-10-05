@@ -20,6 +20,7 @@ namespace Assets.NinjaGame.Scripts
         public bool gamePlaying;
         public MovingRigidbodyPhysics[] fruitsAndBombs;
         public NinjaGameEventController ninjaGameEvent;
+        public GUIContent guiContent;
 
         void Start()
         {

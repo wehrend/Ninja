@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18053585, g: 0.2260178, b: 0.30718696, a: 1}
+  m_IndirectSpecularColor: {r: 0.18053626, g: 0.22601849, b: 0.30718803, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1062,8 +1062,8 @@ MonoBehaviour:
   startHeight: 2
   gamePlaying: 0
   fruitsAndBombs:
-  - {fileID: 114000012687851636, guid: 7c479e5d0c751f146ae5080ef567ef51, type: 2}
-  - {fileID: 114000012687851636, guid: 7c479e5d0c751f146ae5080ef567ef51, type: 2}
+  - {fileID: 11495796, guid: d10288e42e611824f96a5bd0b5cf1b31, type: 2}
+  - {fileID: 11495796, guid: d10288e42e611824f96a5bd0b5cf1b31, type: 2}
   - {fileID: 114000012206532324, guid: a3a1074208de4564ca5db2640c08f54b, type: 2}
   ninjaGameEvent: {fileID: 0}
 --- !u!1 &1252186249
@@ -1633,8 +1633,8 @@ MonoBehaviour:
   startHeight: 2
   gamePlaying: 0
   fruitsAndBombs:
-  - {fileID: 114000012687851636, guid: 7c479e5d0c751f146ae5080ef567ef51, type: 2}
-  - {fileID: 114000012687851636, guid: 7c479e5d0c751f146ae5080ef567ef51, type: 2}
+  - {fileID: 11495796, guid: d10288e42e611824f96a5bd0b5cf1b31, type: 2}
+  - {fileID: 11495796, guid: d10288e42e611824f96a5bd0b5cf1b31, type: 2}
   - {fileID: 114000012206532324, guid: a3a1074208de4564ca5db2640c08f54b, type: 2}
   ninjaGameEvent: {fileID: 0}
 --- !u!1 &1708542304

@@ -172,14 +172,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pausetime: 2
   angle: 120
-  distance: 5
-  target: {fileID: 0}
+  speed: 5
+  SpawnerDistance: 0.5
+  center: {x: 0, y: 0, z: 0}
+  target: {x: 0, y: 0, z: 0}
+  startHeight: 2
+  gamePlaying: 0
   fruitsAndBombs:
   - {fileID: 11495796, guid: d10288e42e611824f96a5bd0b5cf1b31, type: 2}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 11440848, guid: ef30ddeb66abe4a40bc065bb7f496451, type: 2}
+  ninjaGameEvent: {fileID: 0}
 --- !u!114 &114000010443319046
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -193,14 +198,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pausetime: 2
   angle: 120
-  distance: 5
-  target: {fileID: 0}
+  speed: 5
+  SpawnerDistance: 0.5
+  center: {x: 0, y: 0, z: 0}
+  target: {x: 0, y: 0, z: 0}
+  startHeight: 2
+  gamePlaying: 0
   fruitsAndBombs:
   - {fileID: 11495796, guid: d10288e42e611824f96a5bd0b5cf1b31, type: 2}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 11440848, guid: ef30ddeb66abe4a40bc065bb7f496451, type: 2}
+  ninjaGameEvent: {fileID: 0}
 --- !u!114 &114000011243905964
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -214,14 +224,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pausetime: 2
   angle: 120
-  distance: 5
-  target: {fileID: 0}
+  speed: 5
+  SpawnerDistance: 0.5
+  center: {x: 0, y: 0, z: 0}
+  target: {x: 0, y: 0, z: 0}
+  startHeight: 2
+  gamePlaying: 0
   fruitsAndBombs:
   - {fileID: 11495796, guid: d10288e42e611824f96a5bd0b5cf1b31, type: 2}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 11440848, guid: ef30ddeb66abe4a40bc065bb7f496451, type: 2}
+  ninjaGameEvent: {fileID: 0}
 --- !u!114 &114000012935160158
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -235,11 +250,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pausetime: 2
   angle: 120
-  distance: 5
-  target: {fileID: 0}
+  speed: 5
+  SpawnerDistance: 0.5
+  center: {x: 0, y: 0, z: 0}
+  target: {x: 0, y: 0, z: 0}
+  startHeight: 2
+  gamePlaying: 0
   fruitsAndBombs:
   - {fileID: 11495796, guid: d10288e42e611824f96a5bd0b5cf1b31, type: 2}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 11440848, guid: ef30ddeb66abe4a40bc065bb7f496451, type: 2}
+  ninjaGameEvent: {fileID: 0}

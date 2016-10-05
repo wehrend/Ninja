@@ -43,12 +43,30 @@ using Assets.NinjaGame.Scripts;
             return scenes;
         }
 
+    internal static List<FruitAndBombSpawner> FindFruitAndBombSpawnerInstances()
+    {
+      
 
-        public class DemoLevelListWindow : EditorWindow
+        FruitAndBombSpawner[] allObjects = GameObject.FindObjectsOfType(typeof(FruitAndBombSpawner)) as FruitAndBombSpawner[];
+        List<FruitAndBombSpawner> result = new List<FruitAndBombSpawner>();
+        foreach (var go in allObjects)
+        {
+            Debug.Log(go);
+            result.Add(go);
+        }
+
+        return result;
+    }
+
+
+    public class DemoLevelListWindow : EditorWindow
         {
             List<GuiContainerForScenes> levelScenes;
+            //List<GuiContainerForPrefabs> spawnerPrefabs;
             GUIContent[] listToDisplay;
             GUIContent[] spawnersToDisplay;
+            string selectedScene;
+
             public const string HelpBoxText = "Ninja Game Configuration Window, works only in play mode:\n"
                                            + "Select a Level and configurate speed etc. to your own needs.\n"
                                            + "If you choose optional settings you can change fixed parameters.";
@@ -70,30 +88,38 @@ using Assets.NinjaGame.Scripts;
             float maxAngleLimit = 360f;
 
         void OnEnable()
-            {
-                levelScenes = GetLevelScenes();
-                listToDisplay = levelScenes.Select(s => s.guiContent).ToArray();
-            }
+        {
+            levelScenes = GetLevelScenes();
+            listToDisplay = levelScenes.Select(s => s.guiContent).ToArray();
+
+        }
 
         void OnGUI()
-           {
+        {
 
-                EditorGUILayout.HelpBox(HelpBoxText, MessageType.Info);
-                selectedLevelIndex = EditorGUILayout.Popup(new GUIContent("Available Scenes"), selectedLevelIndex, listToDisplay);
-                var selection = levelScenes[selectedLevelIndex].Name;
-                //EditorGUILayout.MinMaxSlider(new GUIContent("Speed"), ref minSpeedValue, ref maxSpeedValue, minSpeedLimit, maxSpeedLimit);
-                advancedMode=EditorGUILayout.BeginToggleGroup("Change fixed distance and angle",advancedMode);
-                          //EditorGUILayout.Popup(new GUIContent("Select Spawner"), selectedSpawnerIndex, spawnersToDisplay)
-                          EditorGUILayout.HelpBox(AdvancedModeText, MessageType.Error);
-                          EditorGUILayout.MinMaxSlider(new GUIContent("Angle"), ref minAngleValue, ref maxAngleValue, minAngleLimit, maxAngleLimit);
+            var spawnerPrefabs = FindFruitAndBombSpawnerInstances(); //GetSpawnerPrefabsOfScene(selectedScene);
+            Debug.Log(spawnerPrefabs.Count());
+            spawnersToDisplay = new GUIContent("test");
+            // Debug.Log("SpawnerPrefabs count:"+spawnerPrefabs.Count());
+            
+            EditorGUILayout.HelpBox(HelpBoxText, MessageType.Info);
+            selectedLevelIndex = EditorGUILayout.Popup(new GUIContent("Available Scenes"), selectedLevelIndex, listToDisplay);
+            selectedScene = levelScenes[selectedLevelIndex].Name;
+            //EditorGUILayout.MinMaxSlider(new GUIContent("Speed"), ref minSpeedValue, ref maxSpeedValue, minSpeedLimit, maxSpeedLimit);
+            advancedMode=EditorGUILayout.BeginToggleGroup("Change fixed distance and angle",advancedMode);
+                selectedSpawnerIndex=EditorGUILayout.Popup(new GUIContent("Select Spawner"), selectedSpawnerIndex, spawnersToDisplay);
+                var selectedSpawner = spawnerPrefabs[selectedSpawnerIndex];
+
+                EditorGUILayout.HelpBox(AdvancedModeText, MessageType.Error);
+                EditorGUILayout.MinMaxSlider(new GUIContent("Angle"), ref minAngleValue, ref maxAngleValue, minAngleLimit, maxAngleLimit);
                           
                 EditorGUILayout.EndToggleGroup();
 
                 if (GUI.Button(new Rect(position.width - 125, position.height - 35, 120, 30), new GUIContent("Load Level"))
-                    && SceneManager.GetActiveScene().name != selection)
+                    && SceneManager.GetActiveScene().name != selectedScene)
                 {
-                    Debug.Log("Loaded level:" + selection);
-                    SceneManager.LoadScene(selection);
+                    Debug.Log("Loaded level:" + selectedScene);
+                    SceneManager.LoadScene(selectedScene);
                 }
                
 
@@ -107,4 +133,8 @@ using Assets.NinjaGame.Scripts;
             public string Path;
             public GUIContent guiContent;
         }
+
+        internal class GuiContainerForPrefab : GuiContainerForScenes
+        {   }
+
     }

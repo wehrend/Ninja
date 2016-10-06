@@ -11,6 +11,7 @@ namespace Assets.NinjaGame.Scripts
 
         public float pausetime = 5;
         public int angle = 90;
+        public int instances = 1;
         public float speed = 5.0f;
         public float SpawnerDistance = 0.5f;
         public Vector3 center;
@@ -27,6 +28,7 @@ namespace Assets.NinjaGame.Scripts
             gamePlaying = true;
             speed = Random.Range(3f, 20.0f);
             StartCoroutine(FireDelay());
+            
         }
 
 

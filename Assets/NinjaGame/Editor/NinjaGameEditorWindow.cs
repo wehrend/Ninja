@@ -1,6 +1,7 @@
 ﻿    using UnityEngine;
     using UnityEngine.SceneManagement;
     using UnityEditor;
+    using UnityEditor.SceneManagement;
     using System.Linq;
     using System.Collections.Generic;
     using System.IO;
@@ -71,7 +72,8 @@
             public const string HelpBoxText = "Ninja Game Configuration Window, works only in play mode:\n"
                                            + "Select a Level and configurate speed etc. to your own needs.\n"
                                            + "If you choose optional settings you can change fixed parameters.";
-            public const string AdvancedModeText = "Set angle and distance\n Caution: This is not implemeneted yet due to design reasons\n";
+            public const string AdvancedModeText = "Set angle range, quantity and distant range.\n"
+                                                 +"Caution: Changes here will override the values of loaded Scene \n";
                                          
 
 
@@ -79,7 +81,7 @@
             int selectedSpawnerIndex = 0;
             float minSpeedValue = 1.0f;
             float maxSpeedValue = 10.0f;
-            float minSpeedLimit = 0.01f;
+            float minSpeedLimit = 0.1f;
             float maxSpeedLimit = 20.0f;
             bool advancedMode = false;
             // currently mockup stadium
@@ -87,8 +89,11 @@
             float maxAngleValue = 160f;
             float minAngleLimit = 0f;
 	        float maxAngleLimit = 360f;
-	        
-	        float minDistanceValue = 2.5f;
+
+            int minQuantityLimit = 1;
+            int maxQuantityLimit = 10;
+
+            float minDistanceValue = 2.5f;
 	        float maxDistanceValue = 15f;
 	        float minDistanceLimit = 1f;
 	        float maxDistanceLimit = 50f;
@@ -110,49 +115,63 @@
 	            // Debug.Log("SpawnerPrefabs count:"+spawnerPrefabs.Count());
 	            
 		        EditorGUILayout.HelpBox(HelpBoxText, MessageType.Info);
-		        float maxFloatWidth = GUI.skin.textField.CalcSize(new GUIContent(1.6f.ToString(CultureInfo.InvariantCulture))).x;
-		        	
-	            	selectedLevelIndex = EditorGUILayout.Popup(new GUIContent("Available Scenes"), selectedLevelIndex, listToDisplay);
+		        float maxFloatWidth = GUI.skin.textField.CalcSize(new GUIContent(10.23f.ToString(CultureInfo.InvariantCulture))).x;
+                float maxIntWidth = GUI.skin.textField.CalcSize(new GUIContent(100.ToString(CultureInfo.InvariantCulture))).x;
+                selectedLevelIndex = EditorGUILayout.Popup(new GUIContent("Available Scenes"), selectedLevelIndex, listToDisplay);
 		        selectedScene = levelScenes[selectedLevelIndex].Name;
 		        
 		        EditorGUILayout.BeginHorizontal();
-		        EditorGUILayout.LabelField(minSpeedLimit.ToString(),GUILayout.MaxWidth(maxFloatWidth));
-		        EditorGUILayout.MinMaxSlider(new GUIContent("Speed"), ref minSpeedValue, ref maxSpeedValue, minSpeedLimit, maxSpeedLimit);
-		        EditorGUILayout.LabelField(maxSpeedLimit.ToString(),GUILayout.MaxWidth(maxFloatWidth));
+                EditorGUILayout.PrefixLabel("Velocity " + minSpeedValue.ToString("0.0") + " m/s - " + maxSpeedValue.ToString("0.0") + "m/s");
+		        EditorGUILayout.LabelField(minSpeedLimit.ToString(), GUILayout.MaxWidth(maxFloatWidth));
+		        EditorGUILayout.MinMaxSlider( ref minSpeedValue, ref maxSpeedValue, minSpeedLimit, maxSpeedLimit);
+		        EditorGUILayout.LabelField(maxSpeedLimit.ToString(), GUILayout.MaxWidth(maxFloatWidth));  
+		        EditorGUILayout.EndHorizontal();
+                EditorGUILayout.Space();
+		        advancedMode=EditorGUILayout.BeginToggleGroup("Overwrite loaded scene with custom Values ",advancedMode);
 		        
-		        EditorGUILayout.EndHorizontal();
-		        advancedMode=EditorGUILayout.BeginToggleGroup("Change fixed distance and angle",advancedMode);
-		
-			        	
-			    	// selectedSpawnerIndex=EditorGUILayout.Popup(new GUIContent("Select Spawner"), selectedSpawnerIndex, spawnersToDisplay);
-		        	//     var selectedSpawner = spawnerPrefabs[selectedSpawnerIndex];
-		
-		        	EditorGUILayout.HelpBox(AdvancedModeText, MessageType.Error);
-		        EditorGUILayout.BeginHorizontal();
-		        EditorGUILayout.LabelField(minAngleLimit.ToString()+"°",GUILayout.MaxWidth(maxFloatWidth));
-		        EditorGUILayout.MinMaxSlider(new GUIContent("Angle"), ref minAngleValue, ref maxAngleValue, minAngleLimit, maxAngleLimit);
-		        EditorGUILayout.LabelField(maxAngleLimit.ToString()+"°",GUILayout.MaxWidth(maxFloatWidth));
-		        EditorGUILayout.EndHorizontal();
-		        EditorGUILayout.BeginHorizontal();
-		        EditorGUILayout.LabelField(minDistanceLimit.ToString(),GUILayout.MaxWidth(maxFloatWidth));
-		        EditorGUILayout.MinMaxSlider(new GUIContent("Distance"), ref minDistanceValue, ref maxDistanceValue, minDistanceLimit, maxDistanceLimit);   
-		        EditorGUILayout.LabelField(maxDistanceLimit.ToString(),GUILayout.MaxWidth(maxFloatWidth));
-		        EditorGUILayout.EndHorizontal();	
-		                EditorGUILayout.EndToggleGroup();
+		                EditorGUILayout.HelpBox(AdvancedModeText, MessageType.Error);
+		                EditorGUILayout.BeginHorizontal();
 
-		        	if (selectedScene!=null) {
+                        EditorGUILayout.PrefixLabel("Angle "+minAngleValue.ToString("0")+ " °- " + maxAngleValue.ToString("000")+ "°");
+                        EditorGUILayout.LabelField(minAngleLimit.ToString()+"°",GUILayout.MaxWidth(maxIntWidth));
+		                EditorGUILayout.MinMaxSlider( ref minAngleValue, ref maxAngleValue, minAngleLimit, maxAngleLimit);
+		                EditorGUILayout.LabelField(maxAngleLimit.ToString()+"°",GUILayout.MaxWidth(maxIntWidth));
+		                EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.BeginHorizontal();
+                        EditorGUILayout.PrefixLabel("Quantity ");
+                        EditorGUILayout.LabelField(minQuantityLimit.ToString(), GUILayout.MaxWidth(maxIntWidth));
+                        EditorGUILayout.IntSlider( 2, minQuantityLimit, maxQuantityLimit);
+                        EditorGUILayout.LabelField(maxQuantityLimit.ToString(), GUILayout.MaxWidth(maxIntWidth));
+                        EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.BeginHorizontal();
+                        EditorGUILayout.PrefixLabel("Distance " + minDistanceValue.ToString("0.00") + " m - " + maxDistanceValue.ToString("0.00") + "m");
+		                EditorGUILayout.LabelField(minDistanceLimit.ToString(),GUILayout.MaxWidth(maxIntWidth));
+		                EditorGUILayout.MinMaxSlider(ref minDistanceValue, ref maxDistanceValue, minDistanceLimit, maxDistanceLimit);   
+		                EditorGUILayout.LabelField(maxDistanceLimit.ToString(),GUILayout.MaxWidth(maxIntWidth));
+		                EditorGUILayout.EndHorizontal();
+
+                        if (GUI.Button(new Rect(5, position.height - 35, 120, 30), new GUIContent("Save Level Config")))
+                            {
+                                var savePath = Application.dataPath + "Assets/NinjaGame/Levels";
+                                //Debug.Log("Saved scene as");
+                                //EditorSceneManager.SaveScene(SceneManager.GetActiveScene(),savePath, true);
+                            }
+         EditorGUILayout.EndToggleGroup();
+
+		        if (selectedScene!=null)
+                {
 			                if (GUI.Button(new Rect(position.width - 125, position.height - 35, 120, 30), new GUIContent("Load Level"))
 				                && SceneManager.GetActiveScene().name != selectedScene)
-			                {
-			                    Debug.Log("Loaded level:" + selectedScene);
-			                    SceneManager.LoadScene(selectedScene);
-			                }
-		        		}
+			                        {
+			                            Debug.Log("Loaded level:" + selectedScene);
+			                            SceneManager.LoadScene(selectedScene);
+			                        }
+		        	    }
 	               
-	        } else{
+	           } else {
 	        	
 	        	EditorGUILayout.HelpBox("Ninja Game not running, please press play button to configure Ninja Game.\n", MessageType.Error);
-	        }
+	          }
 	       }
         }
 

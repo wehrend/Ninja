@@ -507,6 +507,7 @@ MonoBehaviour:
   uiClickButton: 3
   menuToggleButton: 7
   axisFidelity: 1
+  triggerClickThreshold: 1
   triggerPressed: 0
   triggerTouched: 0
   triggerHairlinePressed: 0
@@ -571,6 +572,7 @@ MonoBehaviour:
   uiClickButton: 3
   menuToggleButton: 7
   axisFidelity: 1
+  triggerClickThreshold: 1
   triggerPressed: 0
   triggerTouched: 0
   triggerHairlinePressed: 0
@@ -597,6 +599,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d45c8d32f1d960d4498790bb3961fc52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  modelElementPaths:
+    bodyModelPath: Model/body
+    triggerModelPath: Model/trigger
+    leftGripModelPath: Model/lgrip
+    rightGripModelPath: Model/rgrip
+    touchpadModelPath: Model/trackpad
+    appMenuModelPath: Model/button
+    systemMenuModelPath: Model/sys_button
+  elementHighlighterOverrides:
+    body: {fileID: 0}
+    trigger: {fileID: 0}
+    gripLeft: {fileID: 0}
+    gripRight: {fileID: 0}
+    touchpad: {fileID: 0}
+    appMenu: {fileID: 0}
+    systemMenu: {fileID: 0}
 --- !u!114 &114000013071246368
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -661,6 +679,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d45c8d32f1d960d4498790bb3961fc52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  modelElementPaths:
+    bodyModelPath: Model/body
+    triggerModelPath: Model/trigger
+    leftGripModelPath: Model/lgrip
+    rightGripModelPath: Model/rgrip
+    touchpadModelPath: Model/trackpad
+    appMenuModelPath: Model/button
+    systemMenuModelPath: Model/sys_button
+  elementHighlighterOverrides:
+    body: {fileID: 0}
+    trigger: {fileID: 0}
+    gripLeft: {fileID: 0}
+    gripRight: {fileID: 0}
+    touchpad: {fileID: 0}
+    appMenu: {fileID: 0}
+    systemMenu: {fileID: 0}
 --- !u!114 &114000013608541510
 MonoBehaviour:
   m_ObjectHideFlags: 1

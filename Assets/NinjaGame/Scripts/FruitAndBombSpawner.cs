@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using System.Collections;
+using System.Linq;
 using Random= UnityEngine.Random;
 using System.Collections.Generic;
 
@@ -11,9 +13,9 @@ namespace Assets.NinjaGame.Scripts
 
         public float pausetime = 5;
         public int angle = 90;
-        public int instances = 1;
+        public int NumberOfSpawnerInstances = 1;
         public float speed = 5.0f;
-        public float SpawnerDistance = 0.5f;
+        public float spawnerDistance = 0.5f;
         public Vector3 center;
         public Vector3 target;
         public float startHeight = 2.0f;
@@ -23,12 +25,17 @@ namespace Assets.NinjaGame.Scripts
         public NinjaGameEventController ninjaGameEvent;
         public GUIContent guiContent;
 
+        void OnSceneGUI()
+        {
+            DebugExtension.DrawCircle(Vector3.zero, Vector3.up, Color.green, spawnerDistance);
+        }
+
         void Start()
         {
             gamePlaying = true;
             speed = Random.Range(3f, 20.0f);
-            StartCoroutine(FireDelay());
-            
+      
+            StartCoroutine(FireDelay());    
         }
 
 
@@ -45,34 +52,42 @@ namespace Assets.NinjaGame.Scripts
 
 
 
+
         IEnumerator FireFruit()
-        {
-
-            //Debug.Log("Fire from "+ myTransform.position);
-            //choose randomly from fruit prefabs and instantiate canon
-            MovingRigidbodyPhysics prefab = fruitsAndBombs[Random.Range(0, fruitsAndBombs.Length)];
-
+        { 
+            MovingRigidbodyPhysics prefab; 
+            List<Transform> spawnerInstances = Enumerable.Repeat(transform, NumberOfSpawnerInstances).ToList();
             var position = Vector3.one + Vector3.up*(startHeight-1);
             center = new Vector3(0, 2.0f, 0);
-            transform.position= (position - center).normalized * SpawnerDistance + center;
-            float currentAngle = Random.Range(-angle / 2, angle / 2)-angleAlignment;
 
-            Debug.Log("Transform position:" + transform.position + "Angle:" +(currentAngle-angleAlignment));
-            transform.RotateAround(center, Vector3.up, currentAngle);
-            var startposition = transform.position; 
-            target = new Vector3(-startposition.x, startposition.y, -startposition.z); 
-            //Debug.Log("TransformPosition:" + startposition + " Target.Position " + target+ " from angle "+ currentAngle- angleAlignment );
-            // wait some small time
-            yield return new WaitForSeconds(1.0f);
-            if (prefab != null)
-            {
-                prefab.distance = SpawnerDistance;
-                prefab.speed = speed;
-                prefab.startPoint = transform.position;
-                Instantiate(prefab, transform.position, Quaternion.identity);
+            foreach ( var spawner in spawnerInstances)
+            {   
+                //choose randomly from fruit prefabs and instantiate canon
+                prefab = fruitsAndBombs[Random.Range(0, fruitsAndBombs.Length)];
+                spawner.position= (position - center).normalized * (spawnerDistance+Random.Range(-1,1)) + center;
+                float currentAngle = Random.Range(-angle / 2, angle / 2)-angleAlignment;
+
+                Debug.Log("Transform position:" + spawner.position + "Angle:" +(currentAngle-angleAlignment));
+                spawner.RotateAround(center, Vector3.up, currentAngle);
+                var startposition = spawner.position; 
+                target = new Vector3(-startposition.x, startposition.y, -startposition.z); 
+                //Debug.Log("TransformPosition:" + startposition + " Target.Position " + target+ " from angle "+ currentAngle- angleAlignment );
+                // wait some small time
+                if (prefab != null)
+                {
+                    prefab.distance = spawnerDistance;
+                    prefab.speed = speed;
+                    prefab.startPoint = spawner.position;
+                    Instantiate(prefab, spawner.position, Quaternion.identity);
+
+
+                 }
+                yield return new WaitForFixedUpdate();
                 //Debug.Log("Object " + prefab.transform.name + " instantiated");
             }
 
         }
+
+
     }
 }

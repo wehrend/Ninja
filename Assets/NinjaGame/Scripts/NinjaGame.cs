@@ -7,28 +7,26 @@ using System.Collections.Generic;
 
 namespace Assets.NinjaGame.Scripts
 {
-
-    public class FruitAndBombSpawner : MonoBehaviour
+    public class NinjaGame : MonoBehaviour
     {
 
         public float pausetime = 5;
         public int angle = 90;
         public int NumberOfSpawnerInstances = 1;
         public float speed = 5.0f;
-        public float spawnerDistance = 0.5f;
-        public Vector3 center;
-        public Vector3 target;
+        public float spawnerDistance=5.0f;
+        public float spawnerRange = 1.0f;
+ 
         public float startHeight = 2.0f;
         private float angleAlignment = 45;
         public bool gamePlaying;
+        public Vector3 center;
+        public Vector3 target;
         public MovingRigidbodyPhysics[] fruitsAndBombs;
         public NinjaGameEventController ninjaGameEvent;
         public GUIContent guiContent;
 
-        void OnSceneGUI()
-        {
-            DebugExtension.DrawCircle(Vector3.zero, Vector3.up, Color.green, spawnerDistance);
-        }
+  
 
         void Start()
         {
@@ -64,7 +62,7 @@ namespace Assets.NinjaGame.Scripts
             {   
                 //choose randomly from fruit prefabs and instantiate canon
                 prefab = fruitsAndBombs[Random.Range(0, fruitsAndBombs.Length)];
-                spawner.position= (position - center).normalized * (spawnerDistance+Random.Range(-1,1)) + center;
+                spawner.position= (position - center).normalized * (spawnerDistance+Random.Range(-spawnerRange/2,spawnerRange/2)) + center;
                 float currentAngle = Random.Range(-angle / 2, angle / 2)-angleAlignment;
 
                 Debug.Log("Transform position:" + spawner.position + "Angle:" +(currentAngle-angleAlignment));

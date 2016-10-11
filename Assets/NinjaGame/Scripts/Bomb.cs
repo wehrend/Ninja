@@ -33,11 +33,16 @@ namespace Assets.NinjaGame.Scripts
             {
                 return (int)(collision.collider.GetComponent<Sword>().CollisionForce()/20) * damagePoints;
             }
-            else if ((collision.collider.name.Contains("Paddle") && collision.collider.GetComponent<Paddle>().CollisionForce() > breakForce))
+            if ((collision.collider.name.Contains("Paddle") && collision.collider.GetComponent<Paddle>().CollisionForce() > breakForce))
             {
                 return (int)( collision.collider.GetComponent<Paddle>().CollisionForce()/20) * damagePoints;
             }
-
+           /* else if (collision.collider.name.Contains("RigidbodyContainer") || collision.collider.name.Contains("ControllerColliders"))
+            {
+                Debug.Log("Controller or Hands collision");
+                return 50;
+            }
+            */
             return 0;
         }
 

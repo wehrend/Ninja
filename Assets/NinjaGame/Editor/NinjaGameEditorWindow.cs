@@ -45,12 +45,11 @@
             return scenes;
         }
 
-    internal static List<FruitAndBombSpawner> FindFruitAndBombSpawnerInstances()
+    internal static List<NinjaGame> FindNinjaGameInstances()
     {
       
-
-        FruitAndBombSpawner[] allObjects = GameObject.FindObjectsOfType(typeof(FruitAndBombSpawner)) as FruitAndBombSpawner[];
-        List<FruitAndBombSpawner> result = new List<FruitAndBombSpawner>();
+        NinjaGame[] allObjects = GameObject.FindObjectsOfType(typeof(NinjaGame)) as NinjaGame[];
+        List<NinjaGame> result = new List<NinjaGame>();
         foreach (var go in allObjects)
         {
             Debug.Log(go);
@@ -109,7 +108,7 @@
         {
 	        if (Application.isPlaying )
 	        {
-	            var spawnerPrefabs = FindFruitAndBombSpawnerInstances(); //GetSpawnerPrefabsOfScene(selectedScene);
+	            var spawnerPrefabs = FindNinjaGameInstances(); //GetSpawnerPrefabsOfScene(selectedScene);
 	            Debug.Log(spawnerPrefabs.Count());
 		        //spawnersToDisplay = new GUIContent("test");
 	            // Debug.Log("SpawnerPrefabs count:"+spawnerPrefabs.Count());
@@ -121,6 +120,7 @@
 		        selectedScene = levelScenes[selectedLevelIndex].Name;
 		        
 		        EditorGUILayout.BeginHorizontal();
+                
                 EditorGUILayout.PrefixLabel("Velocity " + minSpeedValue.ToString("0.0") + " m/s - " + maxSpeedValue.ToString("0.0") + "m/s");
 		        EditorGUILayout.LabelField(minSpeedLimit.ToString(), GUILayout.MaxWidth(maxFloatWidth));
 		        EditorGUILayout.MinMaxSlider( ref minSpeedValue, ref maxSpeedValue, minSpeedLimit, maxSpeedLimit);

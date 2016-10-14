@@ -28,7 +28,7 @@ namespace Assets.NinjaGame.Scripts
         /// </summary>
         private float[] currentSample;
 
-        private double dataRate;
+        public double dataRate;
 
         public double GetDataRate()
         {

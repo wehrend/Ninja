@@ -3,20 +3,21 @@
     using UnityEditor;
     using UnityEditor.SceneManagement;
     using System.Linq;
+    using System.Collections;
     using System.Collections.Generic;
     using System.IO;
     using System.Globalization;
 	using Assets.NinjaGame.Scripts;
    
 //fixme: Namespaces
-
+    [ExecuteInEditMode]
     public class NinjaGameEditorWindow
     {
-
+        
         [MenuItem("Ninja Game / Configuration")]
         public static void Show()
         {
-            var window = EditorWindow.GetWindow<DemoLevelListWindow>();
+            var window = EditorWindow.GetWindow<NinjaGameEditor>();
 
             window.Show();
 
@@ -59,56 +60,93 @@
         return result;
     }
 
-
-    public class DemoLevelListWindow : EditorWindow
+    /// <summary>
+    /// 
+    /// </summary>
+    [ExecuteInEditMode]
+    public class NinjaGameEditor : EditorWindow
         {
-            List<GuiContainerForScenes> levelScenes;
-            //List<GuiContainerForPrefabs> spawnerPrefabs;
-            GUIContent[] listToDisplay;
-            GUIContent[] spawnersToDisplay;
-            string selectedScene;
+        //Fixme: Code doubled
+        List<GuiContainerForScenes> levelScenes;
+        //List<GuiContainerForPrefabs> spawnerPrefabs;
+        GUIContent[] listToDisplay;
+        GUIContent[] spawnersToDisplay;
+        string selectedScene;
 
-            public const string HelpBoxText = "Ninja Game Configuration Window, works only in play mode:\n"
-                                           + "Select a Level and configurate speed etc. to your own needs.\n"
-                                           + "If you choose optional settings you can change fixed parameters.";
-            public const string AdvancedModeText = "Set angle range, quantity and distant range.\n"
-                                                 +"Caution: Changes here will override the values of loaded Scene \n";
-                                         
+        public const string HelpBoxText = "Ninja Game Configuration Window, works only in play mode:\n"
+                                        + "Select a Level and configurate speed etc. to your own needs.\n"
+                                        + "If you choose optional settings you can change fixed parameters.";
+        public const string AdvancedModeText = "Set angle range, quantity and distant range.\n"
+                                                +"Caution: Changes here will override the values of loaded Scene \n";
 
+        SerializedObject serializedObject;
+        public SerializedProperty spawnerDistanceSP;
+        public SerializedProperty spawnerRangeSP;
+        SerializedProperty velocityAvgSP;
+        SerializedProperty velocityRangeSP;
+        public SerializedProperty angleSP;
+        int selectedLevelIndex = 0; //default
+        int selectedSpawnerIndex = 0;
 
-            int selectedLevelIndex = 0; //default
-            int selectedSpawnerIndex = 0;
-            float minSpeedValue = 1.0f;
-            float maxSpeedValue = 10.0f;
-            float minSpeedLimit = 0.1f;
-            float maxSpeedLimit = 20.0f;
-            bool advancedMode = false;
-            // currently mockup stadium
-            float minAngleValue = 45f;
-            float maxAngleValue = 160f;
-            float minAngleLimit = 0f;
-	        float maxAngleLimit = 360f;
-
-            int minQuantityLimit = 1;
-            int maxQuantityLimit = 10;
-
-            float minDistanceValue = 2.5f;
-	        float maxDistanceValue = 15f;
-	        float minDistanceLimit = 1f;
-	        float maxDistanceLimit = 50f;
+        bool advancedMode = false;
+        // currently mockup stadium
+        private float minVelocityValue;
+        private float maxVelocityValue;
+        private float minVelocityLimit =0.1f;
+        private float maxVelocityLimit = 20f;
+        private float minAngleValue;
+        private float maxAngleValue;
+        private float minAngleLimit = 0f;
+	    private float maxAngleLimit = 360f;
+        private int minQuantityLimit = 1;
+        private int maxQuantityLimit = 10;
+        private float minDistanceValue;
+	    private float maxDistanceValue;
+	    private float minDistanceLimit = 1f;
+	    private float maxDistanceLimit = 50f;
 
         void OnEnable()
         {
-	        levelScenes = GetLevelScenes();
+            levelScenes = GetLevelScenes();
 		        
             listToDisplay = levelScenes.Select(s => s.guiContent).ToArray();
+            spawnerDistanceSP = serializedObject.FindProperty("spawnerDistance");
+            spawnerRangeSP = serializedObject.FindProperty("spawnerRange");
+            velocityAvgSP = serializedObject.FindProperty("velocityAvg");
+            velocityRangeSP = serializedObject.FindProperty("velocityRange");
+            angleSP = serializedObject.FindProperty("angle");
+
+
         }
+
+        void OnInspectorUpdate()
+        {
+            if (serializedObject!=null)
+            serializedObject.Update();
+  
+            if (GUI.changed)
+            {
+                float velocityAvg = (maxVelocityValue - minVelocityValue) / 2f;
+                float velocityRange = (maxVelocityValue - velocityAvg);
+                velocityAvgSP.floatValue = velocityAvg;
+                velocityRangeSP.floatValue = velocityRange;
+                float angleAvg = (maxAngleValue - minAngleValue) / 2f;
+                float angleRange = (maxAngleValue - angleAvg);
+                velocityAvgSP.floatValue = velocityAvg;
+                velocityRangeSP.floatValue = velocityRange;
+
+            }
+
+            serializedObject.ApplyModifiedProperties();
+        }
+
 
         void OnGUI()
         {
-	        if (Application.isPlaying )
-	        {
-	            var spawnerPrefabs = FindNinjaGameInstances(); //GetSpawnerPrefabsOfScene(selectedScene);
+	       if (Application.isPlaying)
+	       {
+  
+                var spawnerPrefabs = FindNinjaGameInstances(); //GetSpawnerPrefabsOfScene(selectedScene);
 	            Debug.Log(spawnerPrefabs.Count());
 		        //spawnersToDisplay = new GUIContent("test");
 	            // Debug.Log("SpawnerPrefabs count:"+spawnerPrefabs.Count());
@@ -121,10 +159,10 @@
 		        
 		        EditorGUILayout.BeginHorizontal();
                 
-                EditorGUILayout.PrefixLabel("Velocity " + minSpeedValue.ToString("0.0") + " m/s - " + maxSpeedValue.ToString("0.0") + "m/s");
-		        EditorGUILayout.LabelField(minSpeedLimit.ToString(), GUILayout.MaxWidth(maxFloatWidth));
-		        EditorGUILayout.MinMaxSlider( ref minSpeedValue, ref maxSpeedValue, minSpeedLimit, maxSpeedLimit);
-		        EditorGUILayout.LabelField(maxSpeedLimit.ToString(), GUILayout.MaxWidth(maxFloatWidth));  
+                EditorGUILayout.PrefixLabel("Velocity " + minVelocityValue.ToString("0.0") + " m/s - " + maxVelocityValue.ToString("0.0") + "m/s");
+		        EditorGUILayout.LabelField(minVelocityLimit.ToString(), GUILayout.MaxWidth(maxFloatWidth));
+		        EditorGUILayout.MinMaxSlider( ref minVelocityValue, ref maxVelocityValue, minVelocityLimit, maxVelocityLimit);
+		        EditorGUILayout.LabelField(maxVelocityLimit.ToString(), GUILayout.MaxWidth(maxFloatWidth));  
 		        EditorGUILayout.EndHorizontal();
                 EditorGUILayout.Space();
 		        advancedMode=EditorGUILayout.BeginToggleGroup("Overwrite loaded scene with custom Values ",advancedMode);

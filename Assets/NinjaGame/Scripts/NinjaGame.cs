@@ -13,11 +13,12 @@ namespace Assets.NinjaGame.Scripts
         public float pausetime = 5;
         public int angle = 90;
         public int NumberOfSpawnerInstances = 1;
-        public float speed = 5.0f;
+        public float velocityAvg = 5.0f;
+        public float velocityRange = 1.0f;
+        public float velocity;
         public float spawnerDistance=5.0f;
         public float spawnerRange = 1.0f;
- 
-        public float startHeight = 2.0f;
+        public float height = 2.0f;
         private float angleAlignment = 45;
         public bool gamePlaying;
         public Vector3 center;
@@ -31,7 +32,7 @@ namespace Assets.NinjaGame.Scripts
         void Start()
         {
             gamePlaying = true;
-            speed = Random.Range(3f, 20.0f);
+            velocity = velocityAvg+ Random.Range(-velocityRange/2, velocityRange/2);
       
             StartCoroutine(FireDelay());    
         }
@@ -55,7 +56,7 @@ namespace Assets.NinjaGame.Scripts
         { 
             MovingRigidbodyPhysics prefab; 
             List<Transform> spawnerInstances = Enumerable.Repeat(transform, NumberOfSpawnerInstances).ToList();
-            var position = Vector3.one + Vector3.up*(startHeight-1);
+            var position = Vector3.one + Vector3.up*(height-1);
             center = new Vector3(0, 2.0f, 0);
 
             foreach ( var spawner in spawnerInstances)
@@ -74,7 +75,7 @@ namespace Assets.NinjaGame.Scripts
                 if (prefab != null)
                 {
                     prefab.distance = spawnerDistance;
-                    prefab.speed = speed;
+                    prefab.speed = velocity;
                     prefab.startPoint = spawner.position;
                     Instantiate(prefab, spawner.position, Quaternion.identity);
 

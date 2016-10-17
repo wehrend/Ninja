@@ -21,6 +21,8 @@ namespace Assets.NinjaGame.Scripts
         public float height = 2.0f;
         private float angleAlignment = 45;
         public bool gamePlaying;
+        public Color32[]  objectColors = new Color32[] { Color.white, Color.green, Color.red};
+        public bool particleEffects=false;
         public Vector3 center;
         public Vector3 target;
         public MovingRigidbodyPhysics[] fruitsAndBombs;
@@ -63,6 +65,7 @@ namespace Assets.NinjaGame.Scripts
             {   
                 //choose randomly from fruit prefabs and instantiate canon
                 prefab = fruitsAndBombs[Random.Range(0, fruitsAndBombs.Length)];
+                var color = objectColors[Random.Range(0,objectColors.Length)];
                 spawner.position= (position - center).normalized * (spawnerDistance+Random.Range(-spawnerRange/2,spawnerRange/2)) + center;
                 float currentAngle = Random.Range(-angle / 2, angle / 2)-angleAlignment;
 
@@ -77,6 +80,7 @@ namespace Assets.NinjaGame.Scripts
                     prefab.distance = spawnerDistance;
                     prefab.speed = velocity;
                     prefab.startPoint = spawner.position;
+                    prefab.color = color;
                     Instantiate(prefab, spawner.position, Quaternion.identity);
 
 

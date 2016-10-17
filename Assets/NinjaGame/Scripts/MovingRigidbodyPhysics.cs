@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 using VRTK;
 
 namespace Assets.NinjaGame.Scripts
 {
 
     [RequireComponent(typeof(Rigidbody))]
-    [RequireComponent(typeof(MeshRenderer))]
+    [RequireComponent(typeof(Mesh))]
     public class MovingRigidbodyPhysics : MonoBehaviour
     {
 
@@ -14,9 +15,12 @@ namespace Assets.NinjaGame.Scripts
 
         public Rigidbody Body { get; private set; }
         protected GameController gameController;
-        //private MeshRenderer renderer;
+        private MeshRenderer meshrenderer;
+        private ParticleSystem ps;
         public float distance;
         public Vector3 startPoint;
+        public Color32 color = Color.white;
+        public bool particleEffects= false;
         public float hoverStrenght = 140f;
         public float hoverHeight = 2.5f;
         public float speed = 5.0f;//Random.Range(1,20);
@@ -28,14 +32,15 @@ namespace Assets.NinjaGame.Scripts
         private void Awake()
         {
             Body = GetComponent<Rigidbody>();
+            meshrenderer = GetComponent<MeshRenderer>();
+            ps= GetComponent<ParticleSystem>();
             gameController = FindObjectOfType(typeof(GameController)) as GameController;
-            //renderer = Body.GetComponent<MeshRenderer>();
             Body.collisionDetectionMode = CollisionDetectionMode.Continuous;
-           
         }
 
         void Start()
         {
+            meshrenderer.material.color = color;
             target = -transform.position;
             target.y = -target.y;
         }

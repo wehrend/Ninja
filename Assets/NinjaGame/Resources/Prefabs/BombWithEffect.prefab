@@ -168,11 +168,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5edf3354251184b9db47de36ce5c30a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distance: 10
-  startPoint: {x: -7.1633477, y: 3.2941813, z: -6.856496}
+  distance: 5
+  startPoint: {x: -2.1618814, y: 2, z: 3.5979745}
+  color:
+    serializedVersion: 2
+    rgba: 4278190335
+  particleEffects: 0
   hoverStrenght: 160
   hoverHeight: 1.8
-  speed: 9.734247
+  speed: 4.8159146
   target: {x: 0, y: 0, z: 0}
   layermask: 256
   breakForce: 50
@@ -196,7 +200,7 @@ ParticleSystem:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011209656874}
-  serializedVersion: 2
+  serializedVersion: 4
   lengthInSec: 100000
   startDelay:
     scalar: 0
@@ -234,12 +238,13 @@ ParticleSystem:
       m_RotationOrder: 4
     minMaxState: 0
   speed: 1
-  randomSeed: 1111302376
   looping: 1
   prewarm: 0
   playOnAwake: 1
   moveWithTransform: 0
+  autoRandomSeed: 0
   scalingMode: 1
+  randomSeed: 1111302400
   InitialModule:
     serializedVersion: 2
     enabled: 1
@@ -1939,7 +1944,7 @@ ParticleSystem:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010416336456}
-  serializedVersion: 2
+  serializedVersion: 4
   lengthInSec: 5
   startDelay:
     scalar: 0
@@ -1977,12 +1982,13 @@ ParticleSystem:
       m_RotationOrder: 4
     minMaxState: 0
   speed: 1
-  randomSeed: 1111302376
   looping: 1
   prewarm: 0
   playOnAwake: 1
   moveWithTransform: 0
+  autoRandomSeed: 0
   scalingMode: 1
+  randomSeed: 1111302400
   InitialModule:
     serializedVersion: 2
     enabled: 1

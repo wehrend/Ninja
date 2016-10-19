@@ -86,7 +86,7 @@
         SerializedProperty velocityRangeSP;
         public SerializedProperty angleSP;
         int selectedLevelIndex = 0; //default
-        int selectedSpawnerIndex = 0;
+        //int selectedSpawnerIndex = 0;
 
         bool advancedMode = false;
         // currently mockup stadium

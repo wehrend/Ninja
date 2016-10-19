@@ -18,8 +18,8 @@ public class NinjaGameEditor : Editor {
     {
         spawnerDistanceSP = serializedObject.FindProperty("spawnerDistance");
         spawnerRangeSP = serializedObject.FindProperty("spawnerRange");
-        velocitySP = serializedObject.FindProperty("velocityA");
-        velocityRangeSP = serializedObject.FindProperty("velocityRange");
+        // velocitySP = serializedObject.FindProperty("velocityAvg");
+        // velocityRangeSP = serializedObject.FindProperty("velocityRange");
         angleSP = serializedObject.FindProperty("angle");
     }
    

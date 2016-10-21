@@ -22,7 +22,6 @@ public class NinjaGameEditor : Editor {
         // velocityRangeSP = serializedObject.FindProperty("velocityRange");
         angleSP = serializedObject.FindProperty("angle");
     }
-   
 
     void OnSceneGUI()
     {
@@ -31,7 +30,6 @@ public class NinjaGameEditor : Editor {
         max_angle = angleSP.intValue;
 
         //NinjaGame t = target as NinjaGame;
-        Debug.Log("Draw circle");
         
         Handles.color = Color.white;
         //Draw the spawner area 
@@ -43,3 +41,21 @@ public class NinjaGameEditor : Editor {
         Handles.DrawWireArc(Vector3.zero, Vector3.up, Vector3.forward, -max_angle/2, spawnerDistanceSP.floatValue+spawnerRangeSP.floatValue/2);
     }
 }
+/*
+public static class ProbabilityList
+{
+    public static void Show(List<SerializedProperty> list)
+    {
+        foreach (var l in list)
+        {
+            //EditorGUILayout.PropertyField(list);
+            for (int i = 0; i < list.arraySize; i++)
+            {
+                EditorGUILayout.PropertyField(list.GetArrayElementAtIndex(i));
+
+            }
+        }
+    }
+
+}
+*/

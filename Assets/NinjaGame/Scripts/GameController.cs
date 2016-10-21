@@ -9,7 +9,7 @@ namespace Assets.NinjaGame.Scripts
         /// <summary>
         /// we need the light for game over setting
         /// </summary>
-	    public Light light = new Light(); 
+	    public new Light light = new Light(); 
 	    public int health;
         public int score;
         public bool gamePlaying;

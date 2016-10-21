@@ -12,7 +12,7 @@ namespace Assets.NinjaGame.Scripts
             private VRTK_ControllerActions controllerActions;
             private VRTK_ControllerEvents controllerEvents;
             //public LSLMarkerStream markerStream;
-            private GameController gameController;
+            public GameController gameController;
             public NinjaGameEventController ninjaGameEvent;
             public NinjaGameEventArgs eve;
             private float impactMagnifier = 120f;

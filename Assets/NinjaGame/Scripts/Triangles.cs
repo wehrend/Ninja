@@ -18,6 +18,10 @@ namespace Assets.NinjaGame.Scripts
         {
 
         }
+        public override void CollisionWithForce(float force)
+        {//stub
+        }
+
     }
 
 }

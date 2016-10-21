@@ -70,7 +70,7 @@
         List<GuiContainerForScenes> levelScenes;
         //List<GuiContainerForPrefabs> spawnerPrefabs;
         GUIContent[] listToDisplay;
-        GUIContent[] spawnersToDisplay;
+        //GUIContent[] spawnersToDisplay;
         string selectedScene;
 
         public const string HelpBoxText = "Ninja Game Configuration Window, works only in play mode:\n"
@@ -188,12 +188,12 @@
 		                EditorGUILayout.LabelField(maxDistanceLimit.ToString(),GUILayout.MaxWidth(maxIntWidth));
 		                EditorGUILayout.EndHorizontal();
 
-                        if (GUI.Button(new Rect(5, position.height - 35, 120, 30), new GUIContent("Save Level Config")))
+                        /*if (GUI.Button(new Rect(5, position.height - 35, 120, 30), new GUIContent("Save Level Config")))
                             {
                                 var savePath = Application.dataPath + "Assets/NinjaGame/Levels";
                                 //Debug.Log("Saved scene as");
                                 //EditorSceneManager.SaveScene(SceneManager.GetActiveScene(),savePath, true);
-                            }
+                            }*/
          EditorGUILayout.EndToggleGroup();
 
 		        if (selectedScene!=null)

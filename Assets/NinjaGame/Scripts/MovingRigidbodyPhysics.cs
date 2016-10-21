@@ -8,7 +8,7 @@ namespace Assets.NinjaGame.Scripts
 
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(Mesh))]
-    public class MovingRigidbodyPhysics : MonoBehaviour
+    public abstract class MovingRigidbodyPhysics : MonoBehaviour
     {
 
 
@@ -27,6 +27,7 @@ namespace Assets.NinjaGame.Scripts
         public Vector3 target;
         //floor is layermask 8
         public int layermask = 1 << 8;
+        public float breakForce=50f;
 
 
         private void Awake()
@@ -73,10 +74,40 @@ namespace Assets.NinjaGame.Scripts
                 Body.AddRelativeForce(Vector3.forward * speed, ForceMode.Force);
         }
 
-        void OnTriggerEnter(Collider enteredCollider)
+       /* void OnTriggerEnter(Collider enteredCollider)
         {
             //should be kill zone 
             Destroy(Body.gameObject);
+        }*/
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            var collisionForce = GetCollisionForce(collision);
+      
+            if (collisionForce > 0)
+                CollisionWithForce(collisionForce);
+        }
+
+
+        abstract public void CollisionWithForce(float force);
+
+        private float GetCollisionForce(Collision collision)
+        {
+
+            if ((collision.collider.name.Contains("Sword") && collision.collider.GetComponent<Sword>().CollisionForce() > breakForce))
+            {
+                return collision.collider.GetComponent<Sword>().CollisionForce() * 1.2f;
+            }
+
+            if ((collision.collider.name.Contains("Paddle") && collision.collider.GetComponent<Paddle>().CollisionForce() > breakForce))
+            {
+                return collision.collider.GetComponent<Paddle>().CollisionForce() * 1.2f;
+            }
+            else
+            {
+                Debug.LogWarning("Controller or Hands collision: " + collision.collider.name);
+                return 100 * 1.2f;
+            }
         }
     }
 }

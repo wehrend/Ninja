@@ -9,50 +9,19 @@ namespace Assets.NinjaGame.Scripts
     public class Bomb : MovingRigidbodyPhysics
     {
 
-        public float breakForce = 50f;
         //let it be one of a mild bomb
-        public int damagePoints = 4;
+        public int damagePoints = 5;
         public float explosionMultiplier = 0.3f;
 
-        private void OnCollisionEnter(Collision collision)
+        public override void CollisionWithForce(float collisionForce)
         {
-            int damage =  GetCollisionForce(collision);
+            int damage = (int)collisionForce / 100 * damagePoints;
+            Destroy(Body.gameObject, 0.5f);
+            if (gameController)
+                gameController.issueDamage(damage);
 
-            if (Body && damage > 0)
-            {
-                if (gameController)
-                    gameController.issueDamage(damage);
-                Debug.Log("Bomb damaged you with" + damage + "damage!\n");
-            }
-            Destroy(Body.gameObject);
+            Debug.Log("Bomb damaged you with" + damage + "damage!\n");
         }
 
-        private int GetCollisionForce(Collision collision)
-        {
-            if ((collision.collider.name.Contains("Sword") && collision.collider.GetComponent<Sword>().CollisionForce() > breakForce))
-            {
-                return (int)(collision.collider.GetComponent<Sword>().CollisionForce()/20) * damagePoints;
-            }
-            if ((collision.collider.name.Contains("Paddle") && collision.collider.GetComponent<Paddle>().CollisionForce() > breakForce))
-            {
-                return (int)( collision.collider.GetComponent<Paddle>().CollisionForce()/20) * damagePoints;
-            }
-           /* else if (collision.collider.name.Contains("RigidbodyContainer") || collision.collider.name.Contains("ControllerColliders"))
-            {
-                Debug.Log("Controller or Hands collision");
-                return 50;
-            }
-            */
-            return 0;
-        }
-
-
-        /* void OnTriggerEnter(Collider enteredCollider)
-         {
-             if (Body && enteredCollider.CompareTag("kill zone") )
-             {
-                 Destroy(gameObject);
-             }
-         }*/
     }
 }

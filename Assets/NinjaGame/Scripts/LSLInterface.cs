@@ -72,10 +72,10 @@ namespace Assets.NinjaGame.Scripts
         {
             if (outlet == null)
                 return;
-            if (Vector3.Magnitude(firstDevice.velocity) > 1)
+           /* if (Vector3.Magnitude(firstDevice.velocity) > 1)
                 Debug.Log("Position:" +firstDevice.transform.pos);
             if (Vector3.Magnitude(firstDevice.angularVelocity) > 1)
-                Debug.Log("Rotation"+firstDevice.transform.rot);
+                Debug.Log("Rotation"+firstDevice.transform.rot);*/
             // reuse the array for each sample to reduce allocation costs
             // currently only for right-hand device
             currentSample[0] = firstDevice.transform.pos.x;

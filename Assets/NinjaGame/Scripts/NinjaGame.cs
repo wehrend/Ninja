@@ -31,12 +31,8 @@ namespace Assets.NinjaGame.Scripts
         private float angleAlignment = 45;
         public bool gamePlaying;
         public MovingRigidbodyPhysics prefab;
-
         //choose some static color 
         public List<Probability> Colors = new List<Probability>(); //{ { Color.white, 70 }, { Color.green, 15 }, { Color.red, 15 } };
-
-       // public Dictionary<object,int> staticColors = new Dictionary<object, int>() {  { Color.white, 70 }, { Color.green, 15 }, { Color.red,15 } };
-        private int colorProbability;
         public Vector3 center;
         public Vector3 target;
         public NinjaGameEventController ninjaGameEvent;
@@ -91,8 +87,7 @@ namespace Assets.NinjaGame.Scripts
                 var color = RandomWithProbability(Colors);
                 spawner.position= (position - center).normalized * (spawnerDistance+Random.Range(-spawnerRange/2,spawnerRange/2)) + center;
                 float currentAngle = Random.Range(-angle / 2, angle / 2)-angleAlignment;
-                Debug.LogWarning(prefabname);
-                Debug.Log("Transform position:" + spawner.position + "Angle:" +(currentAngle-angleAlignment));
+                //Debug.Log("Transform position:" + spawner.position + "Angle:" +(currentAngle-angleAlignment));
                 spawner.RotateAround(center, Vector3.up, currentAngle);
                 var startposition = spawner.position; 
                 target = new Vector3(-startposition.x, startposition.y, -startposition.z); 

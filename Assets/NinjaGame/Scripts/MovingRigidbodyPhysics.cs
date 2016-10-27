@@ -14,7 +14,9 @@ namespace Assets.NinjaGame.Scripts
 
 
         public Rigidbody Body { get; private set; }
-        protected GameController gameController;
+        //protected GameController gameController;
+        protected NinjaGameEventController ninjaControl;
+        protected NinjaGameEventArgs eve;
         private MeshRenderer meshrenderer;
         private ParticleSystem ps;
         public float distance;
@@ -35,7 +37,8 @@ namespace Assets.NinjaGame.Scripts
             Body = GetComponent<Rigidbody>();
             meshrenderer = GetComponent<MeshRenderer>();
             ps= GetComponent<ParticleSystem>();
-            gameController = FindObjectOfType(typeof(GameController)) as GameController;
+            //gameController = FindObjectOfType(typeof(GameController)) as GameController;
+            ninjaControl = FindObjectOfType(typeof(NinjaGameEventController)) as NinjaGameEventController;
             Body.collisionDetectionMode = CollisionDetectionMode.Continuous;
         }
 

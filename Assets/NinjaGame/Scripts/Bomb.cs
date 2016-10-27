@@ -17,8 +17,12 @@ namespace Assets.NinjaGame.Scripts
         {
             int damage = (int)collisionForce / 100 * damagePoints;
             Destroy(Body.gameObject, 0.5f);
-            if (gameController)
-                gameController.issueDamage(damage);
+            // if (gameController)
+            //     gameController.issueDamage(damage);
+
+            eve.damage = damage;
+            if (ninjaControl)
+                ninjaControl.OnBombCollision(eve);
 
             Debug.Log("Bomb damaged you with" + damage + "damage!\n");
         }

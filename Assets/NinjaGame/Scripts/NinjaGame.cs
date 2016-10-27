@@ -9,10 +9,9 @@ using System.Collections.Generic;
 
 namespace Assets.NinjaGame.Scripts
 {
-
+    [RequireComponent(typeof(NinjaGameEventController))]
     public class NinjaGame : MonoBehaviour
     {
-
 
         List<Probability> objectPool=new List<Probability>();
         public int fruitsProbability=50;
@@ -35,14 +34,35 @@ namespace Assets.NinjaGame.Scripts
         public List<Probability> Colors = new List<Probability>(); //{ { Color.white, 70 }, { Color.green, 15 }, { Color.red, 15 } };
         public Vector3 center;
         public Vector3 target;
-        public NinjaGameEventController ninjaGameEvent;
+        //public NinjaGameEventController ninjaGameEvent;
         public GUIContent guiContent;
 
-
+        public int startHealth = 1000;
+        public int startScore = 0;
+        [HideInInspector]
+        public int health;
+        [HideInInspector]
+        public int score;
+        public NinjaGameEventController ninjaControl;
+        [HideInInspector]
+        public NinjaGameEventArgs e;
+        public Info info;
 
 
         void Start()
         {
+            info.health = startHealth;
+            info.totalscore = startScore;
+            if (ninjaControl == null)
+            {
+                Debug.LogError("The NinjaGameController needs the NinjaGameEventController script to be attached to it");
+                return;
+            }
+            GetComponent<NinjaGameEventController>().FruitCollision += new NinjaGameEventHandler(fruitCollision);
+            GetComponent<NinjaGameEventController>().BombCollision += new NinjaGameEventHandler(bombCollision);
+            GetComponent<NinjaGameEventController>().StartGame += new NinjaGameEventHandler(StartGame);
+            GetComponent<NinjaGameEventController>().GameOver += new NinjaGameEventHandler(GameOver);
+
             Colors.Add(new Probability(Color.white, 60));
             Colors.Add(new Probability(Color.red, 20));
             Colors.Add(new Probability(Color.green, 20));
@@ -55,10 +75,37 @@ namespace Assets.NinjaGame.Scripts
            // prefabObjects = 
             velocity = velocityAvg+ Random.Range(-velocityRange/2, velocityRange/2);
             
-            StartCoroutine(FireDelay());    
+            StartCoroutine(FireDelay());
+            Debug.LogWarning("health:" + health);
+            Debug.LogWarning("score:" + score);
+        }
+
+        void fruitCollision(object sender, NinjaGameEventArgs eve)
+        {
+            info.totalscore  += eve.score;
+
+            Debug.Log("Event: FruitCollision");
+
+        }
+
+        void bombCollision(object sender, NinjaGameEventArgs eve)
+        {
+            info.health -= eve.damage;
+          
+            Debug.Log("Event: BombCollision");
         }
 
 
+        void StartGame(object sender, NinjaGameEventArgs eve)
+        {
+            Debug.Log("Start Game");
+        }
+
+        void GameOver(object sender, NinjaGameEventArgs eve)
+        {
+            Debug.Log("GameOver");
+            //light.enabled = false;
+        }
 
         IEnumerator FireDelay()
         {
@@ -156,5 +203,12 @@ namespace Assets.NinjaGame.Scripts
             }
         }
 
+
+        [Serializable]
+        public class Info
+        {
+            public int totalscore;
+            public int health;
+        }
     }
 }

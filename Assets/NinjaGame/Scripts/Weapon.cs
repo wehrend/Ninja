@@ -12,7 +12,6 @@ namespace Assets.NinjaGame.Scripts
             private VRTK_ControllerActions controllerActions;
             private VRTK_ControllerEvents controllerEvents;
             //public LSLMarkerStream markerStream;
-            public GameController gameController;
             public NinjaGameEventController ninjaGameEvent;
             public NinjaGameEventArgs eve;
             private float impactMagnifier = 120f;
@@ -61,22 +60,12 @@ namespace Assets.NinjaGame.Scripts
         protected override void Awake()
             {
                 base.Awake();
-                gameController = FindObjectOfType(typeof(GameController)) as GameController;
+                
                 rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
 
                 //grabbingProxy = GetComponent<GrabbingProxy>();
             }
 
-           /* protected override void Update()
-            {
-                base.Update();
-            if (ninjaGameEvent != null)
-            {
-                if (gameController.getHealth() < 3)
-                    ninjaGameEvent.TriggerGameOver(eve);
-            }
-
-            }*/
 
         private void OnCollisionEnter(Collision collision)
             {

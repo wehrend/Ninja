@@ -12,11 +12,15 @@ namespace Assets.NinjaGame.Scripts
         public override void CollisionWithForce( float collisionForce)
         {
             Destroy(Body.gameObject, 0.5f);
-            if (gameController)
-            {
-                Debug.Log("Game Controller found");
-            }
-            gameController.issueBoni(bonusPoints);
+            /* if (gameController)
+             {
+                 Debug.Log("Game Controller found");
+             }*/
+            
+            eve.score = bonusPoints;
+            if (ninjaControl)
+                ninjaControl.OnFruitCollision(eve);
+            //gameController.issueBoni(bonusPoints);
             Debug.Log("Fruit killed!");
         }
     }

@@ -7,11 +7,10 @@ namespace Assets.NinjaGame.Scripts
     public class ControllerHide : MonoBehaviour
     {
 
-
-        ControllerInteractionEventHandler touchpadAxisChanged;
-        VRTK_ControllerActions actions;
-        VRTK_ControllerEvents events;
-        Rigidbody thumb; 
+        public ControllerInteractionEventHandler touchpadAxisChanged;
+        public VRTK_ControllerActions actions;
+        public VRTK_ControllerEvents events;
+        public Rigidbody thumb; 
      
         // Use this for initialization
         void Start()
@@ -31,6 +30,7 @@ namespace Assets.NinjaGame.Scripts
             events.TouchpadTouchEnd += new ControllerInteractionEventHandler(DoTouchpadTouchReleased);
             Debug.Log("Event handler installed");
             thumb = new Rigidbody();
+
         
         }
 

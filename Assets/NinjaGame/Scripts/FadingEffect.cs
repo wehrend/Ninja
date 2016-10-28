@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Not in use yet.
+/// </summary>
+
 public class FadingEffect : MonoBehaviour {
 
     public float fadeTime = 2f;

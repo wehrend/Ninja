@@ -2,6 +2,10 @@
 using System.Collections;
 using VRTK;
 
+/// <summary>
+/// ControllerHide script, currently not in use.
+/// </summary>
+
 namespace Assets.NinjaGame.Scripts
 {
     public class ControllerHide : MonoBehaviour
@@ -37,8 +41,8 @@ namespace Assets.NinjaGame.Scripts
         private void DoTouchpadAxisChanged(object sender, ControllerInteractionEventArgs e)
         {
         
-            var controllerEvents = (VRTK_ControllerEvents)sender;
-            /* if (moveOnButtonPress != VRTK_ControllerEvents.ButtonAlias.Undefined && !controllerEvents.IsButtonPressed(moveOnButtonPress))
+            /*var controllerEvents = (VRTK_ControllerEvents)sender;
+            if (moveOnButtonPress != VRTK_ControllerEvents.ButtonAlias.Undefined && !controllerEvents.IsButtonPressed(moveOnButtonPress))
              {
                  touchAxis = Vector2.zero;
                  return;

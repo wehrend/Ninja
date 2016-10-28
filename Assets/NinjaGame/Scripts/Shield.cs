@@ -2,6 +2,10 @@
 using System.Collections;
 using VRTK;
 
+
+/// <summary>
+/// This is actually a Script for abn obsolete prefab, may be deprecated in future
+/// </summary>
 namespace Assets.NinjaGame.Scripts
 {
 
@@ -13,7 +17,7 @@ namespace Assets.NinjaGame.Scripts
 
         private float protectionPower = 500f;
         private float collisionForce = 0f;
-        private MeshRenderer renderer;
+        private Renderer render;
 
 
         public float CollisionForce()
@@ -32,7 +36,7 @@ namespace Assets.NinjaGame.Scripts
         {
             base.Awake();
             rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-            renderer = GetComponent<MeshRenderer>();
+            render = GetComponent<Renderer>();
         }
 
 
@@ -57,14 +61,14 @@ namespace Assets.NinjaGame.Scripts
                 duration -= Time.deltaTime;
 
                 //toggle renderer
-                renderer.enabled = !renderer.enabled;
+                render.enabled = !render.enabled;
 
                 //wait for a bit
                 yield return new WaitForSeconds(blinkTime);
             }
 
             //make sure renderer is enabled when we exit
-            renderer.enabled = true;
+            render.enabled = true;
         }
 
     }

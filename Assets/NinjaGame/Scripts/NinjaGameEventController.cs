@@ -26,8 +26,6 @@
 
         public event NinjaGameEventHandler FruitCollision;
         public event NinjaGameEventHandler BombCollision;
-        public event NinjaGameEventHandler UpdateScore;
-        public event NinjaGameEventHandler UpdateHealth;
         public event NinjaGameEventHandler StartGame;
         public event NinjaGameEventHandler GameOver;
 

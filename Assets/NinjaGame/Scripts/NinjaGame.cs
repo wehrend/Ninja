@@ -6,13 +6,16 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
-
+/// <summary>
+/// Main class of the Paradigm-specific code, 
+/// Includes Game controller logic and object spawning
+/// </summary>
 namespace Assets.NinjaGame.Scripts
 {
     [RequireComponent(typeof(NinjaGameEventController))]
     public class NinjaGame : MonoBehaviour
     {
-
+       
         List<Probability> objectPool=new List<Probability>();
         public int fruitsProbability=50;
         public int bombsProbability=50;
@@ -39,29 +42,29 @@ namespace Assets.NinjaGame.Scripts
 
         public int startHealth = 1000;
         public int startScore = 0;
-        [HideInInspector]
-        public int health;
-        [HideInInspector]
-        public int score;
+        //Next todo: using singletones here 
+        public static GameInfo scores;
         public NinjaGameEventController ninjaControl;
-        [HideInInspector]
-        public NinjaGameEventArgs e;
-        public Info info;
 
 
         void Start()
         {
-            info.health = startHealth;
-            info.totalscore = startScore;
+            scores = new GameInfo();
+            #region Game Event logic
+            scores.health = startHealth;
+            scores.totalscore = startScore;
+
             if (ninjaControl == null)
             {
                 Debug.LogError("The NinjaGameController needs the NinjaGameEventController script to be attached to it");
                 return;
             }
-            GetComponent<NinjaGameEventController>().FruitCollision += new NinjaGameEventHandler(fruitCollision);
-            GetComponent<NinjaGameEventController>().BombCollision += new NinjaGameEventHandler(bombCollision);
-            GetComponent<NinjaGameEventController>().StartGame += new NinjaGameEventHandler(StartGame);
-            GetComponent<NinjaGameEventController>().GameOver += new NinjaGameEventHandler(GameOver);
+            ninjaControl.FruitCollision += new NinjaGameEventHandler(fruitCollision);
+            ninjaControl.BombCollision += new NinjaGameEventHandler(bombCollision);
+            ninjaControl.StartGame += new NinjaGameEventHandler(StartGame);
+            ninjaControl.GameOver += new NinjaGameEventHandler(GameOver);
+
+            #endregion 
 
             Colors.Add(new Probability(Color.white, 60));
             Colors.Add(new Probability(Color.red, 20));
@@ -69,44 +72,57 @@ namespace Assets.NinjaGame.Scripts
             objectPool.Add(new Probability("SomeFruit", fruitsProbability));
             objectPool.Add(new Probability("BombWithEffect", bombsProbability));
             gapsProbability = 100 - (fruitsProbability + bombsProbability);
-            Debug.LogWarning(objectPool);
+            //Debug.LogWarning(objectPool);
             gamePlaying = true;
             
            // prefabObjects = 
             velocity = velocityAvg+ Random.Range(-velocityRange/2, velocityRange/2);
             
             StartCoroutine(FireDelay());
-            Debug.LogWarning("health:" + health);
-            Debug.LogWarning("score:" + score);
         }
+        #region Game Event logic
 
         void fruitCollision(object sender, NinjaGameEventArgs eve)
         {
-            info.totalscore  += eve.score;
-
+            scores.score = eve.score;
+            scores.totalscore += scores.score;
+            eve.totalscore = scores.totalscore;
+            
             Debug.Log("Event: FruitCollision");
+            Debug.LogWarning("score:" + eve.score);
+            Debug.LogWarning("totalscore:" + eve.totalscore);
+   
 
         }
 
         void bombCollision(object sender, NinjaGameEventArgs eve)
         {
-            info.health -= eve.damage;
-          
+            scores.damage = eve.damage;
+            scores.health -= scores.damage;
+            eve.health = scores.health;
+            Debug.LogWarning("health:" + eve.health);
             Debug.Log("Event: BombCollision");
         }
 
 
         void StartGame(object sender, NinjaGameEventArgs eve)
         {
+            //eve.totalscore = startScore;
+            //eve.health = startHealth;
+
             Debug.Log("Start Game");
         }
 
         void GameOver(object sender, NinjaGameEventArgs eve)
         {
+            eve.health = 0;
             Debug.Log("GameOver");
             //light.enabled = false;
         }
 
+        #endregion
+
+        #region ObjectSpawner
         IEnumerator FireDelay()
         {
             // As long as the Game is playing, later conditional
@@ -116,9 +132,6 @@ namespace Assets.NinjaGame.Scripts
                 yield return new WaitForSeconds(pausetime);
             }
         }
-
-
-
 
         IEnumerator FireFruit()
         { 
@@ -148,7 +161,7 @@ namespace Assets.NinjaGame.Scripts
                 {
                     Debug.Log(prefab.name);
                     prefab.distance = spawnerDistance;
-                    prefab.speed = velocity;
+                    prefab.velocity = velocity;
                     prefab.startPoint = spawner.position;
                     prefab.color = (Color) color;
 
@@ -202,12 +215,14 @@ namespace Assets.NinjaGame.Scripts
                 m_probability = probability;
             }
         }
-
+        #endregion
 
         [Serializable]
-        public class Info
+        public class GameInfo : ScriptableObject
         {
+            public int score;
             public int totalscore;
+            public int damage;
             public int health;
         }
     }

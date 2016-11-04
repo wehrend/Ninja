@@ -91,11 +91,19 @@ namespace Assets.NinjaGame.Scripts
         private void OnCollisionEnter(Collision collision)
         {
             var collisionForce = GetCollisionForce(collision);
-      
+            
             if (collisionForce > 0)
                 CollisionWithForce(collisionForce);
         }
 
+        void OnCollisionStay(Collision collision)
+        {
+            foreach (ContactPoint contact in collision.contacts)
+            {
+                print(contact.thisCollider.name + " hit " + contact.otherCollider.name);
+                Debug.DrawRay(contact.point, contact.normal, Color.white);
+            }
+        }
 
         abstract public void CollisionWithForce(float force);
 
@@ -110,6 +118,11 @@ namespace Assets.NinjaGame.Scripts
             if ((collision.collider.name.Contains("Paddle") && collision.collider.GetComponent<Paddle>().CollisionForce() > breakForce))
             {
                 return collision.collider.GetComponent<Paddle>().CollisionForce() * 1.2f;
+            }
+            if ((collision.collider.name.Contains("ControllerCollider") && collision.collider.GetComponent<HandCursorController>().CollisionForce() > breakForce))
+            {
+                return collision.collider.GetComponent<HandCursorController>().CollisionForce() * 1.2f;
+                Debug.LogWarning("Controller or Hands collision: " + collision.collider.name);
             }
             else
             {

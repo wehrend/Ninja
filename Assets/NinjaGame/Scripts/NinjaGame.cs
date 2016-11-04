@@ -6,6 +6,8 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
+using Assets.LSL4Unity.Scripts;
+
 /// <summary>
 /// Main class of the Paradigm-specific code, 
 /// Includes Game controller logic and object spawning
@@ -45,7 +47,7 @@ namespace Assets.NinjaGame.Scripts
         //Next todo: using singletones here 
         public static GameInfo scores;
         public NinjaGameEventController ninjaControl;
-
+        //private LSLMarkerStream eventMarker;
 
         void Start()
         {
@@ -87,8 +89,9 @@ namespace Assets.NinjaGame.Scripts
             scores.score = eve.score;
             scores.totalscore += scores.score;
             eve.totalscore = scores.totalscore;
-            
-            Debug.Log("Event: FruitCollision");
+
+            //eventMarker.Write("Event: Fruit Collision");
+
             Debug.LogWarning("score:" + eve.score);
             Debug.LogWarning("totalscore:" + eve.totalscore);
    
@@ -100,8 +103,9 @@ namespace Assets.NinjaGame.Scripts
             scores.damage = eve.damage;
             scores.health -= scores.damage;
             eve.health = scores.health;
+            //eventMarker.Write("Event: Bomb Collision");
             Debug.LogWarning("health:" + eve.health);
-            Debug.Log("Event: BombCollision");
+           
         }
 
 

@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12758557, g: 0.13438153, b: 0.12117015, a: 1}
+  m_IndirectSpecularColor: {r: 0.12758532, g: 0.13438144, b: 0.121170156, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -394,7 +394,7 @@ MonoBehaviour:
   respondsToKeyboardShortcuts: 1
   respondsToCommandLineArguments: 1
   msaaLevel: 4
-  minimumRenderScale: 0.01
+  minimumRenderScale: 0.8
   maximumRenderScale: 1.4
   maximumRenderTargetDimension: 4096
   renderScaleFillRateStepSizeInPercent: 15

@@ -25,6 +25,7 @@ namespace Assets.NinjaGame.Scripts
          
         public float pausetime = 5;
         public int angle = 90;
+        public Vector3 objectScale = new Vector3(0.5f,0.5f,0.5f);
         public int NumberOfSpawnerInstances = 1;
         public float velocityAvg = 5.0f;
         public float velocityRange = 1.0f;
@@ -72,7 +73,7 @@ namespace Assets.NinjaGame.Scripts
             Colors.Add(new Probability(Color.red, 20));
             Colors.Add(new Probability(Color.green, 20));
             objectPool.Add(new Probability("SomeFruit", fruitsProbability));
-            objectPool.Add(new Probability("BombWithEffect", bombsProbability));
+            objectPool.Add(new Probability("Bomb", bombsProbability));
             gapsProbability = 100 - (fruitsProbability + bombsProbability);
             //Debug.LogWarning(objectPool);
             gamePlaying = true;
@@ -168,7 +169,7 @@ namespace Assets.NinjaGame.Scripts
                     prefab.velocity = velocity;
                     prefab.startPoint = spawner.position;
                     prefab.color = (Color) color;
-
+                    prefab.transform.localScale = objectScale;
                     Instantiate(prefab, spawner.position, Quaternion.identity);
 
                 }

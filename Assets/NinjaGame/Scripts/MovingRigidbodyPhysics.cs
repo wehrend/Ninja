@@ -119,11 +119,11 @@ namespace Assets.NinjaGame.Scripts
             {
                 return collision.collider.GetComponent<Paddle>().CollisionForce() * 1.2f;
             }
-            if ((collision.collider.name.Contains("ControllerCollider") && collision.collider.GetComponent<HandCursorController>().CollisionForce() > breakForce))
+            /*if ((collision.collider.name.Contains("ControllerCollider") && collision.collider.GetComponent<HandCursorController>().CollisionForce() > breakForce))
             {
-                return collision.collider.GetComponent<HandCursorController>().CollisionForce() * 1.2f;
+               return collision.collider.GetComponent<HandCursorController>().CollisionForce()  1.2f;
                 Debug.LogWarning("Controller or Hands collision: " + collision.collider.name);
-            }
+            }*/
             else
             {
                 Debug.LogWarning("Controller or Hands collision: " + collision.collider.name);

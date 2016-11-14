@@ -20,11 +20,12 @@ namespace Assets.NinjaGame.Scripts
         protected NinjaGameEventArgs eve;
         [HideInInspector]
         private MeshRenderer meshrenderer;
-        private ParticleSystem particleSys;
         public float distance;
         public Vector3 startPoint;
         public Color32 color = Color.white;
         public bool particleEffects= false;
+        protected ParticleSystem particleSystem;
+        protected ParticleSystem.EmissionModule emission;
         public float hoverStrenght = 140f;
         public float hoverHeight = 2.5f;
         public float velocity = 5.0f;//Random.Range(1,20);
@@ -40,7 +41,9 @@ namespace Assets.NinjaGame.Scripts
         {
             Body = GetComponent<Rigidbody>();
             meshrenderer = GetComponent<MeshRenderer>();
-            particleSys= GetComponent<ParticleSystem>();
+            particleSystem = GetComponent<ParticleSystem>();
+            emission = particleSystem.emission;
+            emission.enabled = false;
             ninjaControl = FindObjectOfType(typeof(NinjaGameEventController)) as NinjaGameEventController;
             Body.collisionDetectionMode = CollisionDetectionMode.Continuous;
         }
@@ -90,20 +93,25 @@ namespace Assets.NinjaGame.Scripts
 
         private void OnCollisionEnter(Collision collision)
         {
+            emission.enabled = true;
             var collisionForce = GetCollisionForce(collision);
-            
-            if (collisionForce > 0)
-                CollisionWithForce(collisionForce);
-        }
-
-        void OnCollisionStay(Collision collision)
-        {
             foreach (ContactPoint contact in collision.contacts)
             {
                 print(contact.thisCollider.name + " hit " + contact.otherCollider.name);
-                Debug.DrawRay(contact.point, contact.normal, Color.white);
+            }
+
+            if (collisionForce > 0)
+            {
+                //switch physics of and set velcoitys to zero
+                Body.isKinematic = true;
+                Body.velocity = Vector3.zero;
+                Body.AddTorque(0f, 0f, 3f);
+
+                CollisionWithForce(collisionForce);
             }
         }
+
+
 
         abstract public void CollisionWithForce(float force);
 

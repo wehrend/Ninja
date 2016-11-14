@@ -72,8 +72,8 @@ namespace Assets.NinjaGame.Scripts
             Colors.Add(new Probability(Color.white, 60));
             Colors.Add(new Probability(Color.red, 20));
             Colors.Add(new Probability(Color.green, 20));
-            objectPool.Add(new Probability("SomeFruit", fruitsProbability));
-            objectPool.Add(new Probability("Bomb", bombsProbability));
+            objectPool.Add(new Probability("SomePlasmaFruit", fruitsProbability));
+            objectPool.Add(new Probability("SomePlasmaFruit", bombsProbability));
             gapsProbability = 100 - (fruitsProbability + bombsProbability);
             //Debug.LogWarning(objectPool);
             gamePlaying = true;

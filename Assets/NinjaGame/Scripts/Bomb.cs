@@ -16,6 +16,9 @@ namespace Assets.NinjaGame.Scripts
         public override void CollisionWithForce(float collisionForce)
         {
             int damage = (int)collisionForce / 100 * damagePoints;
+   
+
+            particleSystem.Play();
             Destroy(Body.gameObject, 0.5f);
             // if (gameController)
             //     gameController.issueDamage(damage);

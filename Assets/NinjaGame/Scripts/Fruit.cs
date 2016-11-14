@@ -11,6 +11,7 @@ namespace Assets.NinjaGame.Scripts
 
         public override void CollisionWithForce( float collisionForce)
         {
+            particleSystem.Play();
             Destroy(Body.gameObject, 0.5f);
             /* if (gameController)
              {

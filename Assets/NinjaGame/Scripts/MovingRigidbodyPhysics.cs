@@ -8,6 +8,7 @@ namespace Assets.NinjaGame.Scripts
 
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(Mesh))]
+    [RequireComponent(typeof(ParticleSystem))]
     public abstract class MovingRigidbodyPhysics : MonoBehaviour
     {
 
@@ -23,9 +24,6 @@ namespace Assets.NinjaGame.Scripts
         public float distance;
         public Vector3 startPoint;
         public Color32 color = Color.white;
-        public bool particleEffects= false;
-        protected ParticleSystem particleSystem;
-        protected ParticleSystem.EmissionModule emission;
         public float hoverStrenght = 140f;
         public float hoverHeight = 2.5f;
         public float velocity = 5.0f;//Random.Range(1,20);
@@ -41,9 +39,6 @@ namespace Assets.NinjaGame.Scripts
         {
             Body = GetComponent<Rigidbody>();
             meshrenderer = GetComponent<MeshRenderer>();
-            particleSystem = GetComponent<ParticleSystem>();
-            emission = particleSystem.emission;
-            emission.enabled = false;
             ninjaControl = FindObjectOfType(typeof(NinjaGameEventController)) as NinjaGameEventController;
             Body.collisionDetectionMode = CollisionDetectionMode.Continuous;
         }
@@ -51,6 +46,7 @@ namespace Assets.NinjaGame.Scripts
         void Start()
         {
             meshrenderer.material.color = color;
+
             //Todo: Get rid of this logic, currently necessary to let objects fly
             //by beyond the subject 
             target = -transform.position;
@@ -93,7 +89,6 @@ namespace Assets.NinjaGame.Scripts
 
         private void OnCollisionEnter(Collision collision)
         {
-            emission.enabled = true;
             var collisionForce = GetCollisionForce(collision);
             foreach (ContactPoint contact in collision.contacts)
             {

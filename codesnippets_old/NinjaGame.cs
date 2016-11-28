@@ -17,9 +17,8 @@ namespace Assets.NinjaGame.Scripts
     [RequireComponent(typeof(NinjaGameEventController))]
     public class NinjaGame : MonoBehaviour
     {
-       
-        public List<Trial> trialsList=new List<Trial>();
-        TrialsList displayTrialsList;
+
+        public static TrialsList trialsList;
         public int fruitsProbability=50;
         public int bombsProbability=50;
         public int gapsProbability;
@@ -52,7 +51,6 @@ namespace Assets.NinjaGame.Scripts
 
         void Start()
         {
-            //should be ScriptableObject.CreateInstance but doesnt work 
             scores = new GameInfo();
             #region Game Event logic
             scores.health = startHealth;
@@ -69,22 +67,18 @@ namespace Assets.NinjaGame.Scripts
             ninjaControl.GameOver += new NinjaGameEventHandler(GameOver);
 
             #endregion
-            trialsList.Add(new Trial("Distract", Color.red, 0.3f, 4.0f, 3.8f, 1));
-            trialsList.Add(new Trial("Target", Color.green, 0.4f, 5.0f, 8.0f, 1));
-            trialsList.Add(new Trial("Distract", Color.red, 0.3f, 4.0f, 9.0f, 1));
-            trialsList.Add(new Trial("Target", Color.green, 0.4f, 5.0f, 8.0f, 2));
-            trialsList.Add(new Trial("Distract", Color.red, 0.5f, 3.0f, 6.5f, 2));
-            trialsList.Add(new Trial("Target", Color.green, 0.6f, 2.5f, 8.0f, 1));
-            trialsList.Add(new Trial("Distract", Color.red, 0.4f, 5.0f, 5.0f, 1));
-            trialsList.Add(new Trial("Other", Color.blue, 0.6f, 2.5f, 8.0f, 1));
-            trialsList.Add(new Trial("Other", Color.black, 0.4f, 5.0f, 5.0f, 1));
-            displayTrialsList = new TrialsList(trialsList);
+            trialsList.Add(new TrialsList.Trial("Distract", Color.red, 0.3f, 4.0f, 3.8f, 1));
+            trialsList.Add(new TrialsList.Trial("Target", Color.green, 0.4f, 5.0f, 8.0f, 1));
+            trialsList.Add(new TrialsList.Trial("Distract", Color.red, 0.3f, 4.0f, 9.0f, 1));
+            trialsList.Add(new TrialsList.Trial("Target", Color.green, 0.4f, 5.0f, 8.0f, 2));
+            trialsList.Add(new TrialsList.Trial("Distract", Color.red, 0.5f, 3.0f, 6.5f, 2));
+            trialsList.Add(new TrialsList.Trial("Target", Color.green, 0.6f, 2.5f, 8.0f, 1));
             //Debug.LogWarning(objectPool);
             gamePlaying = true;
             
            // prefabObjects = 
             velocity = velocityAvg+ Random.Range(-velocityRange/2, velocityRange/2);
-            
+
             StartCoroutine(FireDelay());
         }
         #region Game Event logic
@@ -150,10 +144,8 @@ namespace Assets.NinjaGame.Scripts
 
             foreach ( var spawner in spawnerInstances)
             {
-                 
-                var selected = Trial.PickAndDelete(trialsList);
-                displayTrialsList = new TrialsList(trialsList);
-                Debug.LogWarning(selected.trial +' '+ selected.color +' '+selected.distance);
+                
+                var selected = TrialsList.Trial.PickAndDelete(trialsList);
                 spawner.position= (position - center).normalized * selected.distance + center;
                 float currentAngle = Random.Range(-angle / 2, angle / 2)-angleAlignment;
                 //Debug.Log("Transform position:" + spawner.position + "Angle:" +(currentAngle-angleAlignment));
@@ -162,7 +154,7 @@ namespace Assets.NinjaGame.Scripts
                 target = new Vector3(-startposition.x, startposition.y, -startposition.z); 
                 //Debug.Log("TransformPosition:" + startposition + " Target.Position " + target+ " from angle "+ currentAngle- angleAlignment );
                 // wait some small time
-                prefab = Resources.Load("BasicPrefab", typeof(MovingRigidbodyPhysics)) as MovingRigidbodyPhysics;
+                prefab = Resources.Load("SomeFruit", typeof(MovingRigidbodyPhysics)) as MovingRigidbodyPhysics;
                 prefab.distance = selected.distance;
                 prefab.velocity = selected.velocity; //velocity;
                 prefab.startPoint = spawner.position;
@@ -177,6 +169,8 @@ namespace Assets.NinjaGame.Scripts
         }
 
         #endregion
+
+
 
         [Serializable]
         public class GameInfo : ScriptableObject

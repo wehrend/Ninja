@@ -18,8 +18,7 @@ namespace Assets.NinjaGame.Scripts
     public class NinjaGame : MonoBehaviour
     {
        
-        public List<Trial> trialsList=new List<Trial>();
-        TrialsList displayTrialsList;
+        List<Trial> trialsList=new List<Trial>();
         public int fruitsProbability=50;
         public int bombsProbability=50;
         public int gapsProbability;
@@ -52,7 +51,6 @@ namespace Assets.NinjaGame.Scripts
 
         void Start()
         {
-            //should be ScriptableObject.CreateInstance but doesnt work 
             scores = new GameInfo();
             #region Game Event logic
             scores.health = startHealth;
@@ -76,9 +74,7 @@ namespace Assets.NinjaGame.Scripts
             trialsList.Add(new Trial("Distract", Color.red, 0.5f, 3.0f, 6.5f, 2));
             trialsList.Add(new Trial("Target", Color.green, 0.6f, 2.5f, 8.0f, 1));
             trialsList.Add(new Trial("Distract", Color.red, 0.4f, 5.0f, 5.0f, 1));
-            trialsList.Add(new Trial("Other", Color.blue, 0.6f, 2.5f, 8.0f, 1));
-            trialsList.Add(new Trial("Other", Color.black, 0.4f, 5.0f, 5.0f, 1));
-            displayTrialsList = new TrialsList(trialsList);
+
             //Debug.LogWarning(objectPool);
             gamePlaying = true;
             
@@ -152,8 +148,7 @@ namespace Assets.NinjaGame.Scripts
             {
                  
                 var selected = Trial.PickAndDelete(trialsList);
-                displayTrialsList = new TrialsList(trialsList);
-                Debug.LogWarning(selected.trial +' '+ selected.color +' '+selected.distance);
+
                 spawner.position= (position - center).normalized * selected.distance + center;
                 float currentAngle = Random.Range(-angle / 2, angle / 2)-angleAlignment;
                 //Debug.Log("Transform position:" + spawner.position + "Angle:" +(currentAngle-angleAlignment));
@@ -162,7 +157,7 @@ namespace Assets.NinjaGame.Scripts
                 target = new Vector3(-startposition.x, startposition.y, -startposition.z); 
                 //Debug.Log("TransformPosition:" + startposition + " Target.Position " + target+ " from angle "+ currentAngle- angleAlignment );
                 // wait some small time
-                prefab = Resources.Load("BasicPrefab", typeof(MovingRigidbodyPhysics)) as MovingRigidbodyPhysics;
+                prefab = Resources.Load("SomeFruit", typeof(MovingRigidbodyPhysics)) as MovingRigidbodyPhysics;
                 prefab.distance = selected.distance;
                 prefab.velocity = selected.velocity; //velocity;
                 prefab.startPoint = spawner.position;

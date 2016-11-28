@@ -11,6 +11,7 @@ public class NinjaGameEditor : Editor {
     SerializedProperty velocitySP;
     SerializedProperty velocityRangeSP;
     SerializedProperty angleSP;
+    SerializedProperty trialsListSP;
     int max_angle;
 
 
@@ -21,7 +22,21 @@ public class NinjaGameEditor : Editor {
         // velocitySP = serializedObject.FindProperty("velocityAvg");
         // velocityRangeSP = serializedObject.FindProperty("velocityRange");
         angleSP = serializedObject.FindProperty("angle");
+        trialsListSP = serializedObject.FindProperty("displayTrialsList");
     }
+
+  /*  public override void OnInspectorGUI()
+    {
+        serializedObject.Update();
+        Debug.LogWarning("Size:"+trialsListSP.arraySize);
+        for (int i = 0; i < trialsListSP.arraySize; i++)
+        {
+            Debug.LogWarning(trialsListSP.GetArrayElementAtIndex(i));
+
+        }
+        serializedObject.ApplyModifiedProperties();
+    }*/
+
 
     void OnSceneGUI()
     {

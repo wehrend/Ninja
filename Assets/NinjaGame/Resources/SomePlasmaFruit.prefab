@@ -41,7 +41,7 @@ Transform:
   m_GameObject: {fileID: 1000011436982980}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -9.735066, y: 4.1558475, z: 7.650001}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
@@ -109,14 +109,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distance: 5
-  startPoint: {x: 4.04103, y: 2, z: 2.8295596}
+  startPoint: {x: 0.6093469, y: 2, z: 4.962731}
   color:
     serializedVersion: 2
-    rgba: 4294967295
-  particleEffects: 0
+    rgba: 4278190335
   hoverStrenght: 160
   hoverHeight: 1.9
-  velocity: 5.3781815
+  velocity: 5
   target: {x: 0, y: 0, z: 0}
   layermask: 256
   breakForce: 50

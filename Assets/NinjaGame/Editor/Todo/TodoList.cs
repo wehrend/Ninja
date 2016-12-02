@@ -190,14 +190,14 @@ public class TodoList : EditorWindow
     private void SaveListData()
     {
         EditorUtility.SetDirty(_listData);
-        EditorApplication.SaveAssets();
+        AssetDatabase.SaveAssets();
         AssetDatabase.SaveAssets();
     }
 
 	void OnDestroy()
 	{
 		EditorUtility.SetDirty(_listData);
-		EditorApplication.SaveAssets();
+		AssetDatabase.SaveAssets();
 		AssetDatabase.SaveAssets();
 	}	
 }

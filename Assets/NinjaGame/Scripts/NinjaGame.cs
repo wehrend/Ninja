@@ -17,12 +17,8 @@ namespace Assets.NinjaGame.Scripts
     [RequireComponent(typeof(NinjaGameEventController))]
     public class NinjaGame : MonoBehaviour
     {
-       
-        public List<Trial> trialsList=new List<Trial>();
-        TrialsList displayTrialsList;
-        public int fruitsProbability=50;
-        public int bombsProbability=50;
-        public int gapsProbability;
+
+        public List<Trial> trialsList;
          
         public float pausetime = 5;
         public int angle = 90;
@@ -69,16 +65,12 @@ namespace Assets.NinjaGame.Scripts
             ninjaControl.GameOver += new NinjaGameEventHandler(GameOver);
 
             #endregion
-            trialsList.Add(new Trial("Distract", Color.red, 0.3f, 4.0f, 3.8f, 1));
-            trialsList.Add(new Trial("Target", Color.green, 0.4f, 5.0f, 8.0f, 1));
-            trialsList.Add(new Trial("Distract", Color.red, 0.3f, 4.0f, 9.0f, 1));
-            trialsList.Add(new Trial("Target", Color.green, 0.4f, 5.0f, 8.0f, 2));
-            trialsList.Add(new Trial("Distract", Color.red, 0.5f, 3.0f, 6.5f, 2));
-            trialsList.Add(new Trial("Target", Color.green, 0.6f, 2.5f, 8.0f, 1));
-            trialsList.Add(new Trial("Distract", Color.red, 0.4f, 5.0f, 5.0f, 1));
-            trialsList.Add(new Trial("Other", Color.blue, 0.6f, 2.5f, 8.0f, 1));
-            trialsList.Add(new Trial("Other", Color.black, 0.4f, 5.0f, 5.0f, 1));
-            displayTrialsList = new TrialsList(trialsList);
+            //build test trials
+            //code has to be rewritten
+            TrialsList trials= new TrialsList();
+            var testTrial = trials.buildTestTrial();
+            trialsList=trials.GenerateTrialsList(testTrial);
+
             //Debug.LogWarning(objectPool);
             gamePlaying = true;
             
@@ -152,7 +144,6 @@ namespace Assets.NinjaGame.Scripts
             {
                  
                 var selected = Trial.PickAndDelete(trialsList);
-                displayTrialsList = new TrialsList(trialsList);
                 Debug.LogWarning(selected.trial +' '+ selected.color +' '+selected.distance);
                 spawner.position= (position - center).normalized * selected.distance + center;
                 float currentAngle = Random.Range(-angle / 2, angle / 2)-angleAlignment;

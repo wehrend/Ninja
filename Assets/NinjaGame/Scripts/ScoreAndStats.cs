@@ -37,8 +37,8 @@ namespace Assets.NinjaGame.Scripts
 
         void Update()
         {
-            scoresText.text = "Score:\n" + NinjaGame.scores.totalscore.ToString();
-            healthBar.size = (float) NinjaGame.scores.health / 1000f;
+            scoresText.text = "Score:\n" + NinjaGame.game.totalscore.ToString();
+            healthBar.size = (float) NinjaGame.game.health / 1000f;
         }
 
 

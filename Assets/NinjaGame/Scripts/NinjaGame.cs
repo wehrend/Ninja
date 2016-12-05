@@ -42,18 +42,20 @@ namespace Assets.NinjaGame.Scripts
         public int startHealth = 1000;
         public int startScore = 0;
         //Next todo: using singletones here 
-        public static GameInfo scores;
+        public static GameInfo game;
         public NinjaGameEventController ninjaControl;
         //private LSLMarkerStream eventMarker;
 
+
         void Start()
         {
-            //should be ScriptableObject.CreateInstance but doesnt work 
-            scores = new GameInfo();
-            #region Game Event logic
-            scores.health = startHealth;
-            scores.totalscore = startScore;
 
+            #region Game Event logic
+            if (game)
+            {
+                game.health = startHealth;
+                game.totalscore = startScore;
+            }
             if (ninjaControl == null)
             {
                 Debug.LogError("The NinjaGameController needs the NinjaGameEventController script to be attached to it");
@@ -65,27 +67,22 @@ namespace Assets.NinjaGame.Scripts
             ninjaControl.GameOver += new NinjaGameEventHandler(GameOver);
 
             #endregion
-            //build test trials
-            //code has to be rewritten
-            TrialsList trials= new TrialsList();
-            var testTrial = trials.buildTestTrial();
-            trialsList=trials.GenerateTrialsList(testTrial);
-
             //Debug.LogWarning(objectPool);
             gamePlaying = true;
             
            // prefabObjects = 
             velocity = velocityAvg+ Random.Range(-velocityRange/2, velocityRange/2);
-            
-            StartCoroutine(FireDelay());
+            if(game.trialsList!=null)
+                StartCoroutine(FireDelay());
+       
         }
         #region Game Event logic
 
         void fruitCollision(object sender, NinjaGameEventArgs eve)
         {
-            scores.score = eve.score;
-            scores.totalscore += scores.score;
-            eve.totalscore = scores.totalscore;
+            game.score = eve.score;
+            game.totalscore += game.score;
+            eve.totalscore = game.totalscore;
 
             //eventMarker.Write("Event: Fruit Collision");
 
@@ -97,9 +94,9 @@ namespace Assets.NinjaGame.Scripts
 
         void bombCollision(object sender, NinjaGameEventArgs eve)
         {
-            scores.damage = eve.damage;
-            scores.health -= scores.damage;
-            eve.health = scores.health;
+            game.damage = eve.damage;
+            game.health -= game.damage;
+            eve.health = game.health;
             //eventMarker.Write("Event: Bomb Collision");
             Debug.LogWarning("health:" + eve.health);
            
@@ -143,7 +140,7 @@ namespace Assets.NinjaGame.Scripts
             foreach ( var spawner in spawnerInstances)
             {
                  
-                var selected = Trial.PickAndDelete(trialsList);
+                var selected = Trial.PickAndDelete(game.trialsList);
                 Debug.LogWarning(selected.trial +' '+ selected.color +' '+selected.distance);
                 spawner.position= (position - center).normalized * selected.distance + center;
                 float currentAngle = Random.Range(-angle / 2, angle / 2)-angleAlignment;
@@ -176,6 +173,7 @@ namespace Assets.NinjaGame.Scripts
             public int totalscore;
             public int damage;
             public int health;
+            public List<Trial> trialsList;
         }
     }
 }

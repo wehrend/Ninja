@@ -48,10 +48,10 @@ namespace Assets.NinjaGame.Scripts
         //needs to  be rewritten later on
 
         //private List<Trial> generatedTrails;
-        public  List<Trial> testTrial = new List<Trial>();
+       // public  List<Trial> testTrial = new List<Trial>();
         public List<Trial> listOfTrials = new List<Trial>();
 
-        public List<Trial> buildTestTrial()
+        /*public List<Trial> buildTestTrial()
         {
             
             testTrial.Add(new Trial(50,"Distract", Color.red, 0.3f, 4.0f, 3.8f, 1));
@@ -64,8 +64,9 @@ namespace Assets.NinjaGame.Scripts
             testTrial.Add(new Trial(3,"Other", Color.blue, 0.6f, 2.5f, 8.0f, 1));
             testTrial.Add(new Trial(3,"Other2", Color.black, 0.4f, 5.0f, 5.0f, 1));
             return testTrial;
-        }
+        }*/
 
+ 
 
         public List<Trial> GenerateTrialsList( List<Trial> exemplaricBaseTrials )
         {

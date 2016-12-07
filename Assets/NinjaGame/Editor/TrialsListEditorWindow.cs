@@ -16,6 +16,7 @@ namespace Assets.NinjaGame.Scripts
         private int curIndex;
         public string dataDirectory;
 
+        int angle;
         /// <summary>
         /// 
         /// </summary>
@@ -25,6 +26,7 @@ namespace Assets.NinjaGame.Scripts
         Color[] color;
         float[] velocity;
         float[] distance;
+        float[] scale;
         int[] numberOfParallelSpawns;
         string[] trialsnameToSelect;
 
@@ -76,23 +78,30 @@ namespace Assets.NinjaGame.Scripts
 
         private void ReinitTrials()
         {
+            angle = trialsConfig.maximumAngle;
+
             sizeOfTrials = trialsConfig.listOfTrials.Count;
             trialsname = new string[sizeOfTrials];
             instances = new int[sizeOfTrials];
             color = new Color[sizeOfTrials];
             velocity = new float[sizeOfTrials];
             distance = new float[sizeOfTrials];
+            scale = new float[sizeOfTrials];
             numberOfParallelSpawns = new int[sizeOfTrials];
             trialsnameToSelect = new string[sizeOfTrials];
 
             for (int i = 0; i < sizeOfTrials; i++)
             {
-                trialsname[i] = trialsConfig.listOfTrials[i].trial;
+                trialsConfig.maximumAngle = angle;
                 trialsnameToSelect[i] = trialsConfig.listOfTrials[i].trial;
                 instances[i] = trialsConfig.listOfTrials[i].instances;
+                trialsname[i] = trialsConfig.listOfTrials[i].trial;
                 color[i] = trialsConfig.listOfTrials[i].color;
+                scale[i] = trialsConfig.listOfTrials[i].scale;
                 velocity[i] = trialsConfig.listOfTrials[i].velocity;
                 distance[i] = trialsConfig.listOfTrials[i].distance;
+                numberOfParallelSpawns[i] = trialsConfig.listOfTrials[i].numberOfSpawners;
+
             }
         }
 
@@ -100,10 +109,12 @@ namespace Assets.NinjaGame.Scripts
         {
             for (int i = 0; i < sizeOfTrials; i++)
             {
-                trialsConfig.listOfTrials[i].trial = trialsname[i];
+               
                 trialsConfig.listOfTrials[i].trial = trialsnameToSelect[i];
+                trialsConfig.listOfTrials[i].trial = trialsname[i];
                 trialsConfig.listOfTrials[i].instances = instances[i];
                 trialsConfig.listOfTrials[i].color = color[i];
+                trialsConfig.listOfTrials[i].scale = scale[i];
                 trialsConfig.listOfTrials[i].velocity = velocity[i];
                 trialsConfig.listOfTrials[i].distance = distance[i];
             }
@@ -116,12 +127,14 @@ namespace Assets.NinjaGame.Scripts
             Repaint();
         }
 
-        /*public void OnSceneGUI()
+        public void OnSceneGUI()
         {
+            //set Application game object active 
+            
             Handles.color = Color.white;
             //Draw the spawner Arc
-            Handles.DrawWireArc(Vector3.zero, Vector3.up, Vector3.forward, 360 / 2, distance[currentTrialIndex]);
-            Handles.DrawWireArc(Vector3.zero, Vector3.up, Vector3.forward, 360 / 2, distance[currentTrialIndex]);
+            Handles.DrawWireArc(Vector3.zero, Vector3.up, Vector3.forward, angle / 2, distance[curIndex]);
+            Handles.DrawWireArc(Vector3.zero, Vector3.up, Vector3.forward, angle / 2, distance[curIndex]);
             
             var prefab = Resources.Load("BasicPrefab", typeof(MovingRigidbodyPhysics)) as MovingRigidbodyPhysics;
             prefab.name = trialsname[curIndex];
@@ -130,16 +143,17 @@ namespace Assets.NinjaGame.Scripts
             prefab.distance = distance[curIndex];//velocity;
             //prefab.transform.localScale = scale[currentTrialIndex] * Vector3.one
 
-        }*/
+        }
 
 
         public void OnGUI() {
+            EditorGUILayout.IntField("Maximum Angle",angle);
             EditorGUILayout.LabelField("Size of Trials:\t"+sizeOfTrials);
             EditorGUILayout.LabelField("Select trial to edit:");
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("+"))
             {
-                trialsConfig.listOfTrials.Add(new Trial(1, "New Trial", Color.white, 0.5f, 5.0f, 10.0f, 1));
+                trialsConfig.listOfTrials.Add(new Trial( "New Trial",1, Color.white, 0.5f, 5.0f, 10.0f, 1));
                 ReinitTrials();
             }
             curIndex = EditorGUILayout.Popup(curIndex, trialsname);
@@ -152,7 +166,7 @@ namespace Assets.NinjaGame.Scripts
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginVertical();
             trialsname[curIndex]= EditorGUILayout.TextField("Trial",trialsname[curIndex]);
-            instances[curIndex] = EditorGUILayout.IntField("Instance",instances[curIndex]);
+            instances[curIndex] = EditorGUILayout.IntField("Instance", instances[curIndex]);
             color[curIndex] = EditorGUILayout.ColorField("Color",color[curIndex]);
             velocity[curIndex] = EditorGUILayout.FloatField("Velocity",velocity[curIndex]);
             distance[curIndex] = EditorGUILayout.FloatField("Distance",distance[curIndex]);
@@ -177,13 +191,15 @@ namespace Assets.NinjaGame.Scripts
                 if (NinjaGame.game != null)
                 {
                     NinjaGame.game = new NinjaGame.GameInfo();
-                    NinjaGame.game.trialsList = trialsConfig.GenerateTrialsList(trialsConfig.listOfTrials);
+                    NinjaGame.game.setMaximumAngle(angle);
+                    NinjaGame.game.setListOfTrials(trialsConfig.GenerateTrialsList(trialsConfig.listOfTrials));
                 }
                 else
                 {
                     Debug.LogError("Static GameInfo instance not found, create one!");
                     NinjaGame.game = new NinjaGame.GameInfo();
-                    NinjaGame.game.trialsList = trialsConfig.GenerateTrialsList(trialsConfig.listOfTrials);
+                    NinjaGame.game.setMaximumAngle(angle);
+                    NinjaGame.game.setListOfTrials(trialsConfig.GenerateTrialsList(trialsConfig.listOfTrials));
                 }
             }
             if (GUILayout.Button("Save JSON Config As"))

@@ -112,21 +112,19 @@ namespace Assets.NinjaGame.Scripts
 
         private float GetCollisionForce(Collision collision)
         {
-                if ((collision.collider.name.Contains("Hand") && collision.collider.GetComponent<Sword>().CollisionForce() > breakForce))
-                {
-                    return collision.collider.GetComponent<Sword>().CollisionForce() * 1.2f;
-                }
-  
 
-                else if ((collision.collider.name.Contains("Paddle") && collision.collider.GetComponent<Paddle>().CollisionForce() > breakForce))
-                {
-                    return collision.collider.GetComponent<Paddle>().CollisionForce() * 1.2f;
-                }
-                else
-                {
-                    Debug.LogWarning("Controller or Hands collision: " + collision.collider.name);
-                    return 100 * 1.2f;
-                }
+            if ((collision.collider.name.Contains("Paddle") && collision.collider.GetComponent<Paddle>().CollisionForce() > breakForce))
+            {
+                return collision.collider.GetComponent<Paddle>().CollisionForce() * 1.2f;
+            }
+
+            if ((collision.collider.name.Contains("BasicPrefab")))
+            {
+                return 0;
+            }else {
+                Debug.LogWarning("Controller or Hands collision: " + collision.collider.name);
+                return 100 * 1.2f;
+            }
             /*if ((collision.collider.name.Contains("ControllerCollider") && collision.collider.GetComponent<HandCursorController>().CollisionForce() > breakForce))
             {
                return collision.collider.GetComponent<HandCursorController>().CollisionForce()  1.2f;

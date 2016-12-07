@@ -21,7 +21,6 @@ namespace Assets.NinjaGame.Scripts
         public List<Trial> trialsList;
          
         public float pausetime = 5;
-        public int angle = 90;
         public Vector3 objectScale = new Vector3(0.5f,0.5f,0.5f);
         public int NumberOfSpawnerInstances = 1;
         public float velocityAvg = 5.0f;
@@ -46,10 +45,9 @@ namespace Assets.NinjaGame.Scripts
         public NinjaGameEventController ninjaControl;
         //private LSLMarkerStream eventMarker;
 
-
         void Start()
         {
-
+            
             #region Game Event logic
             game = new GameInfo();
             if (game)
@@ -146,7 +144,7 @@ namespace Assets.NinjaGame.Scripts
                     var selected = Trial.PickAndDelete(game.trialsList);
                     Debug.Log("Trials-Countdown:" + game.trialsList.Count+" "+selected.trial + ' ' + selected.color + ' ' + selected.distance);
                     spawner.position = (position - center).normalized * selected.distance + center;
-                    float currentAngle = Random.Range(-angle / 2, angle / 2) - angleAlignment;
+                    float currentAngle = Random.Range(-game.maximumAngle / 2, game.maximumAngle / 2) - angleAlignment;
                     //Debug.Log("Transform position:" + spawner.position + "Angle:" +(currentAngle-angleAlignment));
                     spawner.RotateAround(center, Vector3.up, currentAngle);
                     var startposition = spawner.position;
@@ -177,7 +175,12 @@ namespace Assets.NinjaGame.Scripts
             public int damage;
             public int health;
             public List<Trial> trialsList;
+            public float maximumAngle;
 
+            public void setMaximumAngle(int angle)
+            {
+                game.maximumAngle= angle;
+            }
             public void setListOfTrials(List<Trial> trials)
             {
                 game.trialsList = trials;

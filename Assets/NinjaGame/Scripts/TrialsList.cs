@@ -9,6 +9,7 @@ namespace Assets.NinjaGame.Scripts
     [Serializable]
     public class Trial
     {
+        
         public int instances;
         public string trial;
         //public object prefab;
@@ -19,11 +20,11 @@ namespace Assets.NinjaGame.Scripts
         public int numberOfSpawners;
 
         //Constructor for test purposes
-        public Trial(int i, string t, Color c, float s, float v, float d, int n)
+        public Trial( string t, int i, Color c, float s, float v, float d, int n)
         {
             //Trial Target or distract
-            this.instances = i;
             this.trial = t;
+            this.instances = i;
             //this.prefab = p;
             this.color = c;
             this.scale = s;
@@ -45,27 +46,8 @@ namespace Assets.NinjaGame.Scripts
 
     public class TrialsList : ScriptableObject
     {
-        //needs to  be rewritten later on
-
-        //private List<Trial> generatedTrails;
-       // public  List<Trial> testTrial = new List<Trial>();
+        public int maximumAngle;
         public List<Trial> listOfTrials = new List<Trial>();
-
-        /*public List<Trial> buildTestTrial()
-        {
-            
-            testTrial.Add(new Trial(50,"Distract", Color.red, 0.3f, 4.0f, 3.8f, 1));
-            testTrial.Add(new Trial(50,"Target", Color.green, 0.4f, 5.0f, 8.0f, 1));
-            testTrial.Add(new Trial(5,"Distract2", Color.red, 0.3f, 4.0f, 9.0f, 1));
-            testTrial.Add(new Trial(5,"Target2", Color.green, 0.4f, 5.0f, 8.0f, 2));
-            testTrial.Add(new Trial(5,"Distract3", Color.red, 0.5f, 3.0f, 6.5f, 2));
-            testTrial.Add(new Trial(5,"Target3", Color.green, 0.6f, 2.5f, 8.0f, 1));
-            testTrial.Add(new Trial(3,"Distract", Color.red, 0.4f, 5.0f, 5.0f, 1));
-            testTrial.Add(new Trial(3,"Other", Color.blue, 0.6f, 2.5f, 8.0f, 1));
-            testTrial.Add(new Trial(3,"Other2", Color.black, 0.4f, 5.0f, 5.0f, 1));
-            return testTrial;
-        }*/
-
  
 
         public List<Trial> GenerateTrialsList( List<Trial> exemplaricBaseTrials )

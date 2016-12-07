@@ -51,6 +51,7 @@ namespace Assets.NinjaGame.Scripts
         {
 
             #region Game Event logic
+            game = new GameInfo();
             if (game)
             {
                 game.health = startHealth;
@@ -72,8 +73,8 @@ namespace Assets.NinjaGame.Scripts
             
            // prefabObjects = 
             velocity = velocityAvg+ Random.Range(-velocityRange/2, velocityRange/2);
-            if(game.trialsList!=null)
-                StartCoroutine(FireDelay());
+            StartCoroutine(FireDelay());
+
        
         }
         #region Game Event logic
@@ -139,25 +140,27 @@ namespace Assets.NinjaGame.Scripts
 
             foreach ( var spawner in spawnerInstances)
             {
-                 
-                var selected = Trial.PickAndDelete(game.trialsList);
-                Debug.LogWarning(selected.trial +' '+ selected.color +' '+selected.distance);
-                spawner.position= (position - center).normalized * selected.distance + center;
-                float currentAngle = Random.Range(-angle / 2, angle / 2)-angleAlignment;
-                //Debug.Log("Transform position:" + spawner.position + "Angle:" +(currentAngle-angleAlignment));
-                spawner.RotateAround(center, Vector3.up, currentAngle);
-                var startposition = spawner.position; 
-                target = new Vector3(-startposition.x, startposition.y, -startposition.z); 
-                //Debug.Log("TransformPosition:" + startposition + " Target.Position " + target+ " from angle "+ currentAngle- angleAlignment );
-                // wait some small time
-                prefab = Resources.Load("BasicPrefab", typeof(MovingRigidbodyPhysics)) as MovingRigidbodyPhysics;
-                prefab.distance = selected.distance;
-                prefab.velocity = selected.velocity; //velocity;
-                prefab.startPoint = spawner.position;
-                prefab.color = selected.color;
-                prefab.transform.localScale = selected.scale * Vector3.one;
-                Instantiate(prefab, spawner.position, Quaternion.identity);
-        
+                if (game.trialsList != null)
+                {
+                   
+                    var selected = Trial.PickAndDelete(game.trialsList);
+                    Debug.Log("Trials-Countdown:" + game.trialsList.Count+" "+selected.trial + ' ' + selected.color + ' ' + selected.distance);
+                    spawner.position = (position - center).normalized * selected.distance + center;
+                    float currentAngle = Random.Range(-angle / 2, angle / 2) - angleAlignment;
+                    //Debug.Log("Transform position:" + spawner.position + "Angle:" +(currentAngle-angleAlignment));
+                    spawner.RotateAround(center, Vector3.up, currentAngle);
+                    var startposition = spawner.position;
+                    target = new Vector3(-startposition.x, startposition.y, -startposition.z);
+                    //Debug.Log("TransformPosition:" + startposition + " Target.Position " + target+ " from angle "+ currentAngle- angleAlignment );
+                    // wait some small time
+                    prefab = Resources.Load("BasicPrefab", typeof(MovingRigidbodyPhysics)) as MovingRigidbodyPhysics;
+                    prefab.distance = selected.distance;
+                    prefab.velocity = selected.velocity; //velocity;
+                    prefab.startPoint = spawner.position;
+                    prefab.color = selected.color;
+                    prefab.transform.localScale = selected.scale * Vector3.one;
+                    Instantiate(prefab, spawner.position, Quaternion.identity);
+                }
                 yield return new WaitForFixedUpdate();
                 //Debug.Log("Object " + prefab.transform.name + " instantiated");
             }
@@ -174,6 +177,11 @@ namespace Assets.NinjaGame.Scripts
             public int damage;
             public int health;
             public List<Trial> trialsList;
+
+            public void setListOfTrials(List<Trial> trials)
+            {
+                game.trialsList = trials;
+            }
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Assets.NinjaGame.Scripts
     {
         SerializedObject so;
         public TrialsList trialsConfig;
-        private int currentTrialIndex;
+        private int curIndex;
         public string dataDirectory;
 
         /// <summary>
@@ -63,12 +63,14 @@ namespace Assets.NinjaGame.Scripts
             ReinitTrials();
             if (NinjaGame.game != null)
             {
-                NinjaGame.game = new NinjaGame.GameInfo();
-                NinjaGame.game.trialsList = trialsConfig.GenerateTrialsList(trialsConfig.listOfTrials);
+                NinjaGame.game.setListOfTrials(trialsConfig.GenerateTrialsList(trialsConfig.listOfTrials));
+                Debug.Log("Assigned Trials-List with size " + NinjaGame.game.trialsList.Count);
             } else {
-                Debug.LogError("Static GameInfo instance not found, create one!");
+                Debug.LogWarning("Static GameInfo instance not found, create one!");
                 NinjaGame.game = new NinjaGame.GameInfo();
-                NinjaGame.game.trialsList = trialsConfig.GenerateTrialsList(trialsConfig.listOfTrials);
+                NinjaGame.game.setListOfTrials(trialsConfig.GenerateTrialsList(trialsConfig.listOfTrials));
+                Debug.Log("Assigned Trials-List with size "+ NinjaGame.game.trialsList.Count );
+            
             }
         }
 
@@ -114,6 +116,21 @@ namespace Assets.NinjaGame.Scripts
             Repaint();
         }
 
+        /*public void OnSceneGUI()
+        {
+            Handles.color = Color.white;
+            //Draw the spawner Arc
+            Handles.DrawWireArc(Vector3.zero, Vector3.up, Vector3.forward, 360 / 2, distance[currentTrialIndex]);
+            Handles.DrawWireArc(Vector3.zero, Vector3.up, Vector3.forward, 360 / 2, distance[currentTrialIndex]);
+            
+            var prefab = Resources.Load("BasicPrefab", typeof(MovingRigidbodyPhysics)) as MovingRigidbodyPhysics;
+            prefab.name = trialsname[curIndex];
+            prefab.color = color[curIndex];
+            prefab.velocity = velocity[curIndex];
+            prefab.distance = distance[curIndex];//velocity;
+            //prefab.transform.localScale = scale[currentTrialIndex] * Vector3.one
+
+        }*/
 
 
         public void OnGUI() {
@@ -125,21 +142,21 @@ namespace Assets.NinjaGame.Scripts
                 trialsConfig.listOfTrials.Add(new Trial(1, "New Trial", Color.white, 0.5f, 5.0f, 10.0f, 1));
                 ReinitTrials();
             }
-            currentTrialIndex = EditorGUILayout.Popup(currentTrialIndex, trialsname);
+            curIndex = EditorGUILayout.Popup(curIndex, trialsname);
 
             if (GUILayout.Button("-"))
             {
-                trialsConfig.listOfTrials.RemoveAt(currentTrialIndex);
+                trialsConfig.listOfTrials.RemoveAt(curIndex);
                 ReinitTrials();
             }
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginVertical();
-            trialsname[currentTrialIndex]= EditorGUILayout.TextField("Trial",trialsname[currentTrialIndex]);
-            instances[currentTrialIndex] = EditorGUILayout.IntField("Instance",instances[currentTrialIndex]);
-            color[currentTrialIndex] = EditorGUILayout.ColorField("Color",color[currentTrialIndex]);
-            velocity[currentTrialIndex] = EditorGUILayout.FloatField("Velocity",velocity[currentTrialIndex]);
-            distance[currentTrialIndex] = EditorGUILayout.FloatField("Distance",distance[currentTrialIndex]);
-            numberOfParallelSpawns[currentTrialIndex] =EditorGUILayout.IntField("Parallel Spawns",numberOfParallelSpawns[currentTrialIndex]);
+            trialsname[curIndex]= EditorGUILayout.TextField("Trial",trialsname[curIndex]);
+            instances[curIndex] = EditorGUILayout.IntField("Instance",instances[curIndex]);
+            color[curIndex] = EditorGUILayout.ColorField("Color",color[curIndex]);
+            velocity[curIndex] = EditorGUILayout.FloatField("Velocity",velocity[curIndex]);
+            distance[curIndex] = EditorGUILayout.FloatField("Distance",distance[curIndex]);
+            numberOfParallelSpawns[curIndex] =EditorGUILayout.IntField("Parallel Spawns",numberOfParallelSpawns[curIndex]);
             EditorGUILayout.EndVertical();
 
             EditorGUILayout.Space();
@@ -156,7 +173,19 @@ namespace Assets.NinjaGame.Scripts
             }
             EditorGUILayout.Space();
             if (GUILayout.Button("Apply"))
-                TrialsListEditorWindow.Destroy(this);
+            {
+                if (NinjaGame.game != null)
+                {
+                    NinjaGame.game = new NinjaGame.GameInfo();
+                    NinjaGame.game.trialsList = trialsConfig.GenerateTrialsList(trialsConfig.listOfTrials);
+                }
+                else
+                {
+                    Debug.LogError("Static GameInfo instance not found, create one!");
+                    NinjaGame.game = new NinjaGame.GameInfo();
+                    NinjaGame.game.trialsList = trialsConfig.GenerateTrialsList(trialsConfig.listOfTrials);
+                }
+            }
             if (GUILayout.Button("Save JSON Config As"))
             {
                 SaveTrials();

@@ -962,7 +962,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74caa214452a9764787e17fef257f421, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testTrial: []
   listOfTrials: []
 --- !u!114 &918560878
 MonoBehaviour:
@@ -975,7 +974,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74caa214452a9764787e17fef257f421, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testTrial: []
   listOfTrials: []
 --- !u!4 &918560879
 Transform:
@@ -1082,7 +1080,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 7
   m_Type: 1
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 0.9215687, g: 0.6764706, b: 0.5661765, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30

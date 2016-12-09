@@ -1,12 +1,13 @@
 ﻿
 using UnityEngine;
-using UnityEditor;
 using Random = UnityEngine.Random;
 using System;
+using System.IO;
 using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using Assets.LSL4Unity.Scripts;
+using Assets.VREF.Scripts;
 
 /// <summary>
 /// Main class of the Paradigm-specific code, 
@@ -17,14 +18,11 @@ namespace Assets.NinjaGame.Scripts
     [RequireComponent(typeof(NinjaGameEventController))]
     public class NinjaGame : MonoBehaviour
     {
-
-        public List<Trial> trialsList;
+        public static TrialsList trialsConfig;
+        public static List<Trial> generatedTrials;
          
-        public float pausetime = 5;
+        //public float pausetime = 5;
         public Vector3 objectScale = new Vector3(0.5f,0.5f,0.5f);
-        public int NumberOfSpawnerInstances = 1;
-        public float velocityAvg = 5.0f;
-        public float velocityRange = 1.0f;
         public float velocity;
         public float spawnerDistance=5.0f;
         public float spawnerRange = 1.0f;
@@ -45,11 +43,45 @@ namespace Assets.NinjaGame.Scripts
         public NinjaGameEventController ninjaControl;
         //private LSLMarkerStream eventMarker;
 
+        string expectedTrialsConfig;
+        string saveTrialsConfig;
+
+        //Experiment
+        int angle;
+        int parallelSpawns;
+        float pausetime=5;
+
+        void Awake()
+        {
+            game = new GameInfo();
+            var dataDirectory = Application.dataPath + "/NinjaGame/Config/";
+            expectedTrialsConfig = dataDirectory + "trialslist.json";
+            saveTrialsConfig = dataDirectory + "trialslist.json";
+
+            if (trialsConfig == null)
+            {
+                trialsConfig = new TrialsList();
+                // trialsConfig = ScriptableObject.CreateInstance(typeof(TrialsList)) as TrialsList;
+                //load default trials config
+
+                trialsConfig = ConfigUtil.LoadConfig<TrialsList>(new FileInfo(expectedTrialsConfig), true, () =>
+                {
+                    Debug.LogError("Something is wrong with the AppConfig. Was not found and I was not able to create one!");
+                });
+
+                angle = trialsConfig.experiment.maximumAngle;
+                parallelSpawns = trialsConfig.experiment.parallelSpawns;
+                pausetime = trialsConfig.experiment.pausetime;
+                generatedTrials =trialsConfig.GenerateTrialsList(trialsConfig.listOfTrials);
+                Debug.Log("Config from" + expectedTrialsConfig + "with " + generatedTrials.Capacity + " trials successfully loaded!");
+            }
+        }
+
         void Start()
         {
             
             #region Game Event logic
-            game = new GameInfo();
+ 
             if (game)
             {
                 game.health = startHealth;
@@ -69,8 +101,6 @@ namespace Assets.NinjaGame.Scripts
             //Debug.LogWarning(objectPool);
             gamePlaying = true;
             
-           // prefabObjects = 
-            velocity = velocityAvg+ Random.Range(-velocityRange/2, velocityRange/2);
             StartCoroutine(FireDelay());
 
        
@@ -131,20 +161,21 @@ namespace Assets.NinjaGame.Scripts
         }
 
         IEnumerator FireFruit()
-        { 
-            List<Transform> spawnerInstances = Enumerable.Repeat(transform, NumberOfSpawnerInstances).ToList();
-            var position = Vector3.one + Vector3.up*(height-1);
-            center = new Vector3(0, 2.0f, 0);
-
-            foreach ( var spawner in spawnerInstances)
+        {
+            if (trialsConfig != null)
             {
-                if (game.trialsList != null)
+
+                List<Transform> spawnerInstances = Enumerable.Repeat(transform, parallelSpawns).ToList();
+                Debug.Log(spawnerInstances.Count);
+                var position = Vector3.one + Vector3.up * (height - 1);
+                center = new Vector3(0, 2.0f, 0);
+                foreach (var spawner in spawnerInstances)
                 {
-                   
-                    var selected = Trial.PickAndDelete(game.trialsList);
-                    Debug.Log("Trials-Countdown:" + game.trialsList.Count+" "+selected.trial + ' ' + selected.color + ' ' + selected.distance);
+                    
+                    var selected = Trial.PickAndDelete(generatedTrials);
+                    Debug.Log("Trials-Countdown:" + generatedTrials.Count + " " + selected.trial + ' ' + selected.color + ' ' + selected.distance);
                     spawner.position = (position - center).normalized * selected.distance + center;
-                    float currentAngle = Random.Range(-game.maximumAngle / 2, game.maximumAngle / 2) - angleAlignment;
+                    float currentAngle = Random.Range(-angle / 2, angle / 2) - angleAlignment;
                     //Debug.Log("Transform position:" + spawner.position + "Angle:" +(currentAngle-angleAlignment));
                     spawner.RotateAround(center, Vector3.up, currentAngle);
                     var startposition = spawner.position;
@@ -158,11 +189,11 @@ namespace Assets.NinjaGame.Scripts
                     prefab.color = selected.color;
                     prefab.transform.localScale = selected.scale * Vector3.one;
                     Instantiate(prefab, spawner.position, Quaternion.identity);
+                   
+                    yield return new WaitForFixedUpdate();
+                    //Debug.Log("Object " + prefab.transform.name + " instantiated");
                 }
-                yield return new WaitForFixedUpdate();
-                //Debug.Log("Object " + prefab.transform.name + " instantiated");
             }
-
         }
 
         #endregion
@@ -174,17 +205,12 @@ namespace Assets.NinjaGame.Scripts
             public int totalscore;
             public int damage;
             public int health;
-            public List<Trial> trialsList;
-            public float maximumAngle;
+           /* public List<Trial> ListOfTrials;
 
-            public void setMaximumAngle(int angle)
-            {
-                game.maximumAngle= angle;
-            }
             public void setListOfTrials(List<Trial> trials)
             {
-                game.trialsList = trials;
-            }
+                game.ListOfTrials = trials;
+            }*/
         }
     }
 }

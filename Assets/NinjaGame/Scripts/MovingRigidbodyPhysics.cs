@@ -57,7 +57,6 @@ namespace Assets.NinjaGame.Scripts
         void FixedUpdate()
         {
             //constant choosen by testing, may vary between 1.6 to 1.9
-
             const float hideMultiplier = 1.75f;
             Ray ray = new Ray(Body.transform.position, -transform.up);
          
@@ -84,6 +83,7 @@ namespace Assets.NinjaGame.Scripts
             //if (sword.IsGrabbed()) 
             if (Time.realtimeSinceStartup > 5)
                 Body.AddRelativeForce(Vector3.forward * velocity, ForceMode.Force);
+
         }
 
 
@@ -94,7 +94,6 @@ namespace Assets.NinjaGame.Scripts
             {
                 print(contact.thisCollider.name + " hit " + contact.otherCollider.name);
             }
-
             if (collisionForce > 0)
             {
                 //switch physics of and set velcoitys to zero

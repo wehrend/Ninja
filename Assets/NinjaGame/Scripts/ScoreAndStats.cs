@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor;
 
 using System.Collections;
 
@@ -8,7 +7,6 @@ namespace Assets.NinjaGame.Scripts
 {
     public class ScoreAndStats : MonoBehaviour
     {
-        public SerializedObject so;
         public Text instructionText;
         public Text scoresText;
         public Scrollbar healthBar;
@@ -21,9 +19,9 @@ namespace Assets.NinjaGame.Scripts
         void Start()
         {
             Debug.Log("Test");
-            instructionText.text = "Swing the Sword.\nCatch the blue spheres, and avoid the black bombs";
+            instructionText.text = "Touch the spheres";
             scoresText = GetComponent<Text>();
-            healthBar = GetComponent<Scrollbar>();
+            //healthBar = GetComponent<Scrollbar>();
             ninjaGameEvent = FindObjectOfType(typeof(NinjaGameEventController)) as NinjaGameEventController;
            
             if (ninjaGameEvent == null)
@@ -38,7 +36,7 @@ namespace Assets.NinjaGame.Scripts
         void Update()
         {
             scoresText.text = "Score:\n" + NinjaGame.game.totalscore.ToString();
-            healthBar.size = (float) NinjaGame.game.health / 1000f;
+            //healthBar.size = (float) NinjaGame.game.health / 1000f;
         }
 
 

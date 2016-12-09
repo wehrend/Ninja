@@ -7,9 +7,11 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 0
     path: Assets/VRTK/Examples/037_CameraRig_ClimbingFalling.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/NinjaGame/Levels/1-160grad_oneObject.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/NinjaGame/Levels/2-160grad_multipleObjects.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/NinjaGame/Levels/5_SuperDifficult.unity
+  - enabled: 1
+    path: Assets/NinjaGame/Levels/2-160grad_multipleObjects_hand.unity

@@ -84,48 +84,6 @@
             "velocity": 2.5,
             "distance": 8.0,
             "numberOfSpawners": 1
-        },
-        {
-            "instances": 3,
-            "trial": "Distract",
-            "color": {
-                "r": 1.0,
-                "g": 0.0,
-                "b": 0.0,
-                "a": 1.0
-            },
-            "scale": 0.4000000059604645,
-            "velocity": 5.0,
-            "distance": 5.0,
-            "numberOfSpawners": 1
-        },
-        {
-            "instances": 3,
-            "trial": "Other",
-            "color": {
-                "r": 0.0,
-                "g": 0.29411762952804568,
-                "b": 0.31617647409439089,
-                "a": 1.0
-            },
-            "scale": 0.6000000238418579,
-            "velocity": 2.5,
-            "distance": 8.0,
-            "numberOfSpawners": 1
-        },
-        {
-            "instances": 3,
-            "trial": "Other2",
-            "color": {
-                "r": 0.699999988079071,
-                "g": 0.9117646813392639,
-                "b": 0.9411764740943909,
-                "a": 1.0
-            },
-            "scale": 0.4000000059604645,
-            "velocity": 5.0,
-            "distance": 5.0,
-            "numberOfSpawners": 1
         }
     ]
 }

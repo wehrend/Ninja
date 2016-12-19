@@ -19,7 +19,8 @@ namespace Assets.NinjaGame.Scripts
         void Start()
         {
             Debug.Log("Test");
-            instructionText.text = "Touch the spheres";
+            if(instructionText)
+                instructionText.text = "Touch the spheres";
             scoresText = GetComponent<Text>();
             //healthBar = GetComponent<Scrollbar>();
             ninjaGameEvent = FindObjectOfType(typeof(NinjaGameEventController)) as NinjaGameEventController;
@@ -35,7 +36,8 @@ namespace Assets.NinjaGame.Scripts
 
         void Update()
         {
-            scoresText.text = "Score:\n" + NinjaGame.game.totalscore.ToString();
+            if (scoresText)
+                scoresText.text = "Score:\n" + ExperimentSceneController.experimentInfo.totalscore.ToString();
             //healthBar.size = (float) NinjaGame.game.health / 1000f;
         }
 

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Assets.LSL4Unity.Scripts;
 using Assets.VREF.Scripts;
+using VRTK;
 
 /// <summary>
 /// Main class of the Paradigm-specific code, 
@@ -18,6 +19,8 @@ namespace Assets.NinjaGame.Scripts
     [RequireComponent(typeof(NinjaGameEventController))]
     public class NinjaGame : MonoBehaviour
     {
+        public static ExperimentSceneController expController;
+
         public static TrialsList trialsConfig;
         public static List<Trial> generatedTrials;
          
@@ -38,8 +41,7 @@ namespace Assets.NinjaGame.Scripts
 
         public int startHealth = 1000;
         public int startScore = 0;
-        //Next todo: using singletones here 
-        public static GameInfo game;
+
         public NinjaGameEventController ninjaControl;
         //private LSLMarkerStream eventMarker;
 
@@ -53,7 +55,7 @@ namespace Assets.NinjaGame.Scripts
 
         void Awake()
         {
-            game = new GameInfo();
+            ExperimentSceneController.experimentInfo.triggerPressed = false;
             var dataDirectory = Application.dataPath + "/NinjaGame/Config/";
             expectedTrialsConfig = dataDirectory + "trialslist.json";
             saveTrialsConfig = dataDirectory + "trialslist.json";
@@ -79,13 +81,14 @@ namespace Assets.NinjaGame.Scripts
 
         void Start()
         {
-            
-            #region Game Event logic
- 
-            if (game)
+
+            #region Experiment Event logic
+   
+
+            if (ExperimentSceneController.experimentInfo)
             {
-                game.health = startHealth;
-                game.totalscore = startScore;
+                ExperimentSceneController.experimentInfo.health = startHealth;
+                ExperimentSceneController.experimentInfo.totalscore = startScore;
             }
             if (ninjaControl == null)
             {
@@ -109,9 +112,9 @@ namespace Assets.NinjaGame.Scripts
 
         void fruitCollision(object sender, NinjaGameEventArgs eve)
         {
-            game.score = eve.score;
-            game.totalscore += game.score;
-            eve.totalscore = game.totalscore;
+            ExperimentSceneController.experimentInfo.score = eve.score;
+            ExperimentSceneController.experimentInfo.totalscore += ExperimentSceneController.experimentInfo.score;
+            eve.totalscore = ExperimentSceneController.experimentInfo.totalscore;
 
             //eventMarker.Write("Event: Fruit Collision");
 
@@ -123,9 +126,9 @@ namespace Assets.NinjaGame.Scripts
 
         void bombCollision(object sender, NinjaGameEventArgs eve)
         {
-            game.damage = eve.damage;
-            game.health -= game.damage;
-            eve.health = game.health;
+            ExperimentSceneController.experimentInfo.damage = eve.damage;
+            ExperimentSceneController.experimentInfo.health -= ExperimentSceneController.experimentInfo.damage;
+            eve.health = ExperimentSceneController.experimentInfo.health;
             //eventMarker.Write("Event: Bomb Collision");
             Debug.LogWarning("health:" + eve.health);
            
@@ -136,8 +139,8 @@ namespace Assets.NinjaGame.Scripts
         {
             //eve.totalscore = startScore;
             //eve.health = startHealth;
-
             Debug.Log("Start Game");
+            ExperimentSceneController.experimentInfo.triggerPressed = true;
         }
 
         void GameOver(object sender, NinjaGameEventArgs eve)
@@ -164,18 +167,19 @@ namespace Assets.NinjaGame.Scripts
         {
             if (trialsConfig != null)
             {
-
+                float previousAngle=0;
                 List<Transform> spawnerInstances = Enumerable.Repeat(transform, parallelSpawns).ToList();
                 Debug.Log(spawnerInstances.Count);
                 var position = Vector3.one + Vector3.up * (height - 1);
                 center = new Vector3(0, 2.0f, 0);
                 foreach (var spawner in spawnerInstances)
                 {
-                    
+                 
                     var selected = Trial.PickAndDelete(generatedTrials);
                     Debug.Log("Trials-Countdown:" + generatedTrials.Count + " " + selected.trial + ' ' + selected.color + ' ' + selected.distance);
                     spawner.position = (position - center).normalized * selected.distance + center;
                     float currentAngle = Random.Range(-angle / 2, angle / 2) - angleAlignment;
+                
                     //Debug.Log("Transform position:" + spawner.position + "Angle:" +(currentAngle-angleAlignment));
                     spawner.RotateAround(center, Vector3.up, currentAngle);
                     var startposition = spawner.position;
@@ -198,19 +202,6 @@ namespace Assets.NinjaGame.Scripts
 
         #endregion
 
-        [Serializable]
-        public class GameInfo : ScriptableObject
-        {
-            public int score;
-            public int totalscore;
-            public int damage;
-            public int health;
-           /* public List<Trial> ListOfTrials;
-
-            public void setListOfTrials(List<Trial> trials)
-            {
-                game.ListOfTrials = trials;
-            }*/
-        }
+      
     }
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Valve.VR;
 using VRTK;
 
 namespace Hand
@@ -7,17 +8,17 @@ namespace Hand
     [RequireComponent(typeof(Animator))]
     public class HandModelWithCollider : MonoBehaviour
     {
+        public SteamVR_TrackedObject.EIndex index = SteamVR_TrackedObject.EIndex.None;
+        SteamVR_RenderModel render;
+
         Animator animator;
         VRTK_ControllerEvents events;
         public CapsuleCollider collider;
 
         int idle, point, open, gesture, fist, pick, grab;
 
-        void Awake()
+    void Awake()
         {
-            events = GetComponentInParent<VRTK_ControllerEvents>();
-            if (events == null)
-                Debug.LogError("Vrtk controller events not found");
             animator = GetComponent<Animator>();
             point = Animator.StringToHash("Point");
             idle = Animator.StringToHash("Idle");
@@ -28,14 +29,16 @@ namespace Hand
             grab = Animator.StringToHash("Grab");
         }
 
-        void Start() {
+   void Start()
+        {
             Point();
         }
 
 
 
         void Update()
-        {/*
+        {
+            /*
             if (events.IsButtonPressed(VRTK_ControllerEvents.ButtonAlias.Touchpad_Touch))
                 Point();
             else

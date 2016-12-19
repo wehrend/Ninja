@@ -881,7 +881,7 @@ namespace VRTK
             {
                 return;
             }
-
+            //Debug.Log("Found controllerIndex" + controllerIndex);
             Vector2 currentTriggerAxis = VRTK_SDK_Bridge.GetTriggerAxisOnIndex(controllerIndex);
             Vector2 currentTouchpadAxis = VRTK_SDK_Bridge.GetTouchpadAxisOnIndex(controllerIndex);
 

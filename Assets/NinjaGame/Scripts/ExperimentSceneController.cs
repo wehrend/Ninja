@@ -7,19 +7,18 @@ using Valve.VR;
 
 namespace Assets.NinjaGame.Scripts
 {
+    //Big Todo: Make scenes single, not additive !
+    //But this involves some interscene communication probs.
     //TODO: Make static / singletone 
     public class ExperimentSceneController : MonoBehaviour
-    {
-
-        SteamVR_Controller controller;
-       
-        
+    {        
         public string preExperimentScene = "Empty_room";
-        public string experimentScene = "2-160grad_multipleObjects_hand";
+        public string experimentScene = "experimentScene";
         public string postExperimentScene;
         //Next todo: using singletones here 
         public static ExperimentInfo experimentInfo;
         bool flag;
+        GameObject model;
         // Use this for initialization
         void Awake()
         {
@@ -29,12 +28,15 @@ namespace Assets.NinjaGame.Scripts
         void Start()
         {
             preExperimentScene = "Empty_room";
-            experimentScene = "2-160grad_multipleObjects_hand";
+            experimentScene = "experimentScene";
             postExperimentScene = "Empty_room";
 
             //is SteamVR working??
             if (SteamVR.instance != null)
             {
+
+                model = GameObject.Find("Model");
+                Debug.LogWarning("Found model:" + model);
 
                 SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Additive);
                 flag = false;
@@ -61,6 +63,18 @@ namespace Assets.NinjaGame.Scripts
                     //SceneManager.UnloadSceneAsync(emptyRoom);
                     //Debug.Log("Unload Scene");
 
+                    //unload model
+                    if (model != null)
+                        model.SetActive(false);
+
+                    SceneManager.LoadSceneAsync(experimentScene, LoadSceneMode.Additive);
+                }
+                if ((SceneManager.GetActiveScene().name == experimentScene) && NinjaGame.generatedTrials.Count == 0)
+                {
+
+                    Debug.Log("Load post experiment scene");
+                    if (model != null)
+                        model.SetActive(true);
                     SceneManager.LoadSceneAsync(experimentScene, LoadSceneMode.Additive);
                 }
             }else {

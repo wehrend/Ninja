@@ -35,8 +35,6 @@ namespace Assets.NinjaGame.Scripts
             if (SteamVR.instance != null)
             {
 
-                model = GameObject.Find("Model");
-                Debug.LogWarning("Found model:" + model);
 
                 SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Additive);
                 flag = false;
@@ -64,6 +62,9 @@ namespace Assets.NinjaGame.Scripts
                     //Debug.Log("Unload Scene");
 
                     //unload model
+
+                    model = GameObject.Find("Model");
+                    Debug.LogWarning("Found model:" + model.name);
                     if (model != null)
                         model.SetActive(false);
 

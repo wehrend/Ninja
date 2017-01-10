@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 namespace Assets.NinjaGame.Scripts
@@ -10,6 +10,7 @@ namespace Assets.NinjaGame.Scripts
         public Text instructionText;
         public Text scoresText;
         public Scrollbar healthBar;
+        public Scene scene;
       //  private NinjaGame.GameInfo scores; 
         [HideInInspector]
         private NinjaGameEventController ninjaGameEvent;
@@ -18,10 +19,8 @@ namespace Assets.NinjaGame.Scripts
         // Use this for initialization
         void Start()
         {
-            Debug.Log("Test");
-            if(instructionText)
-                instructionText.text = "Touch the spheres";
-            scoresText = GetComponent<Text>();
+            scene = SceneManager.GetActiveScene();
+            // if scene is "Empty_room"...
             //healthBar = GetComponent<Scrollbar>();
             ninjaGameEvent = FindObjectOfType(typeof(NinjaGameEventController)) as NinjaGameEventController;
            
@@ -31,14 +30,29 @@ namespace Assets.NinjaGame.Scripts
                 return;
             }
             ninjaGameEvent.GameOver += new NinjaGameEventHandler(gameOver);
-
+           
         }
 
+        void StuffForBaseline()
+        {
+            if (instructionText)
+                instructionText.text= "Baseline Recording. Please follow the instructions of lab assistant.";
+            scoresText = GetComponent<Text>();
+            if (scoresText)
+                scoresText.text="0 Trials";
+        }
+        
         void Update()
         {
-            if (scoresText)
-                scoresText.text = "Score:\n" + ExperimentSceneController.experimentInfo.totalscore.ToString();
-            //healthBar.size = (float) NinjaGame.game.health / 1000f;
+            if (scene.name.Contains("Empty_room"))
+                StuffForBaseline();
+            else
+            {
+
+                if (scoresText)
+                 scoresText.text = "Counting Trials :\n" + NinjaGame.generatedTrials.Count;
+                //healthBar.size = (float) NinjaGame.game.health / 1000f;
+            }
         }
 
 

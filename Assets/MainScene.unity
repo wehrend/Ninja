@@ -91,6 +91,48 @@ NavMeshSettings:
     cellSize: 0.16666667
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &523549735
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 458706, guid: 341f3d812511a334eb88d59274891c3a, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0.064453125
+      objectReference: {fileID: 0}
+    - target: {fileID: 458706, guid: 341f3d812511a334eb88d59274891c3a, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 1.4711914
+      objectReference: {fileID: 0}
+    - target: {fileID: 458706, guid: 341f3d812511a334eb88d59274891c3a, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0.3828125
+      objectReference: {fileID: 0}
+    - target: {fileID: 458706, guid: 341f3d812511a334eb88d59274891c3a, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 458706, guid: 341f3d812511a334eb88d59274891c3a, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 458706, guid: 341f3d812511a334eb88d59274891c3a, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 458706, guid: 341f3d812511a334eb88d59274891c3a, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 458706, guid: 341f3d812511a334eb88d59274891c3a, type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 341f3d812511a334eb88d59274891c3a, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &847916917
 GameObject:
   m_ObjectHideFlags: 0
@@ -100,6 +142,7 @@ GameObject:
   m_Component:
   - component: {fileID: 847916919}
   - component: {fileID: 847916918}
+  - component: {fileID: 847916920}
   m_Layer: 0
   m_Name: '[ExperimentSceneController]'
   m_TagString: Untagged
@@ -118,9 +161,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f4f0270ba01e4347baedca27fe5c554, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rbStreamDataRate: 90
   preExperimentScene: 
   experimentScene: 
   postExperimentScene: 
+  showModelInExpScene: 0
+  experimentMarker: {fileID: 0}
 --- !u!4 &847916919
 Transform:
   m_ObjectHideFlags: 0
@@ -134,3 +180,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &847916920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 847916917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf81db5e8af04e54280dca36cce9cf1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dataRate: 0
+  StreamName: SituationalAwareness.Unity.RBController
+  StreamType: rigidBody
+  ChannelCount: 7
+  sampling: 0
+  sampleSource: {fileID: 0}

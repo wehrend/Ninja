@@ -2,6 +2,7 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 using System;
+using System.Linq;
 using System.IO;
 using System.Collections;
 using System.Linq;
@@ -43,7 +44,7 @@ namespace Assets.NinjaGame.Scripts
         public int startScore = 0;
 
         public NinjaGameEventController ninjaControl;
-        //private LSLMarkerStream eventMarker;
+        LSLMarkerStream experimentMarker;
 
         string expectedTrialsConfig;
         string saveTrialsConfig;
@@ -52,9 +53,13 @@ namespace Assets.NinjaGame.Scripts
         int angle;
         int parallelSpawns;
         float pausetime=5;
-
+        int trialNumber;
+        public int trialsMax;
         void Awake()
         {
+            experimentMarker = FindObjectsOfType(typeof(LSLMarkerStream)).FirstOrDefault() as LSLMarkerStream;
+            if (experimentMarker != null)
+                Debug.Log("Found "+experimentMarker.name);   
             ExperimentSceneController.experimentInfo.triggerPressed = false;
             var dataDirectory = Application.dataPath + "/NinjaGame/Config/";
             expectedTrialsConfig = dataDirectory + "trialslist.json";
@@ -75,6 +80,7 @@ namespace Assets.NinjaGame.Scripts
                 parallelSpawns = trialsConfig.experiment.parallelSpawns;
                 pausetime = trialsConfig.experiment.pausetime;
                 generatedTrials =trialsConfig.GenerateTrialsList(trialsConfig.listOfTrials);
+                trialsMax = generatedTrials.Count;
                 Debug.Log("Config from" + expectedTrialsConfig + "with " + generatedTrials.Capacity + " trials successfully loaded!");
             }
         }
@@ -176,7 +182,8 @@ namespace Assets.NinjaGame.Scripts
                 {
                  
                     var selected = Trial.PickAndDelete(generatedTrials);
-                    Debug.Log("Trials-Countdown:" + generatedTrials.Count + " " + selected.trial + ' ' + selected.color + ' ' + selected.distance);
+                    trialNumber = trialsMax - generatedTrials.Count;
+                    Debug.Log("Trials:" +trialNumber + " " + selected.trial + ' ' + selected.color + ' ' + selected.distance);
                     spawner.position = (position - center).normalized * selected.distance + center;
                     float currentAngle = Random.Range(-angle / 2, angle / 2) - angleAlignment;
                 
@@ -193,6 +200,8 @@ namespace Assets.NinjaGame.Scripts
                     prefab.color = selected.color;
                     prefab.transform.localScale = selected.scale * Vector3.one;
                     Instantiate(prefab, spawner.position, Quaternion.identity);
+                    prefab.name = trialNumber.ToString();
+                    experimentMarker.Write("spawn_trial_" + trialNumber + ": name:" + selected.trial + ",color:" + selected.color + " ,distance:" + selected.distance+",velocity:"+selected.velocity);
                    
                     yield return new WaitForFixedUpdate();
                     //Debug.Log("Object " + prefab.transform.name + " instantiated");

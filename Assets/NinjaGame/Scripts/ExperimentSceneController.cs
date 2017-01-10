@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Valve.VR;
+using Assets.LSL4Unity.Scripts;
+using UnityEngine.Assertions;
 
 namespace Assets.NinjaGame.Scripts
 {
@@ -11,18 +13,26 @@ namespace Assets.NinjaGame.Scripts
     //But this involves some interscene communication probs.
     //TODO: Make static / singletone 
     public class ExperimentSceneController : MonoBehaviour
-    {        
+    {
+        public double rbStreamDataRate = 90.00;
         public string preExperimentScene = "Empty_room";
         public string experimentScene = "experimentScene";
         public string postExperimentScene;
+        public bool showModelInExpScene = false;
         //Next todo: using singletones here 
         public static ExperimentInfo experimentInfo;
         bool flag;
         GameObject model;
+        RBControllerStream rbControllerStream;
+        public static LSLMarkerStream experimentMarker;
+
+        
         // Use this for initialization
         void Awake()
         {
-            experimentInfo = new ExperimentInfo();
+          experimentInfo = new ExperimentInfo();
+          rbControllerStream= GetComponent<RBControllerStream>();
+          experimentMarker = new LSLMarkerStream();
         }
 
         void Start()
@@ -31,11 +41,18 @@ namespace Assets.NinjaGame.Scripts
             experimentScene = "experimentScene";
             postExperimentScene = "Empty_room";
 
+            //Assert.IsNotNull(experimentMarker, "You forgot to assign the reference to a marker stream implementation!");
+
             //is SteamVR working??
-            if (SteamVR.instance != null)
-            {
+            if (SteamVR.instance != null) {
 
-
+                if (rbControllerStream != null)
+                {
+                    rbControllerStream.SetDataRate(rbStreamDataRate);
+                    if (rbControllerStream.GetDataRate() == rbStreamDataRate)
+                        Debug.Log("Set LSL data rate for RB stream to " + rbStreamDataRate + "Hz.");
+                }
+                Debug.Log("Start empty Room scene with baseline");
                 SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Additive);
                 flag = false;
             } else {
@@ -56,7 +73,8 @@ namespace Assets.NinjaGame.Scripts
                 if (flag == false && triggerPressed)
                 {
                     flag = true;
-                    Debug.Log("Start Experiment");
+
+                   
                     var emptyRoom = SceneManager.GetActiveScene();
                     //SceneManager.UnloadSceneAsync(emptyRoom);
                     //Debug.Log("Unload Scene");
@@ -66,9 +84,11 @@ namespace Assets.NinjaGame.Scripts
                     model = GameObject.Find("Model");
                     Debug.LogWarning("Found model:" + model.name);
                     if (model != null)
-                        model.SetActive(false);
-
+                        model.SetActive(showModelInExpScene);
+                    Debug.Log("Start Experiment");
                     SceneManager.LoadSceneAsync(experimentScene, LoadSceneMode.Additive);
+                    if(experimentMarker!=null)
+                        experimentMarker.Write("begin_experiment_condition");
                 }
                 if ((SceneManager.GetActiveScene().name == experimentScene) && NinjaGame.generatedTrials.Count == 0)
                 {
@@ -76,7 +96,9 @@ namespace Assets.NinjaGame.Scripts
                     Debug.Log("Load post experiment scene");
                     if (model != null)
                         model.SetActive(true);
-                    SceneManager.LoadSceneAsync(experimentScene, LoadSceneMode.Additive);
+                    SceneManager.LoadSceneAsync(postExperimentScene, LoadSceneMode.Additive);
+                    if (experimentMarker != null)
+                        experimentMarker.Write("end_experiment_condition");
                 }
             }else {
                 Debug.LogError("No instance of SteamVR found!");

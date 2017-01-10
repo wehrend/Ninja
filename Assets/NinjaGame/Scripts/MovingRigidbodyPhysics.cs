@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Linq;
+using Assets.LSL4Unity.Scripts;
 using VRTK;
 
 namespace Assets.NinjaGame.Scripts
@@ -33,10 +34,11 @@ namespace Assets.NinjaGame.Scripts
         [HideInInspector]
         public int layermask = 1 << 8;
         public float breakForce=50f;
-
+        LSLMarkerStream experimentMarker;
 
         private void Awake()
         {
+
             Body = GetComponent<Rigidbody>();
             meshrenderer = GetComponent<MeshRenderer>();
             ninjaControl = FindObjectOfType(typeof(NinjaGameEventController)) as NinjaGameEventController;
@@ -45,6 +47,9 @@ namespace Assets.NinjaGame.Scripts
 
         void Start()
         {
+            experimentMarker = FindObjectsOfType(typeof(LSLMarkerStream)).FirstOrDefault() as LSLMarkerStream;
+            if (experimentMarker != null)
+                Debug.Log("Found expMarker for touch trial");
             meshrenderer.material.color = color;
 
             //Todo: Get rid of this logic, currently necessary to let objects fly
@@ -89,11 +94,14 @@ namespace Assets.NinjaGame.Scripts
 
         private void OnCollisionEnter(Collision collision)
         {
+
             var collisionForce = GetCollisionForce(collision);
             foreach (ContactPoint contact in collision.contacts)
             {
                 print(contact.thisCollider.name + " hit " + contact.otherCollider.name);
             }
+           
+
             if (collisionForce > 0)
             {
                 //switch physics of and set velcoitys to zero
@@ -121,6 +129,13 @@ namespace Assets.NinjaGame.Scripts
             {
                 return 0;
             }else {
+                //We want markers only for these targets touched by controller.
+                if (experimentMarker != null)
+                    experimentMarker.Write("touch_trial_" + name + ": name: N/A" + ",color:" + color + " ,distance:" + distance + ",velocity:" + velocity);
+                else
+                {
+                    Debug.LogError("Some trial touched, but no Instance of experimentMarker found ");
+                }
                 Debug.LogWarning("Controller or Hands collision: " + collision.collider.name);
                 return 100 * 1.2f;
             }

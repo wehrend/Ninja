@@ -6,11 +6,69 @@ using Assets.LSL4Unity.Scripts.Common;
 /// Code from LSL4Unity Demo Script 
 /// </summary>
 
+
+    /*  # channels with position and orientation in quaternions
+        objs = setup.append_child("objects")
+        obj = objs.append_child("object")
+        obj.append_child_value("label", "Rigid" + str(name))
+        obj.append_child_value("id", str(name))
+        obj.append_child_value("type", "Mocap")
+
+        channels = vizard_rigid.desc().append_child("channels")
+        chan = channels.append_child("channel")
+        chan.append_child_value("label", "Rigid_" + str(name) + "_X")
+        chan.append_child_value("object", "Rigid_" + str(name))
+        chan.append_child_value("type", "PositionX")
+        chan.append_child_value("unit", "meters")
+
+        chan = channels.append_child("channel")
+        chan.append_child_value("label", "Rigid_" + str(name) + "_Y")
+        chan.append_child_value("object", "Rigid_" + str(name))
+        chan.append_child_value("type", "PositionY")
+        chan.append_child_value("unit", "meters")
+
+        chan = channels.append_child("channel")
+        chan.append_child_value("label", "Rigid_" + str(name) + "_Z")
+        chan.append_child_value("object", "Rigid_" + str(name))
+        chan.append_child_value("type", "PositionZ")
+        chan.append_child_value("unit", "meters")
+
+        chan = channels.append_child("channel")
+        chan.append_child_value("label", "Rigid_" + str(name) + "_quat_X")
+        chan.append_child_value("object", "Rigid_" + str(name))
+        chan.append_child_value("type", "OrientationX")
+        chan.append_child_value("unit", "quaternion")
+
+        chan = channels.append_child("channel")
+        chan.append_child_value("label", "Rigid_" + str(name) + "_quat_Y")
+        chan.append_child_value("object", "Rigid_" + str(name))
+        chan.append_child_value("type", "OrientationY")
+        chan.append_child_value("unit", "quaternion")
+
+        chan = channels.append_child("channel")
+        chan.append_child_value("label", "Rigid_" + str(name) + "_quat_Z")
+        chan.append_child_value("object", "Rigid_" + str(name))
+        chan.append_child_value("type", "OrientationZ")
+        chan.append_child_value("unit", "quaternion")
+
+        chan = channels.append_child("channel")
+        chan.append_child_value("label", "Rigid_" + str(name) + "_quat_W")
+        chan.append_child_value("object", "Rigid_" + str(name))
+        chan.append_child_value("type", "OrientationW")
+        chan.append_child_value("unit", "quaternion")
+
+        if ps_heading:
+            chan = channels.append_child("channel")
+            chan.append_child_value("label", "Rigid_" + str(name) + "_PS_orientation_yaw")
+            chan.append_child_value("object", "Rigid_" + str(name))
+            chan.append_child_value("type", "PS_orientation_yaw")
+            chan.append_child_value("unit", "euler")
+*/
+
 namespace Assets.NinjaGame.Scripts
 {
-    public class LSLInterface : MonoBehaviour {
+    public class RBControllerStream : MonoBehaviour {
         public const string unique_source_id = "21888D87A8084180A5D3282B077DC881";
-
 
         SteamVR_Controller.Device firstDevice;
 
@@ -34,6 +92,12 @@ namespace Assets.NinjaGame.Scripts
         {
             return dataRate;
         }
+
+        public void SetDataRate(double rate )
+        {
+            dataRate=rate;
+        }
+
 
         public bool HasConsumer()
         {
@@ -61,7 +125,7 @@ namespace Assets.NinjaGame.Scripts
             // initialize the array once
             currentSample = new float[ChannelCount];
 
-            dataRate = LSLUtils.GetSamplingRateFor(sampling);
+            //dataRate = LSLUtils.GetSamplingRateFor(sampling);
 
             streamInfo = new liblsl.StreamInfo(StreamName, StreamType, ChannelCount, dataRate, liblsl.channel_format_t.cf_float32, unique_source_id);
 

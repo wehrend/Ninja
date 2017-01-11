@@ -48,8 +48,7 @@ namespace Assets.NinjaGame.Scripts
                 StuffForBaseline();
             else
             {
-
-                if (scoresText)
+                if (scoresText && NinjaGame.generatedTrials != null)
                  scoresText.text = "Counting Trials :\n" + NinjaGame.generatedTrials.Count;
                 //healthBar.size = (float) NinjaGame.game.health / 1000f;
             }

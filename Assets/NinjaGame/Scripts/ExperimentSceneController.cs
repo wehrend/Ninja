@@ -24,6 +24,7 @@ namespace Assets.NinjaGame.Scripts
         bool flag;
         GameObject model;
         RBControllerStream rbControllerStream;
+        RBHmdStream rbHmdStream;
         public static LSLMarkerStream experimentMarker;
 
         
@@ -32,6 +33,7 @@ namespace Assets.NinjaGame.Scripts
         {
           experimentInfo = new ExperimentInfo();
           rbControllerStream= GetComponent<RBControllerStream>();
+          rbHmdStream = GetComponent<RBHmdStream>();
           experimentMarker = new LSLMarkerStream();
         }
 
@@ -50,7 +52,13 @@ namespace Assets.NinjaGame.Scripts
                 {
                     rbControllerStream.SetDataRate(rbStreamDataRate);
                     if (rbControllerStream.GetDataRate() == rbStreamDataRate)
-                        Debug.Log("Set LSL data rate for RB stream to " + rbStreamDataRate + "Hz.");
+                        Debug.Log("Set LSL data rate for RB Controller set to " + rbStreamDataRate + "Hz.");
+                }
+                if (rbHmdStream != null)
+                {
+                    rbHmdStream.SetDataRate(rbStreamDataRate);
+                    if (rbHmdStream.GetDataRate() == rbStreamDataRate)
+                        Debug.Log("Set LSL data rate for RB Hmd set to " + rbStreamDataRate + "Hz.");
                 }
                 Debug.Log("Start empty Room scene with baseline");
                 SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Additive);

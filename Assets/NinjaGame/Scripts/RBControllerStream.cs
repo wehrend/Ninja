@@ -107,11 +107,12 @@ namespace Assets.NinjaGame.Scripts
             return false;
         }
 
-        public string StreamName = "SituationalAwareness.Unity.ViveData";
+        public string StreamName = "Rigid_Controller";
         public string StreamType = "rigidBody";
         // we use 7 DoF:
         // 3 Pos. (x,y,z) + 4 Rot (x,y,z,w)   
         public int ChannelCount = 7; 
+       
 
         public MomentForSampling sampling;
 

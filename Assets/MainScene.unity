@@ -143,6 +143,7 @@ GameObject:
   - component: {fileID: 847916919}
   - component: {fileID: 847916918}
   - component: {fileID: 847916920}
+  - component: {fileID: 847916921}
   m_Layer: 0
   m_Name: '[ExperimentSceneController]'
   m_TagString: Untagged
@@ -166,7 +167,6 @@ MonoBehaviour:
   experimentScene: 
   postExperimentScene: 
   showModelInExpScene: 0
-  experimentMarker: {fileID: 0}
 --- !u!4 &847916919
 Transform:
   m_ObjectHideFlags: 0
@@ -193,6 +193,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dataRate: 0
   StreamName: SituationalAwareness.Unity.RBController
+  StreamType: rigidBody
+  ChannelCount: 7
+  sampling: 0
+  sampleSource: {fileID: 0}
+--- !u!114 &847916921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 847916917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f371fc5d7fbb10d47b73eee9c30308b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dataRate: 0
+  StreamName: SituationalAwareness.Unity.ViveHMD
   StreamType: rigidBody
   ChannelCount: 7
   sampling: 0

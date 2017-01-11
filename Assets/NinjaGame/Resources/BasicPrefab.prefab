@@ -109,7 +109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distance: 8
-  startPoint: {x: 7.4174705, y: 2, z: 2.9968526}
+  startPoint: {x: 3.125849, y: 2, z: 7.3640385}
   color:
     serializedVersion: 2
     rgba: 4278255360

@@ -7,64 +7,6 @@ using Assets.LSL4Unity.Scripts.Common;
 /// </summary>
 
 
-/*  # channels with position and orientation in quaternions
-    objs = setup.append_child("objects")
-    obj = objs.append_child("object")
-    obj.append_child_value("label", "Rigid" + str(name))
-    obj.append_child_value("id", str(name))
-    obj.append_child_value("type", "Mocap")
-
-    channels = vizard_rigid.desc().append_child("channels")
-    chan = channels.append_child("channel")
-    chan.append_child_value("label", "Rigid_" + str(name) + "_X")
-    chan.append_child_value("object", "Rigid_" + str(name))
-    chan.append_child_value("type", "PositionX")
-    chan.append_child_value("unit", "meters")
-
-    chan = channels.append_child("channel")
-    chan.append_child_value("label", "Rigid_" + str(name) + "_Y")
-    chan.append_child_value("object", "Rigid_" + str(name))
-    chan.append_child_value("type", "PositionY")
-    chan.append_child_value("unit", "meters")
-
-    chan = channels.append_child("channel")
-    chan.append_child_value("label", "Rigid_" + str(name) + "_Z")
-    chan.append_child_value("object", "Rigid_" + str(name))
-    chan.append_child_value("type", "PositionZ")
-    chan.append_child_value("unit", "meters")
-
-    chan = channels.append_child("channel")
-    chan.append_child_value("label", "Rigid_" + str(name) + "_quat_X")
-    chan.append_child_value("object", "Rigid_" + str(name))
-    chan.append_child_value("type", "OrientationX")
-    chan.append_child_value("unit", "quaternion")
-
-    chan = channels.append_child("channel")
-    chan.append_child_value("label", "Rigid_" + str(name) + "_quat_Y")
-    chan.append_child_value("object", "Rigid_" + str(name))
-    chan.append_child_value("type", "OrientationY")
-    chan.append_child_value("unit", "quaternion")
-
-    chan = channels.append_child("channel")
-    chan.append_child_value("label", "Rigid_" + str(name) + "_quat_Z")
-    chan.append_child_value("object", "Rigid_" + str(name))
-    chan.append_child_value("type", "OrientationZ")
-    chan.append_child_value("unit", "quaternion")
-
-    chan = channels.append_child("channel")
-    chan.append_child_value("label", "Rigid_" + str(name) + "_quat_W")
-    chan.append_child_value("object", "Rigid_" + str(name))
-    chan.append_child_value("type", "OrientationW")
-    chan.append_child_value("unit", "quaternion")
-
-    if ps_heading:
-        chan = channels.append_child("channel")
-        chan.append_child_value("label", "Rigid_" + str(name) + "_PS_orientation_yaw")
-        chan.append_child_value("object", "Rigid_" + str(name))
-        chan.append_child_value("type", "PS_orientation_yaw")
-        chan.append_child_value("unit", "euler")
-*/
-
 namespace Assets.NinjaGame.Scripts
 {
     public class RBHmdStream : MonoBehaviour
@@ -120,7 +62,7 @@ namespace Assets.NinjaGame.Scripts
 
         void Start()
         {
-            cameraInfo = new SteamVR_Camera();
+            cameraInfo = gameObject.GetComponent<SteamVR_Camera>() as SteamVR_Camera;
 
             // initialize the array once
             currentSample = new float[ChannelCount];

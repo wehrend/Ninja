@@ -34,8 +34,8 @@ namespace Assets.NinjaGame.Scripts
           experimentInfo = new ExperimentInfo();
           rbControllerStream= GetComponent<RBControllerStream>();
           rbHmdStream = GetComponent<RBHmdStream>();
-          experimentMarker = new LSLMarkerStream();
-          if (experimentMarker)
+          experimentMarker = gameObject.AddComponent<LSLMarkerStream>() as LSLMarkerStream;
+          if (experimentMarker!=null)
             experimentMarker.lslStreamName = "ExperimentMarkerStream";
         }
 
@@ -62,7 +62,7 @@ namespace Assets.NinjaGame.Scripts
                     if (rbHmdStream.GetDataRate() == rbStreamDataRate)
                         Debug.Log("Set LSL data rate for RB Hmd set to " + rbStreamDataRate + "Hz.");
                 }
-                Debug.Log("Start empty Room scene with baseline");
+                Debug.Log("Start empty Room scene");
                 SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Additive);
                 preflag = false;
                 postflag = false;
@@ -85,7 +85,7 @@ namespace Assets.NinjaGame.Scripts
                 {
                     preflag = true;
 
-                   
+
                     var emptyRoom = SceneManager.GetActiveScene();
                     //SceneManager.UnloadSceneAsync(emptyRoom);
                     //Debug.Log("Unload Scene");
@@ -98,32 +98,36 @@ namespace Assets.NinjaGame.Scripts
                         model.SetActive(showModelInExpScene);
                     Debug.Log("Start Experiment");
                     SceneManager.LoadSceneAsync(experimentScene, LoadSceneMode.Additive);
-                    if(experimentMarker!=null)
-                        experimentMarker.Write("begin_experiment_condition");
-                }
-                if ((NinjaGame.generatedTrials!=null) && (NinjaGame.generatedTrials.Count == 0) && !postflag)
-                { 
-                    StartCoroutine(_wait(10));
-                    Debug.Log("Load post experiment scene");
-                    if (model != null)
-                        model.SetActive(true);
-                    SceneManager.LoadSceneAsync(postExperimentScene, LoadSceneMode.Additive);
                     if (experimentMarker != null)
-                        experimentMarker.Write("end_experiment_condition");
-                    postflag = true;
+                    {
+                        Debug.Log("Should Write Marker: begin_experiment_condition");
+                        experimentMarker.Write("begin_experiment_condition");
+                    }
                 }
-            }else {
+                if ((NinjaGame.generatedTrials != null) && (NinjaGame.generatedTrials.Count == 0) && !postflag)
+                    //invoke after some time waiting for last bubbles
+                    Invoke("EndExperiment", 15);
+                    postflag = true;
+            }
+            else
+            {
                 Debug.LogError("No instance of SteamVR found!");
+            }
+        }
+            void EndExperiment()
+            {
+                Debug.Log("Load post experiment scene");
+                if (model != null)
+                    model.SetActive(true);
+                SceneManager.LoadSceneAsync(postExperimentScene, LoadSceneMode.Additive);
+                if (experimentMarker != null)
+                    Debug.Log("Should Write Marker: end_experiment_condition");
+                experimentMarker.Write("end_experiment_condition");
+
             }
 
         }
-
-
-        IEnumerator _wait(float time )
-        {
-            yield return new WaitForSeconds(time);
-        }
-    }
+     
 
     [Serializable]
     public class ExperimentInfo : ScriptableObject

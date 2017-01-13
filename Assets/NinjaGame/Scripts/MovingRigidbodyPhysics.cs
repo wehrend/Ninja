@@ -48,8 +48,8 @@ namespace Assets.NinjaGame.Scripts
         void Start()
         {
             experimentMarker = FindObjectsOfType(typeof(LSLMarkerStream)).FirstOrDefault() as LSLMarkerStream;
-            if (experimentMarker != null)
-                Debug.Log("Found expMarker for touch trial");
+            //if (experimentMarker != null)
+               // Debug.Log("Found expMarker for touch trial");
             meshrenderer.material.color = color;
 
             //Todo: Get rid of this logic, currently necessary to let objects fly
@@ -119,16 +119,15 @@ namespace Assets.NinjaGame.Scripts
 
         private float GetCollisionForce(Collision collision)
         {
+            Debug.Log(collision.collider.name);
 
             if ((collision.collider.name.Contains("Paddle") && collision.collider.GetComponent<Paddle>().CollisionForce() > breakForce))
             {
                 return collision.collider.GetComponent<Paddle>().CollisionForce() * 1.2f;
             }
 
-            if ((collision.collider.name.Contains("BasicPrefab")))
+            if ((collision.collider.name.Contains("HandCursor_edited")))
             {
-                return 0;
-            }else {
                 //We want markers only for these targets touched by controller.
                 if (experimentMarker != null)
                     experimentMarker.Write("touch_trial_" + name + ": name: N/A" + ",color:" + color + " ,distance:" + distance + ",velocity:" + velocity);
@@ -139,11 +138,9 @@ namespace Assets.NinjaGame.Scripts
                 Debug.LogWarning("Controller or Hands collision: " + collision.collider.name);
                 return 100 * 1.2f;
             }
-            /*if ((collision.collider.name.Contains("ControllerCollider") && collision.collider.GetComponent<HandCursorController>().CollisionForce() > breakForce))
-            {
-               return collision.collider.GetComponent<HandCursorController>().CollisionForce()  1.2f;
-                Debug.LogWarning("Controller or Hands collision: " + collision.collider.name);
-            }*/
+            else {
+                return 0;
+                }
         }
     }
 }

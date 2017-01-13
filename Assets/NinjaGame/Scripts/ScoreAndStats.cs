@@ -29,9 +29,13 @@ namespace Assets.NinjaGame.Scripts
                 Debug.LogError("The NinjaGameController needs the NinjaGameEventController script to be attached to it");
                 return;
             }
+            ninjaGameEvent.FruitCollision += new NinjaGameEventHandler(updateFruitCollision);
+            ninjaGameEvent.BombCollision += new NinjaGameEventHandler(updateBombCollision);
             ninjaGameEvent.GameOver += new NinjaGameEventHandler(gameOver);
            
         }
+
+
 
         void StuffForBaseline()
         {
@@ -62,6 +66,21 @@ namespace Assets.NinjaGame.Scripts
                 }
             }
         }
+
+        void updateFruitCollision(object sender, NinjaGameEventArgs eve) {
+            if (scoresText && NinjaGame.generatedTrials != null)
+                scoresText.text = "Counting Trials :\n" + NinjaGame.generatedTrials.Count +"Score:"+ eve.score;
+        }
+
+        void updateBombCollision(object sender, NinjaGameEventArgs eve)
+        {
+            if (scoresText && NinjaGame.generatedTrials != null)
+            {
+                eve.score = eve.score / 2;
+                scoresText.text = "Counting Trials :\n" + NinjaGame.generatedTrials.Count + "Score:" + eve.score;
+            }
+        }
+
 
         void gameOver(object sender, NinjaGameEventArgs eve)
         {

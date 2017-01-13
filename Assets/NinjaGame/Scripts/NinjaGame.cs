@@ -5,7 +5,6 @@ using System;
 using System.Linq;
 using System.IO;
 using System.Collections;
-using System.Linq;
 using System.Collections.Generic;
 using Assets.LSL4Unity.Scripts;
 using Assets.VREF.Scripts;
@@ -80,8 +79,8 @@ namespace Assets.NinjaGame.Scripts
                 parallelSpawns = trialsConfig.experiment.parallelSpawns;
                 pausetime = trialsConfig.experiment.pausetime;
                 generatedTrials =trialsConfig.GenerateTrialsList(trialsConfig.listOfTrials);
-                trialsMax = generatedTrials.Count;
-                Debug.Log("Config from" + expectedTrialsConfig + "with " + generatedTrials.Capacity + " trials successfully loaded!");
+                trialsMax = generatedTrials.Count+2;//hack, actually not sure why necessary
+                Debug.Log("Config from" + expectedTrialsConfig + "with " + generatedTrials.Count + " trials successfully loaded!");
             }
         }
 

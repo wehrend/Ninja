@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 54000013464383600}
   - component: {fileID: 114000010597440812}
   m_Layer: 0
-  m_Name: BasicPrefab
+  m_Name: 28
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109,7 +109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distance: 8
-  startPoint: {x: -5.248472, y: 2, z: 6.0376763}
+  startPoint: {x: 2.0705523, y: 2, z: 7.7274065}
   color:
     serializedVersion: 2
     rgba: 4278255360

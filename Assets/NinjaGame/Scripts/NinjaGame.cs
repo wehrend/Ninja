@@ -59,7 +59,7 @@ namespace Assets.NinjaGame.Scripts
         {
             experimentMarker = FindObjectsOfType(typeof(LSLMarkerStream)).FirstOrDefault() as LSLMarkerStream;
             if (experimentMarker != null)
-                Debug.Log("Found "+experimentMarker.name);   
+                Debug.Log("Found LSL Stream"+experimentMarker.lslStreamName);   
             ExperimentSceneController.experimentInfo.triggerPressed = false;
             var dataDirectory = Application.dataPath + "/NinjaGame/Config/";
             expectedTrialsConfig = dataDirectory + "trialslist.json";

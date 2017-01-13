@@ -21,7 +21,7 @@ namespace Assets.NinjaGame.Scripts
         public bool showModelInExpScene = false;
         //Next todo: using singletones here 
         public static ExperimentInfo experimentInfo;
-        bool flag;
+        bool preflag, postflag;
         GameObject model;
         RBControllerStream rbControllerStream;
         RBHmdStream rbHmdStream;
@@ -64,7 +64,8 @@ namespace Assets.NinjaGame.Scripts
                 }
                 Debug.Log("Start empty Room scene with baseline");
                 SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Additive);
-                flag = false;
+                preflag = false;
+                postflag = false;
             } else {
                 Debug.LogError("No instance of SteamVR found!");
             }
@@ -80,9 +81,9 @@ namespace Assets.NinjaGame.Scripts
                 //Debug.Log("deviceIndex: " + deviceIndex);
                 bool triggerPressed = SteamVR_Controller.Input(deviceIndex).GetPressDown(SteamVR_Controller.ButtonMask.Trigger);
                 //Debug.Log("trigger status: " + triggerPressed);
-                if (flag == false && triggerPressed)
+                if (preflag == false && triggerPressed)
                 {
-                    flag = true;
+                    preflag = true;
 
                    
                     var emptyRoom = SceneManager.GetActiveScene();
@@ -100,18 +101,27 @@ namespace Assets.NinjaGame.Scripts
                     if(experimentMarker!=null)
                         experimentMarker.Write("begin_experiment_condition");
                 }
-                if ((NinjaGame.generatedTrials!=null) && (NinjaGame.generatedTrials.Count == 0))
-                {
+                if ((NinjaGame.generatedTrials!=null) && (NinjaGame.generatedTrials.Count == 0) && !postflag)
+                { 
+                    StartCoroutine(_wait(10));
                     Debug.Log("Load post experiment scene");
                     if (model != null)
                         model.SetActive(true);
                     SceneManager.LoadSceneAsync(postExperimentScene, LoadSceneMode.Additive);
                     if (experimentMarker != null)
                         experimentMarker.Write("end_experiment_condition");
+                    postflag = true;
                 }
             }else {
                 Debug.LogError("No instance of SteamVR found!");
             }
+
+        }
+
+
+        IEnumerator _wait(float time )
+        {
+            yield return new WaitForSeconds(time);
         }
     }
 

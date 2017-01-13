@@ -35,6 +35,8 @@ namespace Assets.NinjaGame.Scripts
           rbControllerStream= GetComponent<RBControllerStream>();
           rbHmdStream = GetComponent<RBHmdStream>();
           experimentMarker = new LSLMarkerStream();
+          if (experimentMarker)
+            experimentMarker.lslStreamName = "ExperimentMarkerStream";
         }
 
         void Start()
@@ -98,9 +100,8 @@ namespace Assets.NinjaGame.Scripts
                     if(experimentMarker!=null)
                         experimentMarker.Write("begin_experiment_condition");
                 }
-                if ((SceneManager.GetActiveScene().name == experimentScene) && NinjaGame.generatedTrials.Count == 0)
+                if ((NinjaGame.generatedTrials!=null) && (NinjaGame.generatedTrials.Count == 0))
                 {
-
                     Debug.Log("Load post experiment scene");
                     if (model != null)
                         model.SetActive(true);

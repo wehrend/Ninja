@@ -175,7 +175,7 @@ namespace Assets.NinjaGame.Scripts
             {
                 float previousAngle=0;
                 List<Transform> spawnerInstances = Enumerable.Repeat(transform, parallelSpawns).ToList();
-                Debug.Log(spawnerInstances.Count);
+                //Debug.Log(spawnerInstances.Count);
                 var position = Vector3.one + Vector3.up * (height - 1);
                 center = new Vector3(0, 2.0f, 0);
                 foreach (var spawner in spawnerInstances)

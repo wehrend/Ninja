@@ -41,7 +41,7 @@ namespace Assets.NinjaGame.Scripts
             if (scoresText)
                 scoresText.text="0 Trials";
         }
-        
+
         void Update()
         {
             if (scene.name.Contains("Empty_room"))
@@ -49,11 +49,19 @@ namespace Assets.NinjaGame.Scripts
             else
             {
                 if (scoresText && NinjaGame.generatedTrials != null)
-                 scoresText.text = "Counting Trials :\n" + NinjaGame.generatedTrials.Count;
+                    scoresText.text = "Counting Trials :\n" + NinjaGame.generatedTrials.Count;
                 //healthBar.size = (float) NinjaGame.game.health / 1000f;
             }
-        }
 
+            if ((NinjaGame.generatedTrials != null) && (NinjaGame.generatedTrials.Count == 0))
+            {
+                if (instructionText)
+                {
+                    instructionText.color = Color.blue;
+                    instructionText.text = "Ok. Experiment is finished. Thanks for being part of it";
+                }
+            }
+        }
 
         void gameOver(object sender, NinjaGameEventArgs eve)
         {

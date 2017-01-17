@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 54000013464383600}
   - component: {fileID: 114000010597440812}
   m_Layer: 0
-  m_Name: 14
+  m_Name: 22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109,7 +109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distance: 8
-  startPoint: {x: 6.928203, y: 2, z: 3.9999998}
+  startPoint: {x: -6.1283565, y: 2, z: 5.1422997}
   color:
     serializedVersion: 2
     rgba: 4278255360

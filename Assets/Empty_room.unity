@@ -860,27 +860,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1666455106}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1687247669 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 191234, guid: 16ac3dad9343f9d4e80a174776825923, type: 2}
-  m_PrefabInternal: {fileID: 415945007}
---- !u!114 &1687247670
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1687247669}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf81db5e8af04e54280dca36cce9cf1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dataRate: 0
-  StreamName: SituationalAwareness.Unity.ViveData
-  StreamType: rigidBody
-  ChannelCount: 7
-  sampling: 0
-  sampleSource: {fileID: 0}
 --- !u!1 &1790342740
 GameObject:
   m_ObjectHideFlags: 0

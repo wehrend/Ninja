@@ -12,6 +12,7 @@ namespace Assets.NinjaGame.Scripts
     public class RBHmdStream : MonoBehaviour
     {
         public const string unique_source_id = "A723E9DC2E5A4EA5959C2772DA1D3DB3";
+        public const string StreamName = "Rigid_HMD";
 
         SteamVR_Camera cameraInfo;
 
@@ -50,7 +51,7 @@ namespace Assets.NinjaGame.Scripts
             return false;
         }
 
-        public string StreamName = "Rigid_HMD";
+        //public string StreamName = "Rigid_HMD";
         public string StreamType = "rigidBody";
         // we use 7 DoF:
         // 3 Pos. (x,y,z) + 4 Rot (x,y,z,w)   

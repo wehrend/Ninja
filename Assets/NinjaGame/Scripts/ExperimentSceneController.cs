@@ -19,6 +19,9 @@ namespace Assets.NinjaGame.Scripts
         public string experimentScene = "experimentScene";
         public string postExperimentScene;
         public bool showModelInExpScene = false;
+        public int waitTimeAfterLastTrialSpawn=7;
+       // public const string expMarkerStreamName = "ExperimentMarkerStream";
+
         //Next todo: using singletones here 
         public static ExperimentInfo experimentInfo;
         bool preflag, postflag;
@@ -32,11 +35,9 @@ namespace Assets.NinjaGame.Scripts
         void Awake()
         {
           experimentInfo = new ExperimentInfo();
-          rbControllerStream= GetComponent<RBControllerStream>();
+          rbControllerStream= GetComponent<RBControllerStream>(); 
           rbHmdStream = GetComponent<RBHmdStream>();
-          experimentMarker = gameObject.AddComponent<LSLMarkerStream>() as LSLMarkerStream;
-          if (experimentMarker!=null)
-            experimentMarker.lslStreamName = "ExperimentMarkerStream";
+          experimentMarker = gameObject.GetComponent<LSLMarkerStream>();
         }
 
         void Start()
@@ -44,7 +45,8 @@ namespace Assets.NinjaGame.Scripts
             preExperimentScene = "Empty_room";
             experimentScene = "experimentScene";
             postExperimentScene = "Empty_room";
-
+            preflag = false;
+            postflag = false;
             //Assert.IsNotNull(experimentMarker, "You forgot to assign the reference to a marker stream implementation!");
 
             //is SteamVR working??
@@ -64,8 +66,7 @@ namespace Assets.NinjaGame.Scripts
                 }
                 Debug.Log("Start empty Room scene");
                 SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Additive);
-                preflag = false;
-                postflag = false;
+
             } else {
                 Debug.LogError("No instance of SteamVR found!");
             }
@@ -93,7 +94,8 @@ namespace Assets.NinjaGame.Scripts
                     //unload model
 
                     model = GameObject.Find("Model");
-                    Debug.LogWarning("Found model:" + model.name);
+                    if(model !=null)
+                        Debug.LogWarning("Found model:" + model.name);
                     if (model != null)
                         model.SetActive(showModelInExpScene);
                     Debug.Log("Start Experiment");
@@ -104,10 +106,17 @@ namespace Assets.NinjaGame.Scripts
                         experimentMarker.Write("begin_experiment_condition");
                     }
                 }
-                if ((NinjaGame.generatedTrials != null) && (NinjaGame.generatedTrials.Count == 0) && !postflag)
-                    //invoke after some time waiting for last bubbles
-                    Invoke("EndExperiment", 15);
-                    postflag = true;
+
+                if (NinjaGame.generatedTrials != null){
+   
+                    if ((NinjaGame.generatedTrials.Count == 0) && (!postflag)){
+                        //invoke after some time waiting for last bubbles
+                        Debug.Log("invoking");
+                        Invoke("EndExperiment", waitTimeAfterLastTrialSpawn);
+                        postflag = true;
+                    }
+
+                }
             }
             else
             {

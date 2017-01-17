@@ -89,6 +89,7 @@ namespace Assets.NinjaGame.Scripts
             if (Time.realtimeSinceStartup > 5)
                 Body.AddRelativeForce(Vector3.forward * velocity, ForceMode.Force);
 
+
         }
 
 
@@ -100,7 +101,7 @@ namespace Assets.NinjaGame.Scripts
             {
                 print(contact.thisCollider.name + " hit " + contact.otherCollider.name);
             }
-           
+
 
             if (collisionForce > 0)
             {

@@ -69,7 +69,7 @@ namespace Assets.NinjaGame.Scripts
 {
     public class RBControllerStream : MonoBehaviour {
         public const string unique_source_id = "21888D87A8084180A5D3282B077DC881";
-
+        public const string StreamName = "Rigid_Controller";
         SteamVR_Controller.Device firstDevice;
 
         int firstControllerIndex;
@@ -109,7 +109,7 @@ namespace Assets.NinjaGame.Scripts
             return false;
         }
 
-        public string StreamName = "Rigid_Controller";
+        //public string StreamName = "Rigid_Controller";
         public string StreamType = "rigidBody";
         // we use 7 DoF:
         // 3 Pos. (x,y,z) + 4 Rot (x,y,z,w)   

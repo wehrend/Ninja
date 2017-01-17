@@ -29,8 +29,8 @@ namespace Assets.NinjaGame.Scripts
         RBControllerStream rbControllerStream;
         RBHmdStream rbHmdStream;
         public static LSLMarkerStream experimentMarker;
-
-        
+        private int deviceIndex;
+        private bool triggerPressed;
         // Use this for initialization
         void Awake()
         {
@@ -42,6 +42,7 @@ namespace Assets.NinjaGame.Scripts
 
         void Start()
         {
+    
             preExperimentScene = "Empty_room";
             experimentScene = "experimentScene";
             postExperimentScene = "Empty_room";
@@ -51,6 +52,10 @@ namespace Assets.NinjaGame.Scripts
 
             //is SteamVR working??
             if (SteamVR.instance != null) {
+                //Get Controller index
+                deviceIndex = SteamVR_Controller.GetDeviceIndex(SteamVR_Controller.DeviceRelation.Rightmost);
+                if (deviceIndex == -1)
+                    Debug.LogError("Please switch controller on!");
 
                 if (rbControllerStream != null)
                 {
@@ -75,12 +80,21 @@ namespace Assets.NinjaGame.Scripts
         // Update is called once per frame
         void Update()
         {
+
             if (SteamVR.instance != null)
             {
                 // We need this solution to get rid of the CameraRig in the MainScene
-                int deviceIndex = SteamVR_Controller.GetDeviceIndex(SteamVR_Controller.DeviceRelation.Rightmost);
+
                 //Debug.Log("deviceIndex: " + deviceIndex);
-                bool triggerPressed = SteamVR_Controller.Input(deviceIndex).GetPressDown(SteamVR_Controller.ButtonMask.Trigger);
+                if (deviceIndex == -1)
+                {
+                    //check again
+                    deviceIndex = SteamVR_Controller.GetDeviceIndex(SteamVR_Controller.DeviceRelation.Rightmost);
+                }
+                else
+                {
+                    triggerPressed = SteamVR_Controller.Input(deviceIndex).GetPressDown(SteamVR_Controller.ButtonMask.Trigger);
+                }
                 //Debug.Log("trigger status: " + triggerPressed);
                 if (preflag == false && triggerPressed)
                 {

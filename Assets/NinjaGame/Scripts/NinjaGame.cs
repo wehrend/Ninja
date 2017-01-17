@@ -79,7 +79,7 @@ namespace Assets.NinjaGame.Scripts
                 parallelSpawns = trialsConfig.experiment.parallelSpawns;
                 pausetime = trialsConfig.experiment.pausetime;
                 generatedTrials =trialsConfig.GenerateTrialsList(trialsConfig.listOfTrials);
-                trialsMax = generatedTrials.Count+2;//hack, actually not sure why necessary
+                trialsMax = generatedTrials.Count;
                 Debug.Log("Config from" + expectedTrialsConfig + "with " + generatedTrials.Count + " trials successfully loaded!");
             }
         }

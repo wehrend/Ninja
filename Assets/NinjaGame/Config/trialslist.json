@@ -6,7 +6,7 @@
     },
     "listOfTrials": [
         {
-            "instances": 5,
+            "instances": 6,
             "trial": "Distract",
             "color": {
                 "r": 1.0,
@@ -19,7 +19,7 @@
             "distance": 9.0
         },
         {
-            "instances": 15,
+            "instances": 16,
             "trial": "Target",
             "color": {
                 "r": 0.0,

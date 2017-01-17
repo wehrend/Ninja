@@ -66,9 +66,10 @@ namespace Assets.NinjaGame.Scripts
         public List<Trial> GenerateTrialsList( List<Trial> exemplaricBaseTrials )
         {
             List<Trial> trials= new List<Trial>();
+
             foreach (Trial e in exemplaricBaseTrials)
                 {
-                for (int i = 0; i < e.instances - 1; i++)
+                for (int i = 0; i < e.instances; i++)
                     trials.Add(e);
                 }
             return trials;

@@ -127,6 +127,10 @@ MonoBehaviour:
   postExperimentScene: 
   showModelInExpScene: 0
   waitTimeAfterLastTrialSpawn: 7
+  userInitTime: 15
+  baselineDuration: 30
+  recordingflag: 0
+  finishedflag: 0
 --- !u!4 &847916919
 Transform:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Valve.VR;
 using Assets.LSL4Unity.Scripts;
@@ -20,17 +21,22 @@ namespace Assets.NinjaGame.Scripts
         public string postExperimentScene;
         public bool showModelInExpScene = false;
         public int waitTimeAfterLastTrialSpawn=7;
-       // public const string expMarkerStreamName = "ExperimentMarkerStream";
+        public float userInitTime = 15.00f;
+        public float baselineDuration = 180.00f;
+        // public const string expMarkerStreamName = "ExperimentMarkerStream";
 
         //Next todo: using singletones here 
         public static ExperimentInfo experimentInfo;
-        bool preflag, postflag;
+        public bool preflag, postflag;
         GameObject model;
         RBControllerStream rbControllerStream;
         RBHmdStream rbHmdStream;
+        ScoreAndStats texts;
         public static LSLMarkerStream experimentMarker;
         private int deviceIndex;
         private bool triggerPressed;
+        private bool initflag, endflag;
+        public bool recordingflag, finishedflag;
         // Use this for initialization
         void Awake()
         {
@@ -42,12 +48,14 @@ namespace Assets.NinjaGame.Scripts
 
         void Start()
         {
-    
+  
             preExperimentScene = "Empty_room";
             experimentScene = "experimentScene";
             postExperimentScene = "Empty_room";
             preflag = false;
             postflag = false;
+            recordingflag = false;
+            finishedflag = false;
             //Assert.IsNotNull(experimentMarker, "You forgot to assign the reference to a marker stream implementation!");
 
             //is SteamVR working??
@@ -71,11 +79,53 @@ namespace Assets.NinjaGame.Scripts
                 }
                 Debug.Log("Start empty Room scene");
                 SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Additive);
-
             } else {
                 Debug.LogError("No instance of SteamVR found!");
             }
         }
+
+
+
+
+        void InitBaseline()
+        {
+
+            if (!initflag)
+            {
+                
+                Debug.Log("Init baseline...");
+                recordingflag = true;
+           
+                if (experimentMarker != null)
+                {
+                    experimentMarker.Write("begin_baseline_condition");
+                    Debug.Log("begin_baseline_condition");
+                }
+                initflag = true;
+            }
+
+        }
+
+        void EndBaseline()
+        {
+
+            if (!endflag)
+            {
+
+                Debug.Log("End baseline...");
+                if (experimentMarker != null)
+                {
+                    experimentMarker.Write("end_baseline_condition");
+                    Debug.Log("end_baseline_condition");
+                }
+
+                endflag = true;
+                recordingflag = false;
+            }
+        }
+
+
+
 
         // Update is called once per frame
         void Update()
@@ -120,14 +170,27 @@ namespace Assets.NinjaGame.Scripts
                         experimentMarker.Write("begin_experiment_condition");
                     }
                 }
+                // aka if no experiment scene loaded 
+                if (NinjaGame.generatedTrials == null)
+                {
+                    if (Time.time > userInitTime)
+                    {
+                        //Debug.Log(Time.time);
+                        InitBaseline();
 
-                if (NinjaGame.generatedTrials != null){
+                        if ((Time.time - userInitTime) > baselineDuration)
+
+                            EndBaseline();
+
+                    }
+                }
+                else if (NinjaGame.generatedTrials != null){
    
                     if ((NinjaGame.generatedTrials.Count == 0) && (!postflag)){
                         //invoke after some time waiting for last bubbles
                         Debug.Log("invoking");
                         Invoke("EndExperiment", waitTimeAfterLastTrialSpawn);
-                        postflag = true;
+
                     }
 
                 }
@@ -137,17 +200,21 @@ namespace Assets.NinjaGame.Scripts
                 Debug.LogError("No instance of SteamVR found!");
             }
         }
+
+
+
             void EndExperiment()
             {
                 Debug.Log("Load post experiment scene");
                 if (model != null)
                     model.SetActive(true);
-                SceneManager.LoadSceneAsync(postExperimentScene, LoadSceneMode.Additive);
+                SceneManager.LoadSceneAsync(postExperimentScene, LoadSceneMode.Single);
+
                 if (experimentMarker != null)
                     Debug.Log("Should Write Marker: end_experiment_condition");
                 experimentMarker.Write("end_experiment_condition");
-
-            }
+                postflag = true;
+        }
 
         }
      

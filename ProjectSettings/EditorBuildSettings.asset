@@ -18,6 +18,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/MainScene.unity
   - enabled: 1
+    path: Assets/01_simpleGazeSelection/BoxRoom.unity
+  - enabled: 1
     path: Assets/Empty_room.unity
   - enabled: 1
     path: Assets/experimentScene.unity

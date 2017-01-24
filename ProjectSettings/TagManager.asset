@@ -6,6 +6,11 @@ TagManager:
   tags:
   - kill zone
   - New Tag
+  - FxTemporaire
+  - Fire
+  - projectile
+  - TeleportIgnore
+  - CalibrationCamera
   layers:
   - Default
   - TransparentFX
@@ -16,7 +21,7 @@ TagManager:
   - 
   - 
   - Floor
-  - 
+  - CalibrationView
   - 
   - 
   - 

@@ -4,86 +4,143 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using MonsterLove.StateMachine;
 using Valve.VR;
 using Assets.LSL4Unity.Scripts;
 using UnityEngine.Assertions;
+using SMI;
 
 namespace Assets.NinjaGame.Scripts
 {
     //Big Todo: Make scenes single, not additive !
     //But this involves some interscene communication probs.
     //TODO: Make static / singletone 
+
     public class ExperimentSceneController : MonoBehaviour
     {
+        public enum SceneStates
+        {
+            None,
+            CalibrateScene,
+            PreScene,
+            ExperimentScene,
+            PostScene
+        }
+
         public double rbStreamDataRate = 90.00;
+        public string calibrationScene = "BoxRoom";
         public string preExperimentScene = "Empty_room";
         public string experimentScene = "experimentScene";
         public string postExperimentScene;
         public bool showModelInExpScene = false;
-        public int waitTimeAfterLastTrialSpawn=7;
+        public int waitTimeAfterLastTrialSpawn = 7;
         public float userInitTime = 15.00f;
         public float baselineDuration = 180.00f;
+        private float timeOfEnterRoomScene;
         // public const string expMarkerStreamName = "ExperimentMarkerStream";
-
+        public StateMachine<SceneStates> sceneFsm;
         //Next todo: using singletones here 
         public static ExperimentInfo experimentInfo;
         public bool preflag, postflag;
         GameObject model;
         RBControllerStream rbControllerStream;
         RBHmdStream rbHmdStream;
-        ScoreAndStats texts;
+        ScoreAndStats texts; 
+
+        public bool isSMIvive;
         public static LSLMarkerStream experimentMarker;
+        private bool initialized;
         private int deviceIndex;
         private bool triggerPressed;
-        private bool initflag, endflag;
+        private bool initflag,endflag;
+        private float timeInCalibrationScene;
+        private bool calibrationflag;
         public bool recordingflag, finishedflag;
+
         // Use this for initialization
         void Awake()
         {
-          experimentInfo = new ExperimentInfo();
-          rbControllerStream= GetComponent<RBControllerStream>(); 
-          rbHmdStream = GetComponent<RBHmdStream>();
-          experimentMarker = gameObject.GetComponent<LSLMarkerStream>();
+            initialized = false;
+            experimentInfo = new ExperimentInfo();
+            rbControllerStream = GetComponent<RBControllerStream>();
+            rbHmdStream = GetComponent<RBHmdStream>();
+            experimentMarker = gameObject.GetComponent<LSLMarkerStream>();
+            sceneFsm = StateMachine<SceneStates>.Initialize(this, SceneStates.None);
+            if (sceneFsm!=null)
+                Debug.Log("Scene FSM found");
+
         }
 
-        void Start()
+
+        void OnGUI()
         {
-  
-            preExperimentScene = "Empty_room";
-            experimentScene = "experimentScene";
-            postExperimentScene = "Empty_room";
-            preflag = false;
-            postflag = false;
-            recordingflag = false;
-            finishedflag = false;
-            //Assert.IsNotNull(experimentMarker, "You forgot to assign the reference to a marker stream implementation!");
+            if (!initialized)
+            {
+                Debug.Log("InitScene");
 
-            //is SteamVR working??
-            if (SteamVR.instance != null) {
-                //Get Controller index
-                deviceIndex = SteamVR_Controller.GetDeviceIndex(SteamVR_Controller.DeviceRelation.Rightmost);
-                if (deviceIndex == -1)
-                    Debug.LogError("Please switch controller on!");
+                preExperimentScene = "Empty_room";
+                experimentScene = "experimentScene";
+                postExperimentScene = "Empty_room";
+                preflag = false;
+                postflag = false;
+                calibrationflag = false;
+                recordingflag = false;
+                finishedflag = false;
+                //Assert.IsNotNull(experimentMarker, "You forgot to assign the reference to a marker stream implementation!");
 
-                if (rbControllerStream != null)
+              
+                //is SteamVR working??
+                if (SteamVR.instance != null)
                 {
-                    rbControllerStream.SetDataRate(rbStreamDataRate);
-                    if (rbControllerStream.GetDataRate() == rbStreamDataRate)
-                        Debug.Log("Set LSL data rate for RB Controller set to " + rbStreamDataRate + "Hz.");
+                    //Get Controller index
+
+                    deviceIndex = SteamVR_Controller.GetDeviceIndex(SteamVR_Controller.DeviceRelation.Rightmost);
+                    if (deviceIndex == -1)
+                        Debug.LogError("Please switch controller on!");
+
+                    if (rbControllerStream != null)
+                    {
+                        rbControllerStream.SetDataRate(rbStreamDataRate);
+                        if (rbControllerStream.GetDataRate() == rbStreamDataRate)
+                            Debug.Log("Set LSL data rate for RB Controller set to " + rbStreamDataRate + "Hz.");
+                    }
+                    if (rbHmdStream != null)
+                    {
+                        rbHmdStream.SetDataRate(rbStreamDataRate);
+                        if (rbHmdStream.GetDataRate() == rbStreamDataRate)
+                            Debug.Log("Set LSL data rate for RB Hmd set to " + rbStreamDataRate + "Hz.");
+                    }
+                    initialized = true;
+                    if (isSMIvive)
+                    {
+                            Debug.Log("Load calibrate scene");
+                            sceneFsm.ChangeState(SceneStates.CalibrateScene, StateTransition.Overwrite);
+
+                    }
+                    else
+                    {
+                        Debug.Log("No SMI Vive available, load room scene");
+                        sceneFsm.ChangeState(SceneStates.PreScene);
+                    }
+
                 }
-                if (rbHmdStream != null)
+                else
                 {
-                    rbHmdStream.SetDataRate(rbStreamDataRate);
-                    if (rbHmdStream.GetDataRate() == rbStreamDataRate)
-                        Debug.Log("Set LSL data rate for RB Hmd set to " + rbStreamDataRate + "Hz.");
+                    Debug.LogError("No instance of SteamVR found!");
+                    initialized = true;
+
                 }
-                Debug.Log("Start empty Room scene");
-                SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Additive);
-            } else {
-                Debug.LogError("No instance of SteamVR found!");
             }
         }
 
+
+
+        void CalibrateScene_Enter()
+        {
+                SceneManager.LoadSceneAsync(calibrationScene, LoadSceneMode.Additive);
+                Debug.Log("Start Calibration scene");
+
+        }
 
 
 
@@ -92,10 +149,10 @@ namespace Assets.NinjaGame.Scripts
 
             if (!initflag)
             {
-                
+
                 Debug.Log("Init baseline...");
                 recordingflag = true;
-           
+
                 if (experimentMarker != null)
                 {
                     experimentMarker.Write("begin_baseline_condition");
@@ -124,16 +181,73 @@ namespace Assets.NinjaGame.Scripts
             }
         }
 
-
-
-
-        // Update is called once per frame
-        void Update()
+        void CalibrateScene_Update()
         {
-
             if (SteamVR.instance != null)
             {
-                // We need this solution to get rid of the CameraRig in the MainScene
+
+       
+                    //if calibration successfull
+                    if (SMICalibrationVisualizer.stateOfTheCalibrationView.Equals(SMICalibrationVisualizer.VisualisationState.None))
+                    {
+                        Debug.Log("Calibration successfully");
+                        //wait some time...
+                        if ((sceneFsm.State == SceneStates.CalibrateScene) && (Time.time > 20))
+                        {
+
+                            sceneFsm.ChangeState(SceneStates.PreScene);
+                            // Debug.Log("Unload calibrationScene");
+
+                            //SceneManager.UnloadSceneAsync(calibrationScene);
+
+                            // Debug.Log("Load preExperimentScene");
+                            // SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Additive);
+
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("Current VisualisationState is" + SMICalibrationVisualizer.stateOfTheCalibrationView);
+                    }
+                
+             
+                timeInCalibrationScene = Time.time;
+
+                userInitTime = userInitTime + timeInCalibrationScene;
+            }
+        }
+
+
+        void PreScene_Enter()
+        {
+
+            if (sceneFsm.LastState == SceneStates.CalibrateScene)
+            {
+                Debug.Log("Unload calibrationScene");
+                SceneManager.UnloadSceneAsync(calibrationScene);
+            }
+            Debug.Log("Load preExperimentScene");
+            SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Additive);
+            timeOfEnterRoomScene = Time.time;
+        }
+
+
+        void PreScene_Update()
+        {
+            if (SteamVR.instance != null)
+            {
+                if (Time.time - timeOfEnterRoomScene > userInitTime)
+                {
+                    //Debug.Log(Time.time);
+                    InitBaseline();
+
+                    if (((Time.time - timeOfEnterRoomScene) - userInitTime) > baselineDuration)
+
+                        EndBaseline();
+
+                }
+
+
 
                 //Debug.Log("deviceIndex: " + deviceIndex);
                 if (deviceIndex == -1)
@@ -146,78 +260,59 @@ namespace Assets.NinjaGame.Scripts
                     triggerPressed = SteamVR_Controller.Input(deviceIndex).GetPressDown(SteamVR_Controller.ButtonMask.Trigger);
                 }
                 //Debug.Log("trigger status: " + triggerPressed);
-                if (preflag == false && triggerPressed)
+                if (triggerPressed)
                 {
-                    preflag = true;
-
-
-                    var emptyRoom = SceneManager.GetActiveScene();
-                    //SceneManager.UnloadSceneAsync(emptyRoom);
-                    //Debug.Log("Unload Scene");
-
                     //unload model
 
                     model = GameObject.Find("Model");
-                    if(model !=null)
+                    if (model != null)
                         Debug.LogWarning("Found model:" + model.name);
                     if (model != null)
                         model.SetActive(showModelInExpScene);
+
                     Debug.Log("Start Experiment");
-                    SceneManager.LoadSceneAsync(experimentScene, LoadSceneMode.Additive);
-                    if (experimentMarker != null)
-                    {
-                        Debug.Log("Should Write Marker: begin_experiment_condition");
-                        experimentMarker.Write("begin_experiment_condition");
-                    }
-                }
-                // aka if no experiment scene loaded 
-                if (NinjaGame.generatedTrials == null)
-                {
-                    if (Time.time > userInitTime)
-                    {
-                        //Debug.Log(Time.time);
-                        InitBaseline();
-
-                        if ((Time.time - userInitTime) > baselineDuration)
-
-                            EndBaseline();
-
-                    }
-                }
-                else if (NinjaGame.generatedTrials != null){
-   
-                    if ((NinjaGame.generatedTrials.Count == 0) && (!postflag)){
-                        //invoke after some time waiting for last bubbles
-                        Debug.Log("invoking");
-                        Invoke("EndExperiment", waitTimeAfterLastTrialSpawn);
-
-                    }
-
+                    sceneFsm.ChangeState(SceneStates.ExperimentScene);
                 }
             }
-            else
+        }
+
+
+        void ExperimentScene_Enter()
+        {
+            Debug.Log("Load ExperimentScene");
+            SceneManager.LoadSceneAsync(experimentScene, LoadSceneMode.Additive);
+        }
+
+
+        void ExperimentScene_Update()
+        {
+            if (NinjaGame.generatedTrials.Count == 0)
             {
-                Debug.LogError("No instance of SteamVR found!");
+                sceneFsm.ChangeState(SceneStates.PostScene);
             }
         }
 
 
-
-            void EndExperiment()
-            {
-                Debug.Log("Load post experiment scene");
-                if (model != null)
-                    model.SetActive(true);
-                SceneManager.LoadSceneAsync(postExperimentScene, LoadSceneMode.Single);
-
-                if (experimentMarker != null)
-                    Debug.Log("Should Write Marker: end_experiment_condition");
-                experimentMarker.Write("end_experiment_condition");
-                postflag = true;
+        IEnumerator PostScene_Enter() {
+            yield return new WaitForSeconds(waitTimeAfterLastTrialSpawn);
         }
 
+
+
+        void PostScene_Update()
+        {
+            Debug.Log("Load post experiment scene");
+            if (model != null)
+                model.SetActive(true);
+            SceneManager.LoadSceneAsync(postExperimentScene, LoadSceneMode.Single);
+
+            if (experimentMarker != null)
+                Debug.Log("Should Write Marker: end_experiment_condition");
+            experimentMarker.Write("end_experiment_condition");
+            //postflag = true;
         }
-     
+
+    }
 
     [Serializable]
     public class ExperimentInfo : ScriptableObject

@@ -56,6 +56,8 @@ namespace Assets.NinjaGame.Scripts
         private float timeInCalibrationScene;
         private bool calibrationflag;
         public bool recordingflag, finishedflag;
+        private SMICalibrationVisualizer.VisualisationState previousState, currentState;
+
 
         // Use this for initialization
         void Awake()
@@ -185,14 +187,17 @@ namespace Assets.NinjaGame.Scripts
         {
             if (SteamVR.instance != null)
             {
+                currentState = SMICalibrationVisualizer.stateOfTheCalibrationView;
 
-       
-                    //if calibration successfull
-                    if (SMICalibrationVisualizer.stateOfTheCalibrationView.Equals(SMICalibrationVisualizer.VisualisationState.None))
-                    {
-                        Debug.Log("Calibration successfully");
+                //if calibration state transition
+                if (currentState != previousState)
+                {
+                    Debug.Log("ChangeState...");
+                    if (previousState == SMICalibrationVisualizer.VisualisationState.calibration && currentState== SMICalibrationVisualizer.VisualisationState.None) {
+                        Debug.Log("from calibrate to none");
+
                         //wait some time...
-                        if ((sceneFsm.State == SceneStates.CalibrateScene) && (Time.time > 20))
+                        if ((sceneFsm.State == SceneStates.CalibrateScene) && (Time.time > 3))
                         {
 
                             sceneFsm.ChangeState(SceneStates.PreScene);
@@ -204,16 +209,20 @@ namespace Assets.NinjaGame.Scripts
                             // SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Additive);
 
                         }
+                         }
                     }
                     else
                     {
-                        Debug.Log("Current VisualisationState is" + SMICalibrationVisualizer.stateOfTheCalibrationView);
+                       // Debug.Log("Current VisualisationState is" + SMICalibrationVisualizer.stateOfTheCalibrationView);
+                   
                     }
                 
              
                 timeInCalibrationScene = Time.time;
 
                 userInitTime = userInitTime + timeInCalibrationScene;
+                previousState = SMICalibrationVisualizer.stateOfTheCalibrationView;
+                
             }
         }
 

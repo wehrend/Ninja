@@ -104,6 +104,7 @@ GameObject:
   - component: {fileID: 847916921}
   - component: {fileID: 847916922}
   - component: {fileID: 847916923}
+  - component: {fileID: 847916924}
   m_Layer: 0
   m_Name: '[ExperimentSceneController]'
   m_TagString: Untagged
@@ -134,6 +135,7 @@ MonoBehaviour:
   preflag: 0
   postflag: 0
   isSMIvive: 1
+  startCalibrationTime: 0
   recordingflag: 0
   finishedflag: 0
 --- !u!4 &847916919
@@ -205,3 +207,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 940f0ab09fd541d47a7c0fe69e1ef54e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &847916924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 847916917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c5a57abf80428a4ab8ebd51326f573d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ChannelCount: 19
+  dataRate: 0
+  StreamType: Gaze
+  sampling: 0
+  sampleSource: {fileID: 0}

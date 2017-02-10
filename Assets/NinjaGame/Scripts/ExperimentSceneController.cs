@@ -54,8 +54,11 @@ namespace Assets.NinjaGame.Scripts
         private bool triggerPressed;
         private bool initflag,endflag;
         private float timeInCalibrationScene;
+        public float startCalibrationTime;
         private bool calibrationflag;
+
         public bool recordingflag, finishedflag;
+       // private SMICalibrationVisualizer calibViz;
         private SMICalibrationVisualizer.VisualisationState previousState, currentState;
 
 
@@ -70,8 +73,11 @@ namespace Assets.NinjaGame.Scripts
             sceneFsm = StateMachine<SceneStates>.Initialize(this, SceneStates.None);
             if (sceneFsm!=null)
                 Debug.Log("Scene FSM found");
+           // calibViz = GameObject.FindObjectOfType(typeof(SMICalibrationVisualizer)) as SMICalibrationVisualizer;
+           // Debug.Log("Found: "+calibViz.ToString());
 
         }
+
 
 
         void OnGUI()
@@ -139,8 +145,8 @@ namespace Assets.NinjaGame.Scripts
 
         void CalibrateScene_Enter()
         {
-                SceneManager.LoadSceneAsync(calibrationScene, LoadSceneMode.Additive);
-                Debug.Log("Start Calibration scene");
+            SceneManager.LoadSceneAsync(calibrationScene, LoadSceneMode.Additive);
+            Debug.Log("Start Calibration scene");
 
         }
 
@@ -187,42 +193,32 @@ namespace Assets.NinjaGame.Scripts
         {
             if (SteamVR.instance != null)
             {
-                currentState = SMICalibrationVisualizer.stateOfTheCalibrationView;
-
-                //if calibration state transition
-                if (currentState != previousState)
-                {
-                    Debug.Log("ChangeState...");
-                    if (previousState == SMICalibrationVisualizer.VisualisationState.calibration && currentState== SMICalibrationVisualizer.VisualisationState.None) {
-                        Debug.Log("from calibrate to none");
-
-                        //wait some time...
-                        if ((sceneFsm.State == SceneStates.CalibrateScene) && (Time.time > 3))
-                        {
-
-                            sceneFsm.ChangeState(SceneStates.PreScene);
-                            // Debug.Log("Unload calibrationScene");
-
-                            //SceneManager.UnloadSceneAsync(calibrationScene);
-
-                            // Debug.Log("Load preExperimentScene");
-                            // SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Additive);
-
-                        }
-                         }
-                    }
-                    else
+        
+                    Debug.Log(SMICalibrationVisualizer.Instance.ToString());
+                    if ((Input.GetKeyDown(KeyCode.Alpha3)) || (Input.GetKeyDown(KeyCode.Alpha5)))
                     {
-                       // Debug.Log("Current VisualisationState is" + SMICalibrationVisualizer.stateOfTheCalibrationView);
-                   
+                        startCalibrationTime = Time.time;
+                        Debug.Log("Accept key at time: " + startCalibrationTime);
                     }
                 
-             
-                timeInCalibrationScene = Time.time;
+                    //wait some time...
+                    if ((sceneFsm.State == SceneStates.CalibrateScene) && (Time.time - startCalibrationTime > 30))
+                    {
 
-                userInitTime = userInitTime + timeInCalibrationScene;
-                previousState = SMICalibrationVisualizer.stateOfTheCalibrationView;
-                
+                        sceneFsm.ChangeState(SceneStates.PreScene);
+                        Debug.Log("Unload calibrationScene");
+
+                        //SceneManager.UnloadSceneAsync(calibrationScene);
+
+                        // Debug.Log("Load preExperimentScene");
+                        // SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Additive);
+
+                    }
+
+            timeInCalibrationScene = Time.time;
+
+            userInitTime = userInitTime + timeInCalibrationScene;
+        
             }
         }
 

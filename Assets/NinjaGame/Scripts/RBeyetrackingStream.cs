@@ -5,6 +5,7 @@
 // 
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using LSL;
 using Assets.LSL4Unity.Scripts;
 using Assets.LSL4Unity.Scripts.Common;
@@ -21,16 +22,14 @@ namespace Assets.NinjaGame.Scripts
     {
         public const string unique_source_id = "881A35BC64454035B52C9C518C250E69";
         public const string StreamName = "Rigid_Eyetracking";
-        public const string unique_source_idGoIF = "7D7A50ADABCD4E159C5EDCB787426921";
-        public const string StreamNameGoIF = "GameObjectInFocus";
+
         public int ChannelCount = 19;
         //smi
         private SMI.SMIGazeController gazeCon;
         private SMI.SMIGazeController.unity_SampleHMD sample;
-        public GameObject goInFocus;
         //lsl
-        private liblsl.StreamOutlet outlet, outletGoIF;
-        private liblsl.StreamInfo streamInfoGaze, streamInfoGoIF;
+        private liblsl.StreamOutlet outlet;
+        private liblsl.StreamInfo streamInfoGaze;
         //private liblsl.XMLElement objs, obj;
         private liblsl.XMLElement channels, chan;
         public liblsl.StreamInfo GetStreamInfo()
@@ -66,7 +65,6 @@ namespace Assets.NinjaGame.Scripts
         }
 
         public string StreamType = "Gaze";
-        public string StreamTypeGoIF = "GameObject";
 
 
         public MomentForSampling sampling;
@@ -78,7 +76,18 @@ namespace Assets.NinjaGame.Scripts
 
             // initialize the array once
             currentSample = new double[ChannelCount];
-            gazeCon = GetComponent<SMIGazeController>();
+
+            /*var eyetracking = FindObjectOfType(typeof(SMIEyetracking)) as SMIEyetracking;
+            if (eyetracking)
+            {
+                Debug.Log("Found SMIEyetracking object");
+            }
+            gazeCon = eyetracking.GetComponent<SMIGazeControl/ler>();
+            if (gazeCon != null)
+            {
+                Debug.Log("Get SMI GazeController");
+            }
+            */
             //
 
             streamInfoGaze = new liblsl.StreamInfo(StreamName, StreamType, ChannelCount, dataRate, liblsl.channel_format_t.cf_float32, unique_source_id);
@@ -128,14 +137,6 @@ namespace Assets.NinjaGame.Scripts
                 .append_child_value("manufacturer", "SMI");
             // instantiate gaze data outlet
             outlet = new liblsl.StreamOutlet(streamInfoGaze);
-
-
-            streamInfoGoIF = new liblsl.StreamInfo(StreamNameGoIF, StreamTypeGoIF, ChannelCount, dataRate, liblsl.channel_format_t.cf_string,unique_source_idGoIF);
-            // instantiate gameObject in focus data outlet
-            outletGoIF = new liblsl.StreamOutlet(streamInfoGoIF);
-            streamInfoGoIF.desc().append_child("synchronization").append_child_value("can_drop_samples", "false");
-            channels.append_child("channel").append_child_value("label", "GameObjectInFocus");
-            //.append_child_value("eye", "both").append_child_value("type", "ScreenX").append_child_value("unit", "pixels");
         }
 
         private void pushSample()
@@ -148,7 +149,10 @@ namespace Assets.NinjaGame.Scripts
             {
                 sample = gazeCon.smi_getSample();
                 // assemble gaze sample
-
+                if (Time.time % 10==0)
+                {
+                    Debug.Log("Left POR: " + sample.left.por.x+","+ sample.right.por.y + "Right POR: "+sample.right.por.x +","+ sample.right.por.y);
+                }
                 currentSample[0] = sample.por.x;
                 currentSample[1] = sample.por.y;
                 currentSample[2] = sample.left.por.x;
@@ -184,16 +188,6 @@ namespace Assets.NinjaGame.Scripts
                 outlet.push_sample(currentSample, liblsl.local_clock());
             }
 
-            /* goInFocus = SMIGazeController.Instance.smi_getGameObjectInFocus();
-    
-             if (goInFocus != null)
-
-             {
-
-              if(outletGoIF!=null)
-                    outletGoIF.push_sample(goInFocus.name.ToString(), liblsl.local_clock());
-             }*/
-
         }
 
         void FixedUpdate()
@@ -216,9 +210,6 @@ namespace Assets.NinjaGame.Scripts
 
                 
         }
-
-       
-
 
     }
 }

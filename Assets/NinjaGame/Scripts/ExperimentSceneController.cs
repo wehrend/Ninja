@@ -194,7 +194,7 @@ namespace Assets.NinjaGame.Scripts
             if (SteamVR.instance != null)
             {
         
-                    Debug.Log(SMICalibrationVisualizer.Instance.ToString());
+        //            Debug.Log(SMICalibrationVisualizer.Instance.ToString());
                     if ((Input.GetKeyDown(KeyCode.Alpha3)) || (Input.GetKeyDown(KeyCode.Alpha5)))
                     {
                         startCalibrationTime = Time.time;

@@ -30,7 +30,7 @@ namespace Assets.NinjaGame.Scripts
         //lsl
         private liblsl.StreamOutlet outlet;
         private liblsl.StreamInfo streamInfoGaze;
-
+       
 
         public static RBeyetrackingStream instance;
 
@@ -77,6 +77,7 @@ namespace Assets.NinjaGame.Scripts
 
         void Awake()
         {
+
             if (!instance)
             {
                 instance = this;
@@ -90,7 +91,7 @@ namespace Assets.NinjaGame.Scripts
                 {
                     Debug.Log("Found SMIEyetracking object");
                 }
-                gazeCon = eyetracking.GetComponent<SMIGazeControl/ler>();
+                gazeCon = eyetracking.GetComponent<SMIGazeController>();
                 if (gazeCon != null)
                 {
                     Debug.Log("Get SMI GazeController");
@@ -208,7 +209,14 @@ namespace Assets.NinjaGame.Scripts
         {
             if (sampling == MomentForSampling.Update)
                 pushSample();
-
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                ToogleEyeMonitor();
+            }
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                ToggleStreaming();
+            }
         }
 
         void LateUpdate()
@@ -218,6 +226,40 @@ namespace Assets.NinjaGame.Scripts
 
                 
         }
+
+        bool showeyeImages = true;
+        public void ToogleEyeMonitor()
+        {
+            showeyeImages = !showeyeImages;
+            if (showeyeImages)
+            {
+                Debug.Log("smi_ShowEyeImageMonitor");
+                SMIGazeController.SMIcWrapper.smi_showEyeImageMonitor();
+            }
+            else
+            {
+                Debug.Log("smi_HideEyeImageMonitor");
+                SMIGazeController.SMIcWrapper.smi_hideEyeImageMonitor();
+            }
+        }
+        //Test streaming start/stop
+        bool isStreaming = true;
+        public void ToggleStreaming()
+        {
+            bool simulate = false;
+            System.IntPtr trackingInfo = System.IntPtr.Zero;
+            if (!isStreaming)
+            {
+                SMI.SMIGazeController.SMIcWrapper.smi_startStreaming(simulate, trackingInfo);
+                isStreaming = true;
+            }
+            else
+            {
+                SMI.SMIGazeController.SMIcWrapper.smi_stopStreaming();
+                isStreaming = false;
+            }
+        }
+
 
         public static RBeyetrackingStream Instance
         {
@@ -229,7 +271,7 @@ namespace Assets.NinjaGame.Scripts
                     if (!instance)
                     {
                         GameObject gameObject = new GameObject();
-                        gameObject.name = "RBeyetrackingStrema";
+                        gameObject.name = "RBeyetrackingStream";
                         instance = gameObject.AddComponent(typeof(RBeyetrackingStream)) as RBeyetrackingStream;
 
                     }

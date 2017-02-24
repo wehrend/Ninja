@@ -10,6 +10,7 @@ using Assets.LSL4Unity.Scripts;
 using UnityEngine.Assertions;
 using SMI;
 
+
 namespace Assets.NinjaGame.Scripts
 {
     //Big Todo: Make scenes single, not additive !
@@ -26,7 +27,7 @@ namespace Assets.NinjaGame.Scripts
             ExperimentScene,
             PostScene
         }
-
+           
         public double rbStreamDataRate = 90.00;
         public string calibrationScene = "BoxRoom";
         public string preExperimentScene = "Empty_room";
@@ -56,7 +57,7 @@ namespace Assets.NinjaGame.Scripts
         private float timeInCalibrationScene;
         public float startCalibrationTime;
         private bool calibrationflag;
-
+        private bool capturing;
         public bool recordingflag, finishedflag;
        // private SMICalibrationVisualizer calibViz;
         private SMICalibrationVisualizer.VisualisationState previousState, currentState;
@@ -316,7 +317,19 @@ namespace Assets.NinjaGame.Scripts
             experimentMarker.Write("end_experiment_condition");
             //postflag = true;
         }
+/*
+        public void StartCapture()
+        {
+            capturing = true;
+            VRCapture.
+            VRCapture.Instance.BeginCaptureSession();
+        }
 
+        public void FinishCapture()
+        {
+            VRCapture.Instance.EndCaptureSession();
+            capturing = false;
+        }*/
     }
 
     [Serializable]
@@ -334,4 +347,5 @@ namespace Assets.NinjaGame.Scripts
              game.ListOfTrials = trials;
          }*/
     }
+
 }

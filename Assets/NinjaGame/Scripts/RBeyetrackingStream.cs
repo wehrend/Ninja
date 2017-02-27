@@ -154,6 +154,7 @@ namespace Assets.NinjaGame.Scripts
                 return;
             // reuse the array for each sample to reduce allocation costs
             // currently only for right-hand device
+
             if (gazeCon != null)
             {
                 sample = gazeCon.smi_getSample();

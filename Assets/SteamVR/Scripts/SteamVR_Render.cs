@@ -90,6 +90,7 @@ public class SteamVR_Render : MonoBehaviour
 		cameras = sorted;
 	}
 
+
 	void RemoveInternal(SteamVR_Camera vrcam)
 	{
 		var length = cameras.Length;

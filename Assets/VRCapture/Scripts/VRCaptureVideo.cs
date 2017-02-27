@@ -468,8 +468,8 @@ namespace VRCapture {
         /// <summary>
         /// Frame statistics.
         /// </summary>
-        public int capturedFrameCount;
-        public int encodedFrameCount;
+        int capturedFrameCount;
+        int encodedFrameCount;
         /// <summary>
         /// Reference to native lib API.
         /// </summary>

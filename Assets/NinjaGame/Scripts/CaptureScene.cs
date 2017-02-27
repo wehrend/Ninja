@@ -1,7 +1,11 @@
 ﻿
 using UnityEngine;
+using UnityEngine.Assertions;
+using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using LSL;
 using Assets.LSL4Unity.Scripts;
 using Assets.LSL4Unity.Scripts.Common;
@@ -13,58 +17,98 @@ namespace Assets.NinjaGame.Scripts
     public class CaptureScene : MonoBehaviour
     {
 
-      
+
         /// <summary>
         /// capture
         /// </summary>
         public GameObject cameraGO;
         [Tooltip("Capture cameras for video recording")]
         private VRCaptureVideo captureVideo;
+        public static GameObject captureVideoInstance;
         private bool isProcessing;
         public VRCaptureVideo[] vrCaptureVideos;
         public bool doCapture;
         public bool capturing;
-        public GameObject capture;
-        public LSLMarkerStream framenumber;
+        //public GameObject capture;
+        private VRCaptureVideo curVideoObj;
+        private FieldInfo framenumberField;
+        private FieldInfo encFramenumberField;
+        public LSLMarkerStream CaptureStream;
+        private int framenumber;
+        private int encFramenumber;
+        private int previousFramenumber = 0;
+        private int previousEncFramenumber = 0;
+        private ExperimentSceneController expScene;
 
-      
+        public static string videoSavePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData).ToString()+ Path.DirectorySeparatorChar+ "CaptureVideos"+ Path.DirectorySeparatorChar;
         // Use this for initialization
         void Start()
         {
-            framenumber = new LSLMarkerStream(); 
-            VRCapture.VRCapture.Instance.RegisterSessionCompleteDelegate(HandleCaptureFinish);
+            Assert.IsNotNull(CaptureStream, "You forgot to reference the LSLMarkerStream. please do so.");
             var debugLog = "Video File Path:" + VRCaptureConfig.SaveFolder.ToString() + "\n" +
                 "\n Camera Cache File Path:" + System.IO.Path.GetFullPath(string.Format(@"{0}", "Cache"));
             Debug.LogWarning(debugLog);
-            var captureVideoGO = this.transform.FindChild("Camera (eye)").gameObject;
-            Debug.Log(captureVideoGO.ToString());
-            captureVideo = captureVideoGO.GetComponentInChildren<VRCaptureVideo>();
+            if (captureVideoInstance == null)
+            {
+                Debug.Log(cameraGO.ToString());
+                captureVideoInstance = cameraGO.transform.FindChild("CaptureCamera").gameObject;
+                Debug.Log(captureVideoInstance.ToString());
+            }
+            captureVideo = captureVideoInstance.GetComponentInChildren<VRCaptureVideo>();
             Debug.Log(captureVideo.ToString());
             VRCapture.VRCapture.Instance.vrCaptureVideos = new VRCaptureVideo[] { captureVideo };
+            curVideoObj = VRCapture.VRCapture.Instance.vrCaptureVideos[0];
+            Assert.IsNotNull(curVideoObj, "curVideoObject is null");
+            framenumberField = typeof(VRCaptureVideo).GetField("capturedFrameCount", BindingFlags.NonPublic | BindingFlags.Instance);
+            encFramenumberField = typeof(VRCaptureVideo).GetField("encodedFrameCount", BindingFlags.NonPublic | BindingFlags.Instance);
+            StartCapture();
         }
 
         // Update is called once per frame
         void Update()
         {
-
-           /* if (doCapture)
+            if (doCapture)
             {
-                StartCapture();
-                
+                if (!capturing)
+                {
+                    StartCapture();
+                }
             }
             else
-            { 
-                FinishCapture();
-            }
-            if (framenumber)
             {
                 if (capturing)
                 {
-                    ///Here get the framerate 
+                    FinishCapture();
+                }
+            }
+            if (CaptureStream != null)
+            {
+                if (capturing && curVideoObj != null )
+                {
 
+                    ///Here get the framenumber
+                    
+                    int framenumber = (int)framenumberField.GetValue(curVideoObj);
+                    int encFramenumber = (int)encFramenumberField.GetValue(curVideoObj);
+                    if (framenumber != previousFramenumber)
+                    {
+                        CaptureStream.Write(string.Format("Frame# {0}, encFrame# {1}", framenumber, encFramenumber));
+                        //Debug.Log(framenumber.ToString());
+                        //Debug.Log(encFramenumber.ToString());
+                    }
+                    previousFramenumber = (int)framenumber;
+                    previousEncFramenumber = (int)encFramenumber;
 
                 }
-            }*/
+            }
+            if (Input.GetKey(KeyCode.S))
+            {
+                StartCapture();
+            }
+            if (Input.GetKey(KeyCode.Q))
+            {
+                FinishCapture();
+            }
         }
 
         public void StartCapture()
@@ -88,4 +132,5 @@ namespace Assets.NinjaGame.Scripts
             print("Capture Finish");
         }
     }
+
 }

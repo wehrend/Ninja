@@ -27,8 +27,6 @@ namespace Assets.NinjaGame.Scripts
             ExperimentScene,
             PostScene
         }
-        [Tooltip("DebugHelper Capturing")]
-        public bool noCapturing;
         [Tooltip("DebugHelper SMI")]
         public bool noSMI;
         public double rbStreamDataRate = 90.00;
@@ -65,6 +63,10 @@ namespace Assets.NinjaGame.Scripts
        // private SMICalibrationVisualizer calibViz;
         private SMICalibrationVisualizer.VisualisationState previousState, currentState;
 
+        //capturing Scene
+        private GameObject camCap;
+        private static CaptureScene capScene;
+        
 
         // Use this for initialization
         void Awake()
@@ -77,10 +79,10 @@ namespace Assets.NinjaGame.Scripts
             sceneFsm = StateMachine<SceneStates>.Initialize(this, SceneStates.None);
             if (sceneFsm!=null)
                 Debug.Log("Scene FSM found");
-           // calibViz = GameObject.FindObjectOfType(typeof(SMICalibrationVisualizer)) as SMICalibrationVisualizer;
-           // Debug.Log("Found: "+calibViz.ToString());
-           
+            // calibViz = GameObject.FindObjectOfType(typeof(SMICalibrationVisualizer)) as SMICalibrationVisualizer;
+            // Debug.Log("Found: "+calibViz.ToString());
 
+            DontDestroyOnLoad(this.gameObject);
         }
 
 
@@ -150,7 +152,8 @@ namespace Assets.NinjaGame.Scripts
 
         void CalibrateScene_Enter()
         {
-            SceneManager.LoadSceneAsync(calibrationScene, LoadSceneMode.Additive);
+            SceneManager.LoadSceneAsync(calibrationScene, LoadSceneMode.Single);
+
             Debug.Log("Start Calibration scene");
 
         }
@@ -198,13 +201,16 @@ namespace Assets.NinjaGame.Scripts
         {
             if (SteamVR.instance != null)
             {
-        
-        //            Debug.Log(SMICalibrationVisualizer.Instance.ToString());
+
+                //            Debug.Log(SMICalibrationVisualizer.Instance.ToString());
+                
                     if ((Input.GetKeyDown(KeyCode.Alpha3)) || (Input.GetKeyDown(KeyCode.Alpha5)))
                     {
                         startCalibrationTime = Time.time;
                         Debug.Log("Accept key at time: " + startCalibrationTime);
                     }
+                    
+                
                 
                     //wait some time...
                     if ((sceneFsm.State == SceneStates.CalibrateScene) && (Time.time - startCalibrationTime > 30))
@@ -237,7 +243,7 @@ namespace Assets.NinjaGame.Scripts
                 SceneManager.UnloadSceneAsync(calibrationScene);
             }
             Debug.Log("Load preExperimentScene");
-            SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Additive);
+            SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Single);
             timeOfEnterRoomScene = Time.time;
             CheckDeactivates();
            
@@ -292,7 +298,7 @@ namespace Assets.NinjaGame.Scripts
         void ExperimentScene_Enter()
         {
             Debug.Log("Load ExperimentScene");
-            SceneManager.LoadSceneAsync(experimentScene, LoadSceneMode.Additive);
+            SceneManager.LoadSceneAsync(experimentScene, LoadSceneMode.Single);
             CheckDeactivates();
         }
 
@@ -308,58 +314,55 @@ namespace Assets.NinjaGame.Scripts
 
         IEnumerator PostScene_Enter() {
             yield return new WaitForSeconds(waitTimeAfterLastTrialSpawn);
-
-        }
-
-
-
-        void PostScene_Update()
-        {
             Debug.Log("Load post experiment scene");
             if (model != null)
                 model.SetActive(true);
+           
             SceneManager.LoadSceneAsync(postExperimentScene, LoadSceneMode.Single);
-            CheckDeactivates();
+           
+           // CheckDeactivates();
             if (experimentMarker != null)
                 Debug.Log("Should Write Marker: end_experiment_condition");
             experimentMarker.Write("end_experiment_condition");
-            //postflag = true;
+            //Debug.Log("End Application!");
+            //Application.Quit();
         }
 
         void CheckDeactivates()
-        {
-            if (noCapturing)
-            {
-                var camCap = GameObject.Find("CameraCapture");
-                var capScene= camCap.GetComponent<CaptureScene>();
-                capScene.enabled = false;
-                camCap.SetActive(false);
-                Debug.Log("Deactivate campCap" + camCap.ToString());
-            }
+        { 
             if (noSMI)
             {
                 var smi = GameObject.Find("SMIEyeTracker");
 
                 var script =smi.GetComponent<SMIEyetracking>();
-                script.enabled = false;
-                smi.SetActive(false);
-                Debug.Log("Deactivate smi: script.isActiveAndEnabled="+ script.isActiveAndEnabled);
-                
+                if (script)
+                {
+                    script.enabled = false;
+                    smi.SetActive(false);
+                    Debug.Log("Deactivate smi: script.isActiveAndEnabled=" + script.isActiveAndEnabled);
+                }
+                else
+                {
+                    Debug.Log("No SMIEyetracking script found.");
+                }
             }
         }
-/*
-        public void StartCapture()
+
+        void ActivateAndStartCapturing()
         {
-            capturing = true;
-            VRCapture.
-            VRCapture.Instance.BeginCaptureSession();
+
+            camCap = GameObject.Find("CameraCapture");
+            if (camCap)
+            {
+                capScene = camCap.GetComponent<CaptureScene>();
+                capScene.enabled = true;
+                camCap.SetActive(true);
+                Debug.Log("Activate campCap" + camCap.ToString());
+
+            }
         }
 
-        public void FinishCapture()
-        {
-            VRCapture.Instance.EndCaptureSession();
-            capturing = false;
-        }*/
+
     }
 
 

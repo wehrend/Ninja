@@ -31,8 +31,6 @@ namespace Assets.NinjaGame.Scripts
         public bool capturing;
         //public GameObject capture;
         private VRCaptureVideo curVideoObj;
-        private FieldInfo framenumberField;
-        private FieldInfo encFramenumberField;
         public LSLMarkerStream CaptureStream;
         private int framenumber;
         private int encFramenumber;
@@ -59,8 +57,6 @@ namespace Assets.NinjaGame.Scripts
             VRCapture.VRCapture.Instance.vrCaptureVideos = new VRCaptureVideo[] { captureVideo };
             curVideoObj = VRCapture.VRCapture.Instance.vrCaptureVideos[0];
             Assert.IsNotNull(curVideoObj, "curVideoObject is null");
-            framenumberField = typeof(VRCaptureVideo).GetField("capturedFrameCount", BindingFlags.NonPublic | BindingFlags.Instance);
-            encFramenumberField = typeof(VRCaptureVideo).GetField("encodedFrameCount", BindingFlags.NonPublic | BindingFlags.Instance);
             StartCapture();
         }
 
@@ -83,24 +79,25 @@ namespace Assets.NinjaGame.Scripts
             }
             if (CaptureStream != null)
             {
-                if (capturing && curVideoObj != null )
+                if (capturing && curVideoObj != null)
                 {
 
                     ///Here get the framenumber
-                    
-                    int framenumber = (int)framenumberField.GetValue(curVideoObj);
-                    int encFramenumber = (int)encFramenumberField.GetValue(curVideoObj);
+
+                    var framenumber = curVideoObj.capturedFrameCount;
+                    var encFramenumber = curVideoObj.encodedFrameCount;
                     if (framenumber != previousFramenumber)
                     {
                         CaptureStream.Write(string.Format("Frame# {0}, encFrame# {1}", framenumber, encFramenumber));
-                        //Debug.Log(framenumber.ToString());
-                        //Debug.Log(encFramenumber.ToString());
+                        Debug.Log(framenumber.ToString());
+                        Debug.Log(encFramenumber.ToString());
                     }
-                    previousFramenumber = (int)framenumber;
-                    previousEncFramenumber = (int)encFramenumber;
+                    previousFramenumber = framenumber;
+                    previousEncFramenumber = encFramenumber;
 
                 }
             }
+            else { Debug.LogAssertion("No CaptureStream available!"); }
             if (Input.GetKey(KeyCode.S))
             {
                 StartCapture();

@@ -11,6 +11,7 @@ TagManager:
   - projectile
   - TeleportIgnore
   - CalibrationCamera
+  - MainController
   layers:
   - Default
   - TransparentFX

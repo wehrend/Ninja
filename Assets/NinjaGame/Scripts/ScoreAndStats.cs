@@ -27,28 +27,27 @@ namespace Assets.NinjaGame.Scripts
         {
             scene = SceneManager.GetActiveScene();
             recordingflag = false;
-            //healthBar = GetComponent<Scrollbar>();
-            //ninjaGameEvent = FindObjectOfType(typeof(NinjaGameEventController)) as NinjaGameEventController;
-           
-          /*  if (ninjaGameEvent == null)
-            {
-                Debug.LogError("The NinjaGameController needs the NinjaGameEventController script to be attached to it");
-                return;
-            }*/
-           // ninjaGameEvent.FruitCollision += new NinjaGameEventHandler(updateFruitCollision);
-           // ninjaGameEvent.BombCollision += new NinjaGameEventHandler(updateBombCollision);
-           // ninjaGameEvent.GameOver += new NinjaGameEventHandler(gameOver);
-            var gos_expScene = SceneManager.GetSceneByName("MainScene").GetRootGameObjects();
-            Debug.Log("GameObjects:"+gos_expScene.Length);
-            foreach (var go in gos_expScene)
-                {
-                if (go.gameObject.GetComponent<ExperimentSceneController>())
-                {
-                    expSceneCon = go.gameObject.GetComponent<ExperimentSceneController>();
-                    //Debug.Log("Found" + expSceneCon);
-                }
-            }
-               
+
+            /* Scene mainScene = SceneManager.GetSceneByName("MainScene");
+             if (mainScene != null)
+             {
+                 var gos_expScene = mainScene.GetRootGameObjects();
+                 Debug.Log("GameObjects:" + gos_expScene.Length);
+                 foreach (var go in gos_expScene)
+                 {
+                     if (go.gameObject.GetComponent<ExperimentSceneController>())
+                     {
+                         expSceneCon = go.gameObject.GetComponent<ExperimentSceneController>();
+                         //Debug.Log("Found" + expSceneCon);
+                     }
+                 }
+             }
+             else
+             {
+                 Debug.LogWarning("MainScene not found!");
+             }*/
+           expSceneCon = GameObject.Find("[ExperimentSceneController]").GetComponent<ExperimentSceneController>();
+ 
             expMarker = FindObjectOfType(typeof(LSLMarkerStream)) as LSLMarkerStream;
         }
 

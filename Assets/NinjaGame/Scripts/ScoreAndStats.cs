@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using MonsterLove.StateMachine;
 using Assets.LSL4Unity.Scripts;
 using System.Collections;
 
@@ -46,8 +47,14 @@ namespace Assets.NinjaGame.Scripts
              {
                  Debug.LogWarning("MainScene not found!");
              }*/
-           expSceneCon = GameObject.Find("[ExperimentSceneController]").GetComponent<ExperimentSceneController>();
- 
+            var expGO = GameObject.Find("[ExperimentSceneController]");
+            if (expGO)
+            {
+                expSceneCon = expGO.GetComponent<ExperimentSceneController>();
+            }
+            else {
+                Debug.Log("No Controller found.");
+            }
             expMarker = FindObjectOfType(typeof(LSLMarkerStream)) as LSLMarkerStream;
         }
 
@@ -55,39 +62,45 @@ namespace Assets.NinjaGame.Scripts
 
         void Update()
         {
-
-            // aka if no experiment scene loaded 
-            if (NinjaGame.generatedTrials == null)
+            if(expSceneCon)
             {
 
-                // Debug.Log("Found expscenecontroller");
-                if (expSceneCon && (scoresText))
+                // // aka if no experiment scene loaded 
+                if (expSceneCon.sceneFsm.State == ExperimentSceneController.SceneStates.PreScene)
                 {
-                    if (expSceneCon.recordingflag)
-                    {
-                        scoresText.color = Color.red;
-                        scoresText.text = "Baseline Recording.\nPlease follow the instructions of lab assistant.";
-                    }
-                    else //back top normal (whit, not text)
-                    {
-                        scoresText.color = Color.white;
-                        scoresText.text = "";
-                    }
-                }
-            }
-            else if (NinjaGame.generatedTrials != null)
-            {
-                // aka experiment scene is loaded
-                if (scoresText && NinjaGame.generatedTrials != null)
-                    scoresText.text = "Counting Trials :\n" + NinjaGame.generatedTrials.Count;
-                //healthBar.size = (float) NinjaGame.game.health / 1000f;
 
-                if (scoresText && !expSceneCon)
-                {
-                    scoresText.color = Color.blue;
-                    scoresText.text = "Ok. Experiment is finished. Thanks for being part of it";
+                    // Debug.Log("Found expscenecontroller");
+                    if (scoresText)
+                    {
+                        if (expSceneCon.recordingflag)
+                        {
+                            scoresText.color = Color.red;
+                            scoresText.text = "Baseline Recording.\nPlease follow the instructions of lab assistant.";
+                        }
+                        else //back top normal (whit, not text)
+                        {
+                            scoresText.color = Color.white;
+                            scoresText.text = "";
+                        }
+                        }
+                   }
+                   else if (expSceneCon.sceneFsm.State == ExperimentSceneController.SceneStates.ExperimentScene)
+                    {
+                        // aka experiment scene is loaded
+                        if (scoresText && NinjaGame.generatedTrials != null)
+                            scoresText.text = "Counting Trials :\n" + NinjaGame.generatedTrials.Count;
+                        //healthBar.size = (float) NinjaGame.game.health / 1000f;
+                    }
+                    else if (expSceneCon.sceneFsm.State == ExperimentSceneController.SceneStates.PostScene)
+                    {
+
+                        if (scoresText && !expSceneCon)
+                        {
+                            scoresText.color = Color.blue;
+                            scoresText.text = "Ok. Experiment is finished. Thanks for being part of it";
+                        }
+                    }
                 }
-            }
        }
         
 

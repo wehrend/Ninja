@@ -204,11 +204,11 @@ namespace Assets.NinjaGame.Scripts
 
                 //            Debug.Log(SMICalibrationVisualizer.Instance.ToString());
                 
-                    if ((Input.GetKeyDown(KeyCode.Alpha3)) || (Input.GetKeyDown(KeyCode.Alpha5)))
+                  /*  if ((Input.GetKeyDown(KeyCode.Alpha3)) || (Input.GetKeyDown(KeyCode.Alpha5)))
                     {
                         startCalibrationTime = Time.time;
                         Debug.Log("Accept key at time: " + startCalibrationTime);
-                    }
+                    }*/
                     
                 
                 
@@ -225,11 +225,6 @@ namespace Assets.NinjaGame.Scripts
                         // SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Additive);
 
                     }
-
-            timeInCalibrationScene = Time.time;
-
-            userInitTime = userInitTime + timeInCalibrationScene;
-        
             }
         }
 
@@ -252,8 +247,7 @@ namespace Assets.NinjaGame.Scripts
 
         void PreScene_Update()
         {
-            if (SteamVR.instance != null)
-            {
+           
                 if (Time.time - timeOfEnterRoomScene > userInitTime)
                 {
                     //Debug.Log(Time.time);
@@ -264,9 +258,11 @@ namespace Assets.NinjaGame.Scripts
                         EndBaseline();
 
                 }
+                
 
 
-
+            if (SteamVR.instance != null)
+            {
                 //Debug.Log("deviceIndex: " + deviceIndex);
                 if (deviceIndex == -1)
                 {

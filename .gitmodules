@@ -1,3 +1,6 @@
 [submodule "VREF"]
 	path=Assets/VREF
 	url= git://github.com/xfleckx/VREF.git
+[submodule "Assets/LSL4Unity"]
+	path = Assets/LSL4Unity
+	url = https://github.com/xfleckx/LSL4Unity

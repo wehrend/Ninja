@@ -334,8 +334,6 @@ MonoBehaviour:
   antiAliasing: 0
   targetFramerate: 1
   isDedicated: 0
-  liveStreaming: 0
-  rtmpServerAddress: 
   offlineRender: 0
   isEnabled: 1
 --- !u!81 &176629116
@@ -947,8 +945,6 @@ MonoBehaviour:
   antiAliasing: 0
   targetFramerate: 1
   isDedicated: 1
-  liveStreaming: 0
-  rtmpServerAddress: 
   offlineRender: 0
   isEnabled: 1
 --- !u!20 &1422035586
@@ -1143,8 +1139,6 @@ MonoBehaviour:
   antiAliasing: 0
   targetFramerate: 1
   isDedicated: 1
-  liveStreaming: 0
-  rtmpServerAddress: 
   offlineRender: 0
   isEnabled: 1
 --- !u!20 &1651947851
@@ -1230,8 +1224,6 @@ MonoBehaviour:
   antiAliasing: 0
   targetFramerate: 1
   isDedicated: 1
-  liveStreaming: 0
-  rtmpServerAddress: 
   offlineRender: 1
   isEnabled: 1
 --- !u!20 &1859594681

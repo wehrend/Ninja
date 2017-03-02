@@ -26,7 +26,7 @@ namespace VRCapture {
         /// The camera moving damping
         /// </summary>
         public float smooth = 0.5f;
-        private float distanceHeight = 0f;
+        private float distanceHeight = 2f;
         private bool isHightToCamera = false;
         Vector3 oldDistance;
 

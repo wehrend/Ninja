@@ -129,11 +129,8 @@ MonoBehaviour:
   isShown: 0
   hideOnRelease: 1
   executeOnUnclick: 1
-  buttonColor:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
+  buttonColor: {r: 1, g: 1, b: 1, a: 1}
+  baseHapticStrength: 933
   offsetRotation: 359
   buttonThickness: 0.5
   menuButtons: []

@@ -686,6 +686,260 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 62349839}
+--- !u!1 &65371795
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1000011636845140, guid: f8dbc0f7a048fa346b0e0084f5b4c574,
+    type: 2}
+  m_PrefabInternal: {fileID: 388784466}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 388784467}
+  - component: {fileID: 65371798}
+  - component: {fileID: 65371797}
+  - component: {fileID: 65371796}
+  m_Layer: 5
+  m_Name: Panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &65371796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 114000014026551706, guid: f8dbc0f7a048fa346b0e0084f5b4c574,
+    type: 2}
+  m_PrefabInternal: {fileID: 388784466}
+  m_GameObject: {fileID: 65371795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 913954cb73db5fb4296fd34b8d4651b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionButton:
+  - ButtonIcon: {fileID: 0}
+    OnClick:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 774572696}
+          m_MethodName: CreatXML
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    OnHold:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    OnHoverEnter:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 774572696}
+          m_MethodName: ChangCameraPoint
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    OnHoverExit:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+  - ButtonIcon: {fileID: 0}
+    OnClick:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 899212677}
+          m_MethodName: CreatXML
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    OnHold:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    OnHoverEnter:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 899212677}
+          m_MethodName: ChangCameraPoint
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    OnHoverExit:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+  - ButtonIcon: {fileID: 0}
+    OnClick:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 67784184}
+          m_MethodName: CreatXML
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    OnHold:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    OnHoverEnter:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 67784184}
+          m_MethodName: ChangCameraPoint
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    OnHoverExit:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+  - ButtonIcon: {fileID: 0}
+    OnClick:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1150411816}
+          m_MethodName: CreatXML
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    OnHold:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    OnHoverEnter:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1150411816}
+          m_MethodName: ChangCameraPoint
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    OnHoverExit:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+  positionPrefab: {fileID: 1000013127671202, guid: dfb70bb8d61e5ef4ba0817ed9d42375c,
+    type: 2}
+  rotateIcons: 0
+  isShown: 0
+  hideOnRelease: 1
+  executeOnUnclick: 1
+  buttonColor: {r: 1, g: 1, b: 1, a: 1}
+  baseHapticStrength: 933
+  offsetRotation: 359
+  buttonThickness: 0.5
+  menuButtons:
+  - {fileID: 1916107174}
+  - {fileID: 788067926}
+  - {fileID: 1617884807}
+  - {fileID: 177435089}
+--- !u!114 &65371797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 114000010471093936, guid: f8dbc0f7a048fa346b0e0084f5b4c574,
+    type: 2}
+  m_PrefabInternal: {fileID: 388784466}
+  m_GameObject: {fileID: 65371795}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &65371798
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 222000012233671422, guid: f8dbc0f7a048fa346b0e0084f5b4c574,
+    type: 2}
+  m_PrefabInternal: {fileID: 388784466}
+  m_GameObject: {fileID: 65371795}
 --- !u!1 &66044059
 GameObject:
   m_ObjectHideFlags: 0
@@ -1047,7 +1301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f8437df4df1d0949ae0379c507359b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  displayText: 546f6f6c74697054657874
+  displayText: TooltipText
   fontSize: 10
   containerSize: {x: 110, y: 30}
   drawLineFrom: {fileID: 1668653561}
@@ -1317,11 +1571,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   fillPercent: 25
   fill: 0
@@ -1363,7 +1613,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 177435091}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -1741,7 +1991,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f8437df4df1d0949ae0379c507359b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  displayText: 546f6f6c74697054657874
+  displayText: TooltipText
   fontSize: 10
   containerSize: {x: 110, y: 30}
   drawLineFrom: {fileID: 959286571}
@@ -1894,7 +2144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f8437df4df1d0949ae0379c507359b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  displayText: 546f6f6c74697054657874
+  displayText: TooltipText
   fontSize: 10
   containerSize: {x: 110, y: 30}
   drawLineFrom: {fileID: 245828022}
@@ -2513,7 +2763,7 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f8dbc0f7a048fa346b0e0084f5b4c574, type: 2}
-  m_RootGameObject: {fileID: 790893028}
+  m_RootGameObject: {fileID: 656003985}
   m_IsPrefabParent: 0
 --- !u!224 &388784467
 RectTransform:
@@ -2521,7 +2771,7 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224000013094832046, guid: f8dbc0f7a048fa346b0e0084f5b4c574,
     type: 2}
   m_PrefabInternal: {fileID: 388784466}
-  m_GameObject: {fileID: 1250957528}
+  m_GameObject: {fileID: 65371795}
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071067}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -2544,7 +2794,7 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224000010601726396, guid: f8dbc0f7a048fa346b0e0084f5b4c574,
     type: 2}
   m_PrefabInternal: {fileID: 388784466}
-  m_GameObject: {fileID: 790893028}
+  m_GameObject: {fileID: 656003985}
   m_LocalRotation: {x: 0.68186426, y: -0, z: -0, w: 0.73147875}
   m_LocalPosition: {x: 0, y: 0, z: -0.0494}
   m_LocalScale: {x: 0.0002, y: 0.00020000004, z: 0.00020000004}
@@ -2798,7 +3048,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f8437df4df1d0949ae0379c507359b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  displayText: 546f6f6c74697054657874
+  displayText: TooltipText
   fontSize: 10
   containerSize: {x: 110, y: 30}
   drawLineFrom: {fileID: 1504439826}
@@ -3204,16 +3454,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fbf0d2e4c40a974c9ed984ef66eeadf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  captureType: 0
+  formatType: 0
   frameSize: 2
   cubemapSize: 1
-  equirecatngularFrameSize: 2
+  projectionType: 0
   encodeQuality: 1
   antiAliasing: 0
   targetFramerate: 1
   isDedicated: 1
-  liveStreaming: 0
-  rtmpServerAddress: 72746d703a2f2f646c2e6c6976652d73656e642e6163672e74762f6c6976652d646c2f3f73747265616d6e616d653d6c6976655f323736323234395f39373736353739266b65793d3361646562363861373439666332653936663663663837636365313630646434
   offlineRender: 0
   isEnabled: 1
 --- !u!114 &619345499
@@ -3381,25 +3629,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68f8a1574883c7940a5ea417d4d038bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerText: 43696c636b2054726967676572
-  gripText: 436c69636b2047726970
-  touchpadText: 436c69636b20546f756368706164
-  appMenuText: 436c69636b204170704d656e75
-  tipBackgroundColor:
-    r: 0
-    g: 0.309
-    b: 0.584
-    a: 1
-  tipTextColor:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
-  tipLineColor:
-    r: 0
-    g: 1
-    b: 1
-    a: 1
+  triggerText: Cilck Trigger
+  gripText: Click Grip
+  touchpadText: Click Touchpad
+  appMenuText: Click AppMenu
+  tipBackgroundColor: {r: 0, g: 0.309, b: 0.584, a: 1}
+  tipTextColor: {r: 1, g: 1, b: 1, a: 1}
+  tipLineColor: {r: 0, g: 1, b: 1, a: 1}
 --- !u!1 &622139791
 GameObject:
   m_ObjectHideFlags: 0
@@ -3762,6 +3998,84 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 650400481}
+--- !u!1 &656003985
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1000011070813740, guid: f8dbc0f7a048fa346b0e0084f5b4c574,
+    type: 2}
+  m_PrefabInternal: {fileID: 388784466}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 388784470}
+  - component: {fileID: 656003988}
+  - component: {fileID: 656003987}
+  - component: {fileID: 656003986}
+  m_Layer: 5
+  m_Name: RadialMenu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &656003986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 114000014009091524, guid: f8dbc0f7a048fa346b0e0084f5b4c574,
+    type: 2}
+  m_PrefabInternal: {fileID: 388784466}
+  m_GameObject: {fileID: 656003985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &656003987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 114000013824711646, guid: f8dbc0f7a048fa346b0e0084f5b4c574,
+    type: 2}
+  m_PrefabInternal: {fileID: 388784466}
+  m_GameObject: {fileID: 656003985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1980459831, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+--- !u!223 &656003988
+Canvas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 223000010337205082, guid: f8dbc0f7a048fa346b0e0084f5b4c574,
+    type: 2}
+  m_PrefabInternal: {fileID: 388784466}
+  m_GameObject: {fileID: 656003985}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &664925141
 GameObject:
   m_ObjectHideFlags: 0
@@ -3988,16 +4302,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fbf0d2e4c40a974c9ed984ef66eeadf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  captureType: 0
+  formatType: 0
   frameSize: 2
   cubemapSize: 1
-  equirecatngularFrameSize: 2
+  projectionType: 0
   encodeQuality: 1
   antiAliasing: 0
   targetFramerate: 1
   isDedicated: 1
-  liveStreaming: 0
-  rtmpServerAddress: 
   offlineRender: 0
   isEnabled: 1
 --- !u!1 &761075481
@@ -4486,11 +4798,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   fillPercent: 25
   fill: 0
@@ -4532,7 +4840,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 788067928}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -4624,84 +4932,6 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 790244356}
---- !u!1 &790893028
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1000011070813740, guid: f8dbc0f7a048fa346b0e0084f5b4c574,
-    type: 2}
-  m_PrefabInternal: {fileID: 388784466}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 388784470}
-  - component: {fileID: 790893031}
-  - component: {fileID: 790893030}
-  - component: {fileID: 790893029}
-  m_Layer: 5
-  m_Name: RadialMenu
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &790893029
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114000014009091524, guid: f8dbc0f7a048fa346b0e0084f5b4c574,
-    type: 2}
-  m_PrefabInternal: {fileID: 388784466}
-  m_GameObject: {fileID: 790893028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
---- !u!114 &790893030
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114000013824711646, guid: f8dbc0f7a048fa346b0e0084f5b4c574,
-    type: 2}
-  m_PrefabInternal: {fileID: 388784466}
-  m_GameObject: {fileID: 790893028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1980459831, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
-  m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
-  m_PhysicalUnit: 3
-  m_FallbackScreenDPI: 96
-  m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 1
---- !u!223 &790893031
-Canvas:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 223000010337205082, guid: f8dbc0f7a048fa346b0e0084f5b4c574,
-    type: 2}
-  m_PrefabInternal: {fileID: 388784466}
-  m_GameObject: {fileID: 790893028}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
 --- !u!1 &826631255
 GameObject:
   m_ObjectHideFlags: 0
@@ -5058,16 +5288,8 @@ MonoBehaviour:
   maxLoadAngle: 30
   maxDistance: 5
   lineTelepontWidth: 0.05
-  canTeleportColor:
-    r: 0
-    g: 0.8758622
-    b: 1
-    a: 1
-  unTeleportColor:
-    r: 1
-    g: 0.1862069
-    b: 0
-    a: 1
+  canTeleportColor: {r: 0, g: 0.8758622, b: 1, a: 1}
+  unTeleportColor: {r: 1, g: 0.1862069, b: 0, a: 1}
   vrTeleportSimple: {fileID: 1000012491629934, guid: 1e102d70a310c7845b830178c284eb98,
     type: 2}
   vrPlayAreaSimple: {fileID: 1000013634546368, guid: d89fae20085167540bd43fc53e974800,
@@ -5110,11 +5332,7 @@ MonoBehaviour:
   laserThickness: 0.002
   laserHitScale: 0.02
   maxDistance: 100
-  color:
-    r: 1
-    g: 1
-    b: 0
-    a: 0
+  color: {r: 1, g: 1, b: 0, a: 0}
   controllerState: 1
   isShow: 1
 --- !u!114 &896002637
@@ -5490,7 +5708,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f8437df4df1d0949ae0379c507359b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  displayText: 546f6f6c74697054657874
+  displayText: TooltipText
   fontSize: 10
   containerSize: {x: 110, y: 30}
   drawLineFrom: {fileID: 931016845}
@@ -6092,72 +6310,6 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1217685276}
---- !u!1 &1250957528
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1000011636845140, guid: f8dbc0f7a048fa346b0e0084f5b4c574,
-    type: 2}
-  m_PrefabInternal: {fileID: 388784466}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 388784467}
-  - component: {fileID: 1250957531}
-  - component: {fileID: 1250957530}
-  - component: {fileID: 1250957529}
-  m_Layer: 5
-  m_Name: Panel
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1250957529
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114000014026551706, guid: f8dbc0f7a048fa346b0e0084f5b4c574,
-    type: 2}
-  m_PrefabInternal: {fileID: 388784466}
-  m_GameObject: {fileID: 1250957528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 913954cb73db5fb4296fd34b8d4651b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1250957530
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114000010471093936, guid: f8dbc0f7a048fa346b0e0084f5b4c574,
-    type: 2}
-  m_PrefabInternal: {fileID: 388784466}
-  m_GameObject: {fileID: 1250957528}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
---- !u!222 &1250957531
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 222000012233671422, guid: f8dbc0f7a048fa346b0e0084f5b4c574,
-    type: 2}
-  m_PrefabInternal: {fileID: 388784466}
-  m_GameObject: {fileID: 1250957528}
 --- !u!1 &1271257128
 GameObject:
   m_ObjectHideFlags: 0
@@ -6269,7 +6421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f8437df4df1d0949ae0379c507359b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  displayText: 546f6f6c74697054657874
+  displayText: TooltipText
   fontSize: 10
   containerSize: {x: 110, y: 30}
   drawLineFrom: {fileID: 849645557}
@@ -7469,11 +7621,7 @@ MonoBehaviour:
   laserThickness: 0.002
   laserHitScale: 0.02
   maxDistance: 100
-  color:
-    r: 0.1586206
-    g: 1
-    b: 0
-    a: 0
+  color: {r: 0.1586206, g: 1, b: 0, a: 0}
   controllerState: 1
   isShow: 1
 --- !u!114 &1547898410
@@ -7785,11 +7933,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   fillPercent: 25
   fill: 0
@@ -7831,7 +7975,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 1617884809}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -8670,7 +8814,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f8437df4df1d0949ae0379c507359b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  displayText: 546f6f6c74697054657874
+  displayText: TooltipText
   fontSize: 10
   containerSize: {x: 110, y: 30}
   drawLineFrom: {fileID: 965013807}
@@ -8708,10 +8852,13 @@ MonoBehaviour:
   target: {fileID: 0}
   rightEventController: {fileID: 896002633}
   leftEventController: {fileID: 1547898407}
-  demoBeginIntroduceText: 506c656173652063686f736520746865207363656e6520796f752077616e7420706c617920776974682e
-  demoRayCameraIntroduceText: 55736520796f757220636f6e74726f6c6c65722072617920746f2063686f73652063616d6572612c207072657373207472696767657220746f20686f6c642069742e2053656c6563742073686f74696e6720706f736974696f6e20627920636c69636b20746f7563687061642e2053746172742f53746f70207265636f726420627920636c69636b206170706c69636174696f6e206d656e7520627574746f6e2e
-  demoTouchCameraIntroduceText: 50726573732074726967676572207768656e20796f757220636f6e74726f6c6c657220746f756368207468652063616d65726120746f20686f6c642069742e2053746172742f53746f70207265636f726420627920636c69636b206170706c69636174696f6e206d656e7520627574746f6e2e
-  demoVideoFilePathIntroduceText: 446973706c61792074686520766964656f2066696c657320796f75206a757374207265636f726465642e
+  demoBeginIntroduceText: Please chose the scene you want play with.
+  demoRayCameraIntroduceText: Use your controller ray to chose camera, press trigger
+    to hold it. Select shoting position by click touchpad. Start/Stop record by click
+    application menu button.
+  demoTouchCameraIntroduceText: Press trigger when your controller touch the camera
+    to hold it. Start/Stop record by click application menu button.
+  demoVideoFilePathIntroduceText: Display the video files you just recorded.
 --- !u!4 &1762732044
 Transform:
   m_ObjectHideFlags: 0
@@ -9542,11 +9689,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   fillPercent: 25
   fill: 0
@@ -9588,7 +9731,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 1916107176}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -9896,25 +10039,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68f8a1574883c7940a5ea417d4d038bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerText: 43696c636b2054726967676572
-  gripText: 436c69636b2047726970
-  touchpadText: 436c69636b20546f756368706164
-  appMenuText: 436c69636b204170704d656e75
-  tipBackgroundColor:
-    r: 0
-    g: 0.309
-    b: 0.584
-    a: 1
-  tipTextColor:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
-  tipLineColor:
-    r: 0
-    g: 1
-    b: 1
-    a: 1
+  triggerText: Cilck Trigger
+  gripText: Click Grip
+  touchpadText: Click Touchpad
+  appMenuText: Click AppMenu
+  tipBackgroundColor: {r: 0, g: 0.309, b: 0.584, a: 1}
+  tipTextColor: {r: 1, g: 1, b: 1, a: 1}
+  tipLineColor: {r: 0, g: 1, b: 1, a: 1}
 --- !u!1 &2033696591
 GameObject:
   m_ObjectHideFlags: 0

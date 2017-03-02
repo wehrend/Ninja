@@ -2,7 +2,7 @@
 using UnityEngine;
 
 namespace VRCapture {
-    /// <summary>
+ /*   /// <summary>
     /// Common config.
     /// </summary>
     public class VRCommonConfig {
@@ -21,8 +21,28 @@ namespace VRCapture {
                 return VRCommonConfig.MY_DOCUMENTS_PATH + "/VRCapture/";
             }
         }
+        */
 
-        public static string FFmpegEditorFolder {
+
+        public class VRCommonConfig
+        {
+            public static string DATA_PATH = Application.dataPath;
+            public static string STREAMING_ASSETS_PATH = Application.streamingAssetsPath;
+            public static string PATH = Application.dataPath;
+            
+        }
+
+        public class VRCaptureConfig
+        {
+
+            public static string SaveFolder
+            {
+                get
+                {
+                    return VRCommonConfig.PATH + "/NinjaCaptureStreams/";
+                }
+            }
+            public static string FFmpegEditorFolder {
             get {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
                 return VRCommonConfig.DATA_PATH + "/VRCapture/FFmpeg/Win/";
@@ -80,7 +100,7 @@ namespace VRCapture {
 
         public static string SaveFolder {
             get {
-                return VRCommonConfig.MY_DOCUMENTS_PATH + "/VRCapture/Replays/";
+                return VRCommonConfig.PATH + "/VRCapture/Replays/";
             }
         }
 

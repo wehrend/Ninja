@@ -296,6 +296,7 @@ namespace Assets.NinjaGame.Scripts
             Debug.Log("Load ExperimentScene");
             SceneManager.LoadSceneAsync(experimentScene, LoadSceneMode.Single);
             CheckDeactivates();
+           // ActivateAndStartCapturing();
         }
 
 
@@ -344,7 +345,7 @@ namespace Assets.NinjaGame.Scripts
             }
         }
 
-        void ActivateAndStartCapturing()
+       /* void ActivateAndStartCapturing()
         {
 
             camCap = GameObject.Find("CameraCapture");
@@ -354,10 +355,11 @@ namespace Assets.NinjaGame.Scripts
                 capScene.enabled = true;
                 camCap.SetActive(true);
                 Debug.Log("Activate campCap" + camCap.ToString());
-
+                if (capScene)
+                    capScene.StartCapture();
             }
         }
-
+        */
 
     }
 

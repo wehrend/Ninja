@@ -83,6 +83,7 @@ namespace Assets.NinjaGame.Scripts
             // Debug.Log("Found: "+calibViz.ToString());
 
             DontDestroyOnLoad(this.gameObject);
+
         }
 
 
@@ -159,6 +160,14 @@ namespace Assets.NinjaGame.Scripts
         }
 
 
+            ///search for the loading screen to deactivate if not in calib mode
+         void  DisableSMIScreen()
+        {
+            var loadScreen = GameObject.Find("SMILoadingScreen");
+
+            if (loadScreen)
+                loadScreen.SetActive(false);
+        }
 
         void InitBaseline()
         {
@@ -241,7 +250,7 @@ namespace Assets.NinjaGame.Scripts
             SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Single);
             timeOfEnterRoomScene = Time.time;
             CheckDeactivates();
-           
+            DisableSMIScreen();
         }
 
 
@@ -296,13 +305,15 @@ namespace Assets.NinjaGame.Scripts
             Debug.Log("Load ExperimentScene");
             SceneManager.LoadSceneAsync(experimentScene, LoadSceneMode.Single);
             CheckDeactivates();
-           // ActivateAndStartCapturing();
+            DisableSMIScreen();
+            ActivateCapturing();
+            
         }
 
 
         void ExperimentScene_Update()
         {
-            if (NinjaGame.generatedTrials.Count == 0)
+            if ((NinjaGame.generatedTrials != null) && (  NinjaGame.generatedTrials.Count == 0))
             {
                 sceneFsm.ChangeState(SceneStates.PostScene);
             }
@@ -321,8 +332,8 @@ namespace Assets.NinjaGame.Scripts
             if (experimentMarker != null)
                 Debug.Log("Should Write Marker: end_experiment_condition");
             experimentMarker.Write("end_experiment_condition");
-            //Debug.Log("End Application!");
-            //Application.Quit();
+            Debug.Log("End Application!");
+            Application.Quit();
         }
 
         void CheckDeactivates()
@@ -342,24 +353,25 @@ namespace Assets.NinjaGame.Scripts
                 {
                     Debug.Log("No SMIEyetracking script found.");
                 }
+
+
             }
         }
 
-       /* void ActivateAndStartCapturing()
+       void ActivateCapturing()
         {
 
             camCap = GameObject.Find("CameraCapture");
             if (camCap)
             {
                 capScene = camCap.GetComponent<CaptureScene>();
-                capScene.enabled = true;
+                if(capScene)
+                    capScene.enabled = true;
                 camCap.SetActive(true);
                 Debug.Log("Activate campCap" + camCap.ToString());
-                if (capScene)
-                    capScene.StartCapture();
             }
         }
-        */
+        
 
     }
 

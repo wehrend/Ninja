@@ -91,7 +91,7 @@ namespace Assets.NinjaGame.Scripts
                             scoresText.text = "Counting Trials :\n" + NinjaGame.generatedTrials.Count;
                         //healthBar.size = (float) NinjaGame.game.health / 1000f;
                     }
-                    else if (expSceneCon.sceneFsm.State == ExperimentSceneController.SceneStates.PostScene)
+                    if (expSceneCon.sceneFsm.State == ExperimentSceneController.SceneStates.PostScene)
                     {
 
                         if (scoresText && !expSceneCon)

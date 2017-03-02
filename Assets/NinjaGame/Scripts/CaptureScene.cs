@@ -47,7 +47,7 @@ namespace Assets.NinjaGame.Scripts
             }
             if (!expScene)
                 Debug.LogAssertion("No experimentScene Controller available!");
-
+            captureStream = GetComponent<CaptureMarkerStream>();
             Assert.IsNotNull(captureStream, "You forgot to reference the LSLMarkerStream. please do so.");
             if (captureVideoInstance == null)
             {

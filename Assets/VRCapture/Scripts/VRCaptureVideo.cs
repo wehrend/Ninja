@@ -625,14 +625,14 @@ namespace VRCapture {
                 // Setup camera as required for panorama capture.
                 videoCamera.aspect = 1.0f;
                 videoCamera.fieldOfView = 90;
-#if UNITY_EDITOR
+#if (UNITY_EDITOR)
                 if(projectionType == PanoramaProjectionType.EQUIRECTANGULAR) {
                     // Change to gamma color space.
                     // http://docs.unity3d.com/Manual/LinearLighting.html
                     originalColorSpace = PlayerSettings.colorSpace;
                     PlayerSettings.colorSpace = ColorSpace.Gamma;
-#endif
                 }
+#endif
             }
             // Pixels stored in frameRenderTexture(RenderTexture) always read by frameTexture(Texture2D).
             // NORMAL: camera render -> frameRenderTexture -> frameTexture -> frameQueue
@@ -684,12 +684,12 @@ namespace VRCapture {
                 // Restore maximumDeltaTime states.
                 Time.maximumDeltaTime = originalMaximumDeltaTime;
             }
-#if UNITY_EDITOR
+#if (UNITY_EDITOR)
             if (formatType == FormatType.PANORAMA && projectionType == PanoramaProjectionType.EQUIRECTANGULAR) {
                 // Restore colorSpace states.
                 PlayerSettings.colorSpace = originalColorSpace;
             }
-#endif 
+#endif
             isCapturing = false;
         }
 

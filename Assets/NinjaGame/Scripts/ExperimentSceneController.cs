@@ -248,9 +248,10 @@ namespace Assets.NinjaGame.Scripts
             }
             Debug.Log("Load preExperimentScene");
             SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Single);
+            DisableSMIScreen();
             timeOfEnterRoomScene = Time.time;
             CheckDeactivates();
-            DisableSMIScreen();
+
         }
 
 

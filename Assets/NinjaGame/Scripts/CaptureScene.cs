@@ -86,8 +86,8 @@ namespace Assets.NinjaGame.Scripts
                     {
                         string logFrames = string.Format("Frame# {0}, encFrame# {1}", framenumber, encFramenumber);
                         captureStream.Write(logFrames);
-                        if (Debug.isDebugBuild)
-                            Debug.Log(logFrames);
+                        //if (Debug.isDebugBuild)
+                        //    Debug.Log(logFrames);
                     }
 
                     previousFramenumber = framenumber;

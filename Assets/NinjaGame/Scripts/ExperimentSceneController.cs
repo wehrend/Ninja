@@ -404,18 +404,20 @@ namespace Assets.NinjaGame.Scripts
        void ActivateAndStartCapturing()
         {
 
-            camCap = GameObject.Find("CameraCapture");
+            camCap = GameObject.Find("CaptureCamera");
             if (camCap)
             {
                 camCap.SetActive(true);
                 Debug.Log("Activate campCap" + camCap.ToString());
-                capScene = camCap.GetComponent<CaptureScene>();
+                capScene = cameraRig.GetComponent<CaptureScene>();
                 if (capScene)
                 {
                     capScene.enabled = true;
                     capScene.StartCapture();
                 }
-
+                else {
+                    Debug.Log("Capture Scene not found!");
+                }
             }
         }
         

@@ -8,6 +8,7 @@
 [Aa]ssets/hand
 [Aa]ssets/HandCursor
 [Aa]ssets/SteamVR/InteractionSystem
+[Aa]ssets/NinjaCaptureStreams
 
 #we dont want this in the official git project
 [Aa]ssets/SMIEyeTracking

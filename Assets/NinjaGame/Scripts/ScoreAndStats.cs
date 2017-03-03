@@ -62,7 +62,7 @@ namespace Assets.NinjaGame.Scripts
 
         void Update()
         {
-            if(expSceneCon)
+            if (expSceneCon)
             {
 
                 // // aka if no experiment scene loaded 
@@ -82,25 +82,26 @@ namespace Assets.NinjaGame.Scripts
                             scoresText.color = Color.white;
                             scoresText.text = "";
                         }
-                        }
-                   }
-                   else if (expSceneCon.sceneFsm.State == ExperimentSceneController.SceneStates.ExperimentScene)
-                    {
-                        // aka experiment scene is loaded
-                        if (scoresText && NinjaGame.generatedTrials != null)
-                            scoresText.text = "Counting Trials :\n" + NinjaGame.generatedTrials.Count;
-                        //healthBar.size = (float) NinjaGame.game.health / 1000f;
-                    }
-                    if (expSceneCon.sceneFsm.State == ExperimentSceneController.SceneStates.PostScene)
-                    {
-
-                        if (scoresText && !expSceneCon)
-                        {
-                            scoresText.color = Color.blue;
-                            scoresText.text = "Ok. Experiment is finished. Thanks for being part of it";
-                        }
                     }
                 }
+                else if (expSceneCon.sceneFsm.State == ExperimentSceneController.SceneStates.ExperimentScene)
+                {
+                    // aka experiment scene is loaded
+                    if (scoresText && NinjaGame.generatedTrials != null)
+                        scoresText.text = "Counting Trials :\n" + NinjaGame.generatedTrials.Count;
+                    //healthBar.size = (float) NinjaGame.game.health / 1000f;
+                }
+            
+                else if (expSceneCon.sceneFsm.State == ExperimentSceneController.SceneStates.PostScene)
+                {
+
+                    if (scoresText)
+                    {
+                        scoresText.color = Color.blue;
+                        scoresText.text = "Ok. Experiment is finished. Thanks for being part of it";
+                    }
+                }
+           }
        }
         
 

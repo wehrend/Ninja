@@ -29,6 +29,14 @@ namespace Assets.NinjaGame.Scripts
         }
         [Tooltip("DebugHelper SMI")]
         public bool noSMI;
+        /// <summary>
+        /// Caches for the Camera Prefab  
+        /// </summary>
+        public GameObject cameraRig;
+        public GameObject controllerLeft;
+        public GameObject controllerRight;
+        private GameObject model, hand;
+        ////
         public double rbStreamDataRate = 90.00;
         public string calibrationScene = "BoxRoom";
         public string preExperimentScene = "Empty_room";
@@ -44,7 +52,6 @@ namespace Assets.NinjaGame.Scripts
         //Next todo: using singletones here 
         public static ExperimentInfo experimentInfo;
         public bool preflag, postflag;
-        GameObject model;
         RBControllerStream rbControllerStream;
         RBHmdStream rbHmdStream;
         ScoreAndStats texts; 
@@ -72,6 +79,13 @@ namespace Assets.NinjaGame.Scripts
         void Awake()
         {
             initialized = false;
+            /// <summary>
+            /// Caches the Camer Prefabs, we use Child element, cause naming varys
+            /// </summary>
+            cameraRig = GameObject.Find("Camera (eye)").transform.parent.gameObject;
+            controllerLeft = GameObject.Find("Controller (left)");
+            controllerRight = GameObject.Find("Controller (right)");
+            ////
             experimentInfo = new ExperimentInfo();
             rbControllerStream = GetComponent<RBControllerStream>();
             rbHmdStream = GetComponent<RBHmdStream>();
@@ -81,8 +95,9 @@ namespace Assets.NinjaGame.Scripts
                 Debug.Log("Scene FSM found");
             // calibViz = GameObject.FindObjectOfType(typeof(SMICalibrationVisualizer)) as SMICalibrationVisualizer;
             // Debug.Log("Found: "+calibViz.ToString());
-
+            
             DontDestroyOnLoad(this.gameObject);
+            DontDestroyOnLoad(cameraRig);
 
         }
 
@@ -154,7 +169,6 @@ namespace Assets.NinjaGame.Scripts
         void CalibrateScene_Enter()
         {
             SceneManager.LoadSceneAsync(calibrationScene, LoadSceneMode.Single);
-
             Debug.Log("Start Calibration scene");
 
         }
@@ -224,8 +238,8 @@ namespace Assets.NinjaGame.Scripts
                     //wait some time...
                     if ((sceneFsm.State == SceneStates.CalibrateScene) && (Time.time - startCalibrationTime > 30))
                     {
-
-                        sceneFsm.ChangeState(SceneStates.PreScene);
+                    //the Calibration scene rig translated by 0.704 from origin
+                    sceneFsm.ChangeState(SceneStates.PreScene);
                         Debug.Log("Unload calibrationScene");
 
                         //SceneManager.UnloadSceneAsync(calibrationScene);
@@ -286,14 +300,6 @@ namespace Assets.NinjaGame.Scripts
                 //Debug.Log("trigger status: " + triggerPressed);
                 if (triggerPressed)
                 {
-                    //unload model
-
-                    model = GameObject.Find("Model");
-                    if (model != null)
-                        Debug.LogWarning("Found model:" + model.name);
-                    if (model != null)
-                        model.SetActive(showModelInExpScene);
-
                     Debug.Log("Start Experiment");
                     sceneFsm.ChangeState(SceneStates.ExperimentScene);
                 }
@@ -305,9 +311,12 @@ namespace Assets.NinjaGame.Scripts
         {
             Debug.Log("Load ExperimentScene");
             SceneManager.LoadSceneAsync(experimentScene, LoadSceneMode.Single);
+            ///no controllers, but hands 
+            ChangeAppeareance(false, true);
+            ActivateAndStartCapturing();
             CheckDeactivates();
             DisableSMIScreen();
-            ActivateCapturing();
+
             
         }
 
@@ -317,6 +326,8 @@ namespace Assets.NinjaGame.Scripts
             if ((NinjaGame.generatedTrials != null) && (  NinjaGame.generatedTrials.Count == 0))
             {
                 sceneFsm.ChangeState(SceneStates.PostScene);
+                if(capScene)
+                    capScene.FinishCapture();
             }
         }
 
@@ -324,9 +335,8 @@ namespace Assets.NinjaGame.Scripts
         IEnumerator PostScene_Enter() {
             yield return new WaitForSeconds(waitTimeAfterLastTrialSpawn);
             Debug.Log("Load post experiment scene");
-            if (model != null)
-                model.SetActive(true);
-           
+            //hands, no controllers
+            ChangeAppeareance(true, false);
             SceneManager.LoadSceneAsync(postExperimentScene, LoadSceneMode.Single);
            
            // CheckDeactivates();
@@ -359,17 +369,53 @@ namespace Assets.NinjaGame.Scripts
             }
         }
 
-       void ActivateCapturing()
+        void ChangeAppeareance(bool showModel, bool showHands)
+        {
+            //can be optimized later on....
+            var modell = controllerLeft.transform.FindChild("Model").gameObject;
+            if (modell != null)
+            {
+                Debug.LogWarning("Found model:" + modell.name);
+                modell.SetActive(showModel);
+            }
+            var modelr = controllerRight.transform.FindChild("Model").gameObject;
+            if (modelr != null)
+            {
+                Debug.LogWarning("Found model:" + modelr.name);
+                modelr.SetActive(showModel);
+            }
+            var handl = controllerLeft.transform.FindChild("HandCursor_edited").gameObject;
+            if (handl != null)
+            {
+                Debug.LogWarning("Found model:" + handl.name);
+                modell.SetActive(showHands);
+            }
+            var handr = controllerRight.transform.FindChild("HandCursor_edited").gameObject;
+            if (handr != null)
+            {
+                Debug.LogWarning("Found model:" + handr.name);
+                handr.SetActive(showHands);
+            }
+
+        }
+
+
+
+       void ActivateAndStartCapturing()
         {
 
             camCap = GameObject.Find("CameraCapture");
             if (camCap)
             {
-                capScene = camCap.GetComponent<CaptureScene>();
-                if(capScene)
-                    capScene.enabled = true;
                 camCap.SetActive(true);
                 Debug.Log("Activate campCap" + camCap.ToString());
+                capScene = camCap.GetComponent<CaptureScene>();
+                if (capScene)
+                {
+                    capScene.enabled = true;
+                    capScene.StartCapture();
+                }
+
             }
         }
         

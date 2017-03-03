@@ -70,11 +70,11 @@ namespace Assets.NinjaGame.Scripts
         {
             if ((expScene) && (captureStream != null))
             {
-                if ((expScene.sceneFsm.State == ExperimentSceneController.SceneStates.ExperimentScene) && (!capturing))
+              /*  if ((expScene.sceneFsm.State == ExperimentSceneController.SceneStates.ExperimentScene) && (!capturing))
                     StartCapture();
                 if ((expScene.sceneFsm.State == ExperimentSceneController.SceneStates.ExperimentScene) && (capturing))
                     FinishCapture();
-
+                    */
                 if ((curVideoObj != null) && (capturing))
                 {
 

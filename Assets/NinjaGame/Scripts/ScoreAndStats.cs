@@ -77,10 +77,10 @@ namespace Assets.NinjaGame.Scripts
                             scoresText.color = Color.red;
                             scoresText.text = "Baseline Recording.\nPlease follow the instructions of lab assistant.";
                         }
-                        else //back top normal (whit, not text)
+                        else if((!expSceneCon.recordingflag) && (expSceneCon.initflag) ) //back top normal (whit, not text)
                         {
                             scoresText.color = Color.white;
-                            scoresText.text = "";
+                            scoresText.text = "Now please press the trigger button, to start the experiment...";
                         }
                     }
                 }
@@ -94,8 +94,7 @@ namespace Assets.NinjaGame.Scripts
             
                 else if (expSceneCon.sceneFsm.State == ExperimentSceneController.SceneStates.PostScene)
                 {
-
-                    if (scoresText)
+                    if ((scoresText) && (!expSceneCon.waitflag)) 
                     {
                         scoresText.color = Color.blue;
                         scoresText.text = "Ok. Experiment is finished. Thanks for being part of it";

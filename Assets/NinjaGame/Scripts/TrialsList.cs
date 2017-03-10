@@ -32,10 +32,22 @@ namespace Assets.NinjaGame.Scripts
 
         public static Trial PickAndDelete(List<Trial> trialsList)
         {
+            Trial selected;
+            int index;
+            int minVal = 0;
             System.Random r = new System.Random();
-            int index = r.Next(0, trialsList.Count - 1);
-            Trial selected = trialsList[index];
-            trialsList.RemoveAt(index);
+            if (trialsList.Count != 0)
+            {
+                index = r.Next(minVal, trialsList.Count - 1);
+                //Debug.Log("index: " + index + "ListCount: " + (trialsList.Count - 1));
+                selected = trialsList[index];
+                trialsList.RemoveAt(index);
+            }
+            else
+            {
+                selected = null;
+                Debug.Log("No Object");
+            }
 
             return selected;
         }

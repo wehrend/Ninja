@@ -25,6 +25,7 @@ namespace Assets.NinjaGame.Scripts
             CalibrateScene,
             PreScene,
             ExperimentScene,
+            WaitForPostScene,
             PostScene
         }
         [Tooltip("DebugHelper SMI")]
@@ -61,12 +62,12 @@ namespace Assets.NinjaGame.Scripts
         private bool initialized;
         private int deviceIndex;
         private bool triggerPressed;
-        private bool initflag,endflag;
+        public bool initflag,endflag;
         private float timeInCalibrationScene;
         public float startCalibrationTime;
         private bool calibrationflag;
         private bool capturing;
-        public bool recordingflag, finishedflag;
+        public bool recordingflag, finishedflag, waitflag;
        // private SMICalibrationVisualizer calibViz;
         private SMICalibrationVisualizer.VisualisationState previousState, currentState;
 
@@ -80,9 +81,13 @@ namespace Assets.NinjaGame.Scripts
         {
             initialized = false;
             /// <summary>
-            /// Caches the Camer Prefabs, we use Child element, cause naming varys
+            /// Caches the Camer Prefabs
             /// </summary>
-            cameraRig = GameObject.Find("Camera (eye)").transform.parent.gameObject;
+            /// 
+            cameraRig = GameObject.Find("ViveCamera_WithEyetracking").gameObject;
+
+            // now we have the root object, on  which DontDestroyOnLoad() works
+            Debug.Log(cameraRig.name);
             controllerLeft = GameObject.Find("Controller (left)");
             controllerRight = GameObject.Find("Controller (right)");
             ////
@@ -96,8 +101,9 @@ namespace Assets.NinjaGame.Scripts
             // calibViz = GameObject.FindObjectOfType(typeof(SMICalibrationVisualizer)) as SMICalibrationVisualizer;
             // Debug.Log("Found: "+calibViz.ToString());
             
-            DontDestroyOnLoad(this.gameObject);
-            DontDestroyOnLoad(cameraRig);
+            DontDestroyOnLoad(this.gameObject);//experiment scene controller
+            
+            DontDestroyOnLoad(cameraRig.gameObject);
 
         }
 
@@ -117,6 +123,7 @@ namespace Assets.NinjaGame.Scripts
                 calibrationflag = false;
                 recordingflag = false;
                 finishedflag = false;
+                waitflag = true;
                 //Assert.IsNotNull(experimentMarker, "You forgot to assign the reference to a marker stream implementation!");
 
               
@@ -151,6 +158,7 @@ namespace Assets.NinjaGame.Scripts
                     else
                     {
                         Debug.Log("No SMI Vive available, load room scene");
+                        SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Single);
                         sceneFsm.ChangeState(SceneStates.PreScene);
                     }
 
@@ -227,7 +235,7 @@ namespace Assets.NinjaGame.Scripts
 
                 //            Debug.Log(SMICalibrationVisualizer.Instance.ToString());
                 
-                  /*  if ((Input.GetKeyDown(KeyCode.Alpha3)) || (Input.GetKeyDown(KeyCode.Alpha5)))
+                   /* if ((Input.GetKeyDown(KeyCode.Alpha3)) || (Input.GetKeyDown(KeyCode.Alpha5)))
                     {
                         startCalibrationTime = Time.time;
                         Debug.Log("Accept key at time: " + startCalibrationTime);
@@ -236,18 +244,19 @@ namespace Assets.NinjaGame.Scripts
                 
                 
                     //wait some time...
-                    if ((sceneFsm.State == SceneStates.CalibrateScene) && (Time.time - startCalibrationTime > 30))
+                    if ((sceneFsm.State == SceneStates.CalibrateScene) && (Time.time > 30))
                     {
-                    //the Calibration scene rig translated by 0.704 from origin
+                   
+                    SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Single);
+                    Debug.Log("Load Scene preExperimentScene");
                     sceneFsm.ChangeState(SceneStates.PreScene);
-                        Debug.Log("Unload calibrationScene");
+                    //SceneManager.UnloadSceneAsync(calibrationScene);
 
-                        //SceneManager.UnloadSceneAsync(calibrationScene);
 
-                        // Debug.Log("Load preExperimentScene");
-                        // SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Additive);
+                    // Debug.Log("Load preExperimentScene");
+                    // SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Additive);
 
-                    }
+                }
             }
         }
 
@@ -260,8 +269,8 @@ namespace Assets.NinjaGame.Scripts
                 Debug.Log("Unload calibrationScene");
                 SceneManager.UnloadSceneAsync(calibrationScene);
             }
-            Debug.Log("Load preExperimentScene");
-            SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Single);
+            //Debug.Log("Load preExperimentScene");
+            //SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Single);
             DisableSMIScreen();
             timeOfEnterRoomScene = Time.time;
             CheckDeactivates();
@@ -332,8 +341,15 @@ namespace Assets.NinjaGame.Scripts
         }
 
 
+
         IEnumerator PostScene_Enter() {
             yield return new WaitForSeconds(waitTimeAfterLastTrialSpawn);
+            PostScene();
+        }
+
+
+        void PostScene() {
+            waitflag = false;
             Debug.Log("Load post experiment scene");
             //hands, no controllers
             ChangeAppeareance(true, false);

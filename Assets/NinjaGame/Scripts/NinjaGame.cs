@@ -20,7 +20,8 @@ namespace Assets.NinjaGame.Scripts
     public class NinjaGame : MonoBehaviour
     {
         public static ExperimentSceneController expController;
-
+        [HideInInspector]
+        public static string configDataDirectory;
         public static TrialsList trialsConfig;
         public static List<Trial> generatedTrials;
          
@@ -60,9 +61,13 @@ namespace Assets.NinjaGame.Scripts
             if (experimentMarker != null)
                 Debug.Log("Found LSL Stream"+experimentMarker.lslStreamName);   
             ExperimentSceneController.experimentInfo.triggerPressed = false;
-            var dataDirectory = Application.dataPath + "/NinjaGame/Config/";
-            expectedTrialsConfig = dataDirectory + "trialslist.json";
-            saveTrialsConfig = dataDirectory + "trialslist.json";
+#if (UNITY_EDITOR)
+            configDataDirectory = Application.dataPath + "/NinjaGame/Config/";
+#else
+            configDataDirectory = Application.streamingAssetsPath + "/Config/";
+#endif
+            expectedTrialsConfig = configDataDirectory + "trialslist.json";
+            saveTrialsConfig = configDataDirectory + "trialslist.json";
 
             if (trialsConfig == null)
             {
@@ -87,7 +92,7 @@ namespace Assets.NinjaGame.Scripts
         void Start()
         {
 
-            #region Experiment Event logic
+#region Experiment Event logic
    
 
             if (ExperimentSceneController.experimentInfo)
@@ -105,7 +110,7 @@ namespace Assets.NinjaGame.Scripts
             ninjaControl.StartGame += new NinjaGameEventHandler(StartGame);
             ninjaControl.GameOver += new NinjaGameEventHandler(GameOver);
 
-            #endregion
+#endregion
             //Debug.LogWarning(objectPool);
             gamePlaying = true;
             
@@ -113,7 +118,7 @@ namespace Assets.NinjaGame.Scripts
 
        
         }
-        #region Game Event logic
+#region Game Event logic
 
         void fruitCollision(object sender, NinjaGameEventArgs eve)
         {
@@ -155,9 +160,9 @@ namespace Assets.NinjaGame.Scripts
             //light.enabled = false;
         }
 
-        #endregion
+#endregion
 
-        #region ObjectSpawner
+#region ObjectSpawner
         IEnumerator FireDelay()
         {
             // As long as the Game is playing, later conditional
@@ -173,42 +178,50 @@ namespace Assets.NinjaGame.Scripts
             if (trialsConfig != null)
             {
                 float previousAngle=0;
-                List<Transform> spawnerInstances = Enumerable.Repeat(transform, parallelSpawns).ToList();
+                List<Transform> spawnerInstances = Enumerable.Repeat(transform, parallelSpawns-1).ToList();
                 //Debug.Log(spawnerInstances.Count);
                 var position = Vector3.one + Vector3.up * (height - 1);
                 center = new Vector3(0, 2.0f, 0);
                 foreach (var spawner in spawnerInstances)
                 {
-                 
+
                     var selected = Trial.PickAndDelete(generatedTrials);
-                    trialNumber = trialsMax - generatedTrials.Count;
-                    Debug.Log("Trials:" +trialNumber + " " + selected.trial + ' ' + selected.color + ' ' + selected.distance);
-                    spawner.position = (position - center).normalized * selected.distance + center;
-                    float currentAngle = Random.Range(-angle / 2, angle / 2) - angleAlignment;
-                
-                    //Debug.Log("Transform position:" + spawner.position + "Angle:" +(currentAngle-angleAlignment));
-                    spawner.RotateAround(center, Vector3.up, currentAngle);
-                    var startposition = spawner.position;
-                    target = new Vector3(-startposition.x, startposition.y, -startposition.z);
-                    //Debug.Log("TransformPosition:" + startposition + " Target.Position " + target+ " from angle "+ currentAngle- angleAlignment );
-                    // wait some small time
-                    prefab = Resources.Load("BasicPrefab", typeof(MovingRigidbodyPhysics)) as MovingRigidbodyPhysics;
-                    prefab.distance = selected.distance;
-                    prefab.velocity = selected.velocity; //velocity;
-                    prefab.startPoint = spawner.position;
-                    prefab.color = selected.color;
-                    prefab.transform.localScale = selected.scale * Vector3.one;
-                    Instantiate(prefab, spawner.position, Quaternion.identity);
-                    prefab.name = trialNumber.ToString();
-                    experimentMarker.Write("spawn_trial_" + trialNumber + ": name:" + selected.trial + ",color:" + selected.color + " ,distance:" + selected.distance+",velocity:"+selected.velocity);
-                   
-                    yield return new WaitForFixedUpdate();
-                    //Debug.Log("Object " + prefab.transform.name + " instantiated");
+                    if (selected != null)
+                    {
+                        trialNumber = trialsMax - generatedTrials.Count;
+                        Debug.Log("Trials:" + trialNumber + " " + selected.trial + ' ' + selected.color + ' ' + selected.distance);
+                        spawner.position = (position - center).normalized * selected.distance + center;
+                        float currentAngle = Random.Range(-angle / 2, angle / 2) - angleAlignment;
+
+                        //Debug.Log("Transform position:" + spawner.position + "Angle:" +(currentAngle-angleAlignment));
+                        spawner.RotateAround(center, Vector3.up, currentAngle);
+                        var startposition = spawner.position;
+                        target = new Vector3(-startposition.x, startposition.y, -startposition.z);
+                        //Debug.Log("TransformPosition:" + startposition + " Target.Position " + target+ " from angle "+ currentAngle- angleAlignment );
+                        // wait some small time
+                        prefab = Resources.Load("BasicPrefab", typeof(MovingRigidbodyPhysics)) as MovingRigidbodyPhysics;
+                        prefab.distance = selected.distance;
+                        prefab.velocity = selected.velocity; //velocity;
+                        prefab.startPoint = spawner.position;
+                        prefab.color = selected.color;
+                        prefab.transform.localScale = selected.scale * Vector3.one;
+                        Instantiate(prefab, spawner.position, Quaternion.identity);
+                        prefab.name = trialNumber.ToString();
+                        experimentMarker.Write("spawn_trial_" + trialNumber + ": name:" + selected.trial + ",color:" + selected.color + " ,distance:" + selected.distance + ",velocity:" + selected.velocity);
+
+                        yield return new WaitForFixedUpdate();
+                        //Debug.Log("Object " + prefab.transform.name + " instantiated");
+                    }
+                    else
+                    {
+                        Debug.Log("Empty object");
+                    }
+                    
                 }
             }
         }
 
-        #endregion
+#endregion
 
       
     }

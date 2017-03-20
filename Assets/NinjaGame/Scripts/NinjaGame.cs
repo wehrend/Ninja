@@ -214,7 +214,7 @@ namespace Assets.NinjaGame.Scripts
                     }
                     else
                     {
-                        Debug.Log("Empty object");
+                        Debug.LogError("Empty object");
                     }
                     
                 }

@@ -39,13 +39,14 @@ namespace Assets.NinjaGame.Scripts
         private GameObject model, hand;
         ////
         public double rbStreamDataRate = 90.00;
-        public string calibrationScene = "BoxRoom";
-        public string preExperimentScene = "Empty_room";
-        public string experimentScene = "experimentScene";
+        public string calibrationScene;
+        public string preExperimentScene;
+        public string experimentScene;
         public string postExperimentScene;
         public bool showModelInExpScene = false;
         public int waitTimeAfterLastTrialSpawn = 7;
         public float userInitTime = 15.00f;
+        public float calibrationTimeSlot = 30.0f;
         public float baselineDuration = 180.00f;
         private float timeOfEnterRoomScene;
         // public const string expMarkerStreamName = "ExperimentMarkerStream";
@@ -79,6 +80,8 @@ namespace Assets.NinjaGame.Scripts
         // Use this for initialization
         void Awake()
         {
+
+
             initialized = false;
             /// <summary>
             /// Caches the Camer Prefabs
@@ -113,11 +116,11 @@ namespace Assets.NinjaGame.Scripts
         {
             if (!initialized)
             {
-                Debug.Log("InitScene");
-
+                calibrationScene = "BoxRoom";
                 preExperimentScene = "Empty_room";
                 experimentScene = "experimentScene";
                 postExperimentScene = "Empty_room";
+                Debug.Log("InitScene");
                 preflag = false;
                 postflag = false;
                 calibrationflag = false;
@@ -149,18 +152,10 @@ namespace Assets.NinjaGame.Scripts
                             Debug.Log("Set LSL data rate for RB Hmd set to " + rbStreamDataRate + "Hz.");
                     }
                     initialized = true;
-                    if (isSMIvive)
-                    {
-                            Debug.Log("Load calibrate scene");
-                            sceneFsm.ChangeState(SceneStates.CalibrateScene, StateTransition.Overwrite);
+
+                    Debug.Log("Load calibrate scene");
+                    sceneFsm.ChangeState(SceneStates.CalibrateScene, StateTransition.Overwrite);
                             
-                    }
-                    else
-                    {
-                        Debug.Log("No SMI Vive available, load room scene");
-                        SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Single);
-                        sceneFsm.ChangeState(SceneStates.PreScene);
-                    }
 
                 }
                 else
@@ -234,31 +229,61 @@ namespace Assets.NinjaGame.Scripts
             {
 
                 //            Debug.Log(SMICalibrationVisualizer.Instance.ToString());
-                
-                   /* if ((Input.GetKeyDown(KeyCode.Alpha3)) || (Input.GetKeyDown(KeyCode.Alpha5)))
+
+                /* if ((Input.GetKeyDown(KeyCode.Alpha3)) || (Input.GetKeyDown(KeyCode.Alpha5)))
+                 {
+                     startCalibrationTime = Time.time;
+                     Debug.Log("Accept key at time: " + startCalibrationTime);
+                 }*/
+
+
+
+                //wait some time...
+                if ((sceneFsm.State == SceneStates.CalibrateScene))
                     {
-                        startCalibrationTime = Time.time;
-                        Debug.Log("Accept key at time: " + startCalibrationTime);
-                    }*/
-                    
-                
-                
-                    //wait some time...
-                    if ((sceneFsm.State == SceneStates.CalibrateScene) && (Time.time > 30))
-                    {
-                   
-                    SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Single);
-                    Debug.Log("Load Scene preExperimentScene");
-                    sceneFsm.ChangeState(SceneStates.PreScene);
-                    //SceneManager.UnloadSceneAsync(calibrationScene);
+                        if (SMIGazeController.GazeModel.connectionRoutineDone)
+                        {
+                            Debug.Log("SMI ConnectionRoutine done.");
+                            if (SMIGazeController.GazeModel.ErrorID == 1) //no error 
+                            {
+                                Debug.Log("SMI Vive and working");
+                            //Give timeslot for calibration
 
+                                if (Time.time > calibrationTimeSlot)
+                                {
+                                    LoadPreScene();
+                                }
+                              //  else {
+                              //      Debug.Log(Time.time + "<" + calibrationTimeSlot);
+                              //  }
+                            }
+                            else if (SMIGazeController.GazeModel.ErrorID == 506)
+                            {
+                                Debug.LogError("No SMI Vive connected! (ErrorID: 506)");
+                                //Direct Scene Load 
+                                LoadPreScene();
+                            }
+                            else {
+                                Debug.LogError("SMI Vive Error " + SMIGazeController.GazeModel.ErrorID);
+                                //Direct Scene Load 
+                                LoadPreScene();
+                            }
 
-                    // Debug.Log("Load preExperimentScene");
-                    // SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Additive);
+                        }
 
-                }
-            }
+                    }
+             }
         }
+
+
+        void LoadPreScene()
+        {
+            SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Single);
+            Debug.Log("Load Scene preExperimentScene");
+            sceneFsm.ChangeState(SceneStates.PreScene);
+            //SceneManager.UnloadSceneAsync(calibrationScene);
+        }
+
 
 
         void PreScene_Enter()
@@ -343,6 +368,7 @@ namespace Assets.NinjaGame.Scripts
 
 
         IEnumerator PostScene_Enter() {
+            Debug.Log("PostScene_Enter");
             yield return new WaitForSeconds(waitTimeAfterLastTrialSpawn);
             PostScene();
         }
@@ -354,13 +380,13 @@ namespace Assets.NinjaGame.Scripts
             //hands, no controllers
             ChangeAppeareance(true, false);
             SceneManager.LoadSceneAsync(postExperimentScene, LoadSceneMode.Single);
-           
+            
            // CheckDeactivates();
             if (experimentMarker != null)
                 Debug.Log("Should Write Marker: end_experiment_condition");
             experimentMarker.Write("end_experiment_condition");
             Debug.Log("End Application!");
-            Application.Quit();
+           // Application.Quit();
         }
 
         void CheckDeactivates()

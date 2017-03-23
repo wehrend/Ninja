@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 //using UnityStandardAssets.Effects;
-using VRTK;
+//using VRTK;
 
 namespace Assets.NinjaGame.Scripts
 {

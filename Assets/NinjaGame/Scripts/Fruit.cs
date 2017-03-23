@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using VRTK;
+//using VRTK;
 
 namespace Assets.NinjaGame.Scripts
 {

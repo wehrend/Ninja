@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Linq;
 using Assets.LSL4Unity.Scripts;
-using VRTK;
 
 namespace Assets.NinjaGame.Scripts
 {
@@ -122,10 +121,10 @@ namespace Assets.NinjaGame.Scripts
         {
             Debug.Log(collision.collider.name);
 
-            if ((collision.collider.name.Contains("Paddle") && collision.collider.GetComponent<Paddle>().CollisionForce() > breakForce))
+           /* if ((collision.collider.name.Contains("Paddle") && collision.collider.GetComponent<Paddle>().CollisionForce() > breakForce))
             {
                 return collision.collider.GetComponent<Paddle>().CollisionForce() * 1.2f;
-            }
+            }*/
 
             if ((collision.collider.name.Contains("HandCursor_edited")))
             {

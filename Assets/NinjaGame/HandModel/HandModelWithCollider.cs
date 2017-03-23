@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Valve.VR;
-using VRTK;
 
 namespace Hand
 {
@@ -12,7 +11,6 @@ namespace Hand
         SteamVR_RenderModel render;
 
         Animator animator;
-        VRTK_ControllerEvents events;
         public CapsuleCollider collider;
 
         int idle, point, open, gesture, fist, pick, grab;

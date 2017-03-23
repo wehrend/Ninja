@@ -8,7 +8,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.LSL4Unity.Scripts;
 using Assets.VREF.Scripts;
-using VRTK;
 
 /// <summary>
 /// Main class of the Paradigm-specific code, 

@@ -28,8 +28,9 @@ namespace Assets.NinjaGame.Scripts
             WaitForPostScene,
             PostScene
         }
-        [Tooltip("DebugHelper SMI")]
-        public bool noSMI;
+        //[Tooltip("DebugHelper SMI")]
+        //public bool noSMI;
+
         /// <summary>
         /// Caches for the Camera Prefab  
         /// </summary>
@@ -43,31 +44,33 @@ namespace Assets.NinjaGame.Scripts
         public string preExperimentScene;
         public string experimentScene;
         public string postExperimentScene;
-        public bool showModelInExpScene = false;
         public int waitTimeAfterLastTrialSpawn = 7;
         public float userInitTime = 15.00f;
         public float calibrationTimeSlot = 30.0f;
         public float baselineDuration = 180.00f;
         private float timeOfEnterRoomScene;
+        private float timeInCalibrationScene;
+        public float startCalibrationTime;
         // public const string expMarkerStreamName = "ExperimentMarkerStream";
         public StateMachine<SceneStates> sceneFsm;
         //Next todo: using singletones here 
         public static ExperimentInfo experimentInfo;
+        [HideInInspector]
         public bool preflag, postflag;
         RBControllerStream rbControllerStream;
         RBHmdStream rbHmdStream;
         ScoreAndStats texts; 
 
-        public bool isSMIvive;
         public static LSLMarkerStream experimentMarker;
         private bool initialized;
         private int deviceIndex;
         private bool triggerPressed;
+        [HideInInspector]
         public bool initflag,endflag;
-        private float timeInCalibrationScene;
-        public float startCalibrationTime;
+        [HideInInspector]
         private bool calibrationflag;
         private bool capturing;
+        [HideInInspector]
         public bool recordingflag, finishedflag, waitflag;
        // private SMICalibrationVisualizer calibViz;
         private SMICalibrationVisualizer.VisualisationState previousState, currentState;
@@ -75,7 +78,8 @@ namespace Assets.NinjaGame.Scripts
         //capturing Scene
         private GameObject camCap;
         private static CaptureScene capScene;
-        
+        private GameObject gazeCursor;
+
 
         // Use this for initialization
         void Awake()
@@ -93,6 +97,7 @@ namespace Assets.NinjaGame.Scripts
             Debug.Log(cameraRig.name);
             controllerLeft = GameObject.Find("Controller (left)");
             controllerRight = GameObject.Find("Controller (right)");
+
             ////
             experimentInfo = new ExperimentInfo();
             rbControllerStream = GetComponent<RBControllerStream>();
@@ -103,12 +108,13 @@ namespace Assets.NinjaGame.Scripts
                 Debug.Log("Scene FSM found");
             // calibViz = GameObject.FindObjectOfType(typeof(SMICalibrationVisualizer)) as SMICalibrationVisualizer;
             // Debug.Log("Found: "+calibViz.ToString());
-            
-            DontDestroyOnLoad(this.gameObject);//experiment scene controller
-            
+
+            //experiment scene controller
+            DontDestroyOnLoad(this.gameObject);
+            //Whole CameraRig
             DontDestroyOnLoad(cameraRig.gameObject);
 
-        }
+    }
 
 
 
@@ -177,8 +183,8 @@ namespace Assets.NinjaGame.Scripts
         }
 
 
-            ///search for the loading screen to deactivate if not in calib mode
-         void  DisableSMIScreen()
+        ///search for the loading screen to deactivate if not in calib mode
+        void  DisableSMIScreen()
         {
             var loadScreen = GameObject.Find("SMILoadingScreen");
 
@@ -278,6 +284,11 @@ namespace Assets.NinjaGame.Scripts
 
         void LoadPreScene()
         {
+            gazeCursor = GameObject.Find("Example_GazeCursor");
+
+            //GazeCursor
+            if (gazeCursor != null)
+                DontDestroyOnLoad(gazeCursor.gameObject);
             SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Single);
             Debug.Log("Load Scene preExperimentScene");
             sceneFsm.ChangeState(SceneStates.PreScene);
@@ -298,7 +309,7 @@ namespace Assets.NinjaGame.Scripts
             //SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Single);
             DisableSMIScreen();
             timeOfEnterRoomScene = Time.time;
-            CheckDeactivates();
+            //CheckDeactivates();
 
         }
 
@@ -348,7 +359,7 @@ namespace Assets.NinjaGame.Scripts
             ///no controllers, but hands 
             ChangeAppeareance(false, true);
             ActivateAndStartCapturing();
-            CheckDeactivates();
+            //CheckDeactivates();
             DisableSMIScreen();
 
             
@@ -389,7 +400,7 @@ namespace Assets.NinjaGame.Scripts
            // Application.Quit();
         }
 
-        void CheckDeactivates()
+        /*void CheckDeactivates()
         { 
             if (noSMI)
             {
@@ -409,7 +420,7 @@ namespace Assets.NinjaGame.Scripts
 
 
             }
-        }
+        }*/
 
         void ChangeAppeareance(bool showModel, bool showHands)
         {

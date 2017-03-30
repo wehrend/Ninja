@@ -21,7 +21,8 @@ namespace Assets.NinjaGame.Scripts
     {
         public enum SceneStates
         {
-            None,
+            //None,
+            MenuScene,
             CalibrateScene,
             PreScene,
             ExperimentScene,
@@ -59,10 +60,11 @@ namespace Assets.NinjaGame.Scripts
         public bool preflag, postflag;
         RBControllerStream rbControllerStream;
         RBHmdStream rbHmdStream;
-        ScoreAndStats texts; 
+        ScoreAndStats texts;
 
         public static LSLMarkerStream experimentMarker;
-        private bool initialized;
+        //private bool initialized;
+        public bool startGame=false;
         private int deviceIndex;
         private bool triggerPressed;
         [HideInInspector]
@@ -85,8 +87,6 @@ namespace Assets.NinjaGame.Scripts
         void Awake()
         {
 
-
-            initialized = false;
             /// <summary>
             /// Caches the Camer Prefabs
             /// </summary>
@@ -97,13 +97,13 @@ namespace Assets.NinjaGame.Scripts
             Debug.Log(cameraRig.name);
             controllerLeft = GameObject.Find("Controller (left)");
             controllerRight = GameObject.Find("Controller (right)");
-
+            
             ////
             experimentInfo = new ExperimentInfo();
             rbControllerStream = GetComponent<RBControllerStream>();
             rbHmdStream = GetComponent<RBHmdStream>();
             experimentMarker = gameObject.GetComponent<LSLMarkerStream>();
-            sceneFsm = StateMachine<SceneStates>.Initialize(this, SceneStates.None);
+            sceneFsm = StateMachine<SceneStates>.Initialize(this, SceneStates.MenuScene);
             if (sceneFsm!=null)
                 Debug.Log("Scene FSM found");
             // calibViz = GameObject.FindObjectOfType(typeof(SMICalibrationVisualizer)) as SMICalibrationVisualizer;
@@ -118,61 +118,71 @@ namespace Assets.NinjaGame.Scripts
 
 
 
-        void OnGUI()
+        void MenuScene_Enter()
         {
-            if (!initialized)
+
+            Debug.Log("MenuScene enter");
+            calibrationScene = "BoxRoom";
+            preExperimentScene = "Empty_room";
+            experimentScene = "experimentScene";
+            postExperimentScene = "Empty_room";
+            Debug.Log("InitScene");
+            preflag = false;
+            postflag = false;
+            calibrationflag = false;
+            recordingflag = false;
+            finishedflag = false;
+            waitflag = true;
+            //Assert.IsNotNull(experimentMarker, "You forgot to assign the reference to a marker stream implementation!");
+
+
+
+            if (rbControllerStream != null)
             {
-                calibrationScene = "BoxRoom";
-                preExperimentScene = "Empty_room";
-                experimentScene = "experimentScene";
-                postExperimentScene = "Empty_room";
-                Debug.Log("InitScene");
-                preflag = false;
-                postflag = false;
-                calibrationflag = false;
-                recordingflag = false;
-                finishedflag = false;
-                waitflag = true;
-                //Assert.IsNotNull(experimentMarker, "You forgot to assign the reference to a marker stream implementation!");
+                rbControllerStream.SetDataRate(rbStreamDataRate);
+                if (rbControllerStream.GetDataRate() == rbStreamDataRate)
+                    Debug.Log("Set LSL data rate for RB Controller set to " + rbStreamDataRate + "Hz.");
+            }
+            if (rbHmdStream != null)
+            {
+                rbHmdStream.SetDataRate(rbStreamDataRate);
+                if (rbHmdStream.GetDataRate() == rbStreamDataRate)
+                    Debug.Log("Set LSL data rate for RB Hmd set to " + rbStreamDataRate + "Hz.");
+            }
+            if (SteamVR.instance != null)
+            {
+                //Get Controller index
 
-              
-                //is SteamVR working??
-                if (SteamVR.instance != null)
-                {
-                    //Get Controller index
+                deviceIndex = SteamVR_Controller.GetDeviceIndex(SteamVR_Controller.DeviceRelation.Rightmost);
+                if (deviceIndex == -1)
+                    Debug.LogError("Please switch controller on!");
 
-                    deviceIndex = SteamVR_Controller.GetDeviceIndex(SteamVR_Controller.DeviceRelation.Rightmost);
-                    if (deviceIndex == -1)
-                        Debug.LogError("Please switch controller on!");
 
-                    if (rbControllerStream != null)
-                    {
-                        rbControllerStream.SetDataRate(rbStreamDataRate);
-                        if (rbControllerStream.GetDataRate() == rbStreamDataRate)
-                            Debug.Log("Set LSL data rate for RB Controller set to " + rbStreamDataRate + "Hz.");
-                    }
-                    if (rbHmdStream != null)
-                    {
-                        rbHmdStream.SetDataRate(rbStreamDataRate);
-                        if (rbHmdStream.GetDataRate() == rbStreamDataRate)
-                            Debug.Log("Set LSL data rate for RB Hmd set to " + rbStreamDataRate + "Hz.");
-                    }
-                    initialized = true;
+            }
+            else
+            {
+                Debug.LogError("No instance of SteamVR found!");
 
-                    Debug.Log("Load calibrate scene");
-                    sceneFsm.ChangeState(SceneStates.CalibrateScene, StateTransition.Overwrite);
-                            
-
-                }
-                else
-                {
-                    Debug.LogError("No instance of SteamVR found!");
-                    initialized = true;
-
-                }
             }
         }
 
+        void MenuScene_Update()
+        {
+            if (SteamVR.instance != null)
+            {
+
+                if (startGame || Input.GetKey(KeyCode.KeypadEnter))
+                {
+                    Debug.Log("Load calibrate scene");
+                    sceneFsm.ChangeState(SceneStates.CalibrateScene, StateTransition.Overwrite);
+                }
+            }
+          //  else
+          //  {
+          //      Debug.LogError("No instance of SteamVR found!");
+          //  }
+
+        }
 
 
         void CalibrateScene_Enter()
@@ -234,14 +244,11 @@ namespace Assets.NinjaGame.Scripts
             if (SteamVR.instance != null)
             {
 
-                //            Debug.Log(SMICalibrationVisualizer.Instance.ToString());
-
-                /* if ((Input.GetKeyDown(KeyCode.Alpha3)) || (Input.GetKeyDown(KeyCode.Alpha5)))
-                 {
-                     startCalibrationTime = Time.time;
-                     Debug.Log("Accept key at time: " + startCalibrationTime);
-                 }*/
-
+                // if ((Input.GetKeyDown(KeyCode.Alpha3)) || (Input.GetKeyDown(KeyCode.Alpha5)))
+                // {
+                //     startCalibrationTime = Time.time;
+                //     Debug.Log("Accept key at time: " + startCalibrationTime);
+                // }
 
 
                 //wait some time...

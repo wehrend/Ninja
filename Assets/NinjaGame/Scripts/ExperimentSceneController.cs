@@ -13,8 +13,6 @@ using VRCapture;
 
 namespace Assets.NinjaGame.Scripts
 {
-    //Big Todo: Make scenes single, not additive !
-    //But this involves some interscene communication probs.
     //TODO: Make static / singletone 
 
     public class ExperimentSceneController : MonoBehaviour
@@ -27,7 +25,8 @@ namespace Assets.NinjaGame.Scripts
             PreScene,
             ExperimentScene,
             WaitForPostScene,
-            PostScene
+            PostScene//,
+           // Pause
         }
         //[Tooltip("DebugHelper SMI")]
         //public bool noSMI;
@@ -35,9 +34,10 @@ namespace Assets.NinjaGame.Scripts
         /// <summary>
         /// Caches for the Camera Prefab  
         /// </summary>
-        public GameObject cameraRig;
-        public GameObject controllerLeft;
-        public GameObject controllerRight;
+        public GameObject player;
+        private GameObject cameraRig;
+        public GameObject controllerOne;
+        public GameObject controllerTwo;
         private GameObject model, hand;
         ////
         public double rbStreamDataRate = 90.00;
@@ -61,6 +61,7 @@ namespace Assets.NinjaGame.Scripts
         RBControllerStream rbControllerStream;
         RBHmdStream rbHmdStream;
         ScoreAndStats texts;
+        public GameObject pauseScreen; 
 
         public static LSLMarkerStream experimentMarker;
         //private bool initialized;
@@ -91,12 +92,14 @@ namespace Assets.NinjaGame.Scripts
             /// Caches the Camer Prefabs
             /// </summary>
             /// 
-            cameraRig = GameObject.Find("ViveCamera_WithEyetracking").gameObject;
+            player = GameObject.Find("Player (with Capturing)").gameObject; //ViveCamera_WithEyetracking
 
             // now we have the root object, on  which DontDestroyOnLoad() works
-            Debug.Log(cameraRig.name);
-            controllerLeft = GameObject.Find("Controller (left)");
-            controllerRight = GameObject.Find("Controller (right)");
+            Debug.Log(player.name);
+            //not the very best practice, but for the moment
+            var cameraRig=player.transform.FindChild("SteamVRObjects");
+            controllerOne = cameraRig.transform.Find("Hand1").gameObject;
+            controllerTwo = cameraRig.transform.Find("Hand2").gameObject;
             
             ////
             experimentInfo = new ExperimentInfo();
@@ -112,7 +115,7 @@ namespace Assets.NinjaGame.Scripts
             //experiment scene controller
             DontDestroyOnLoad(this.gameObject);
             //Whole CameraRig
-            DontDestroyOnLoad(cameraRig.gameObject);
+            DontDestroyOnLoad(player.gameObject);
 
     }
 
@@ -171,7 +174,7 @@ namespace Assets.NinjaGame.Scripts
             if (SteamVR.instance != null)
             {
 
-                if (startGame || Input.GetKey(KeyCode.KeypadEnter))
+                if (startGame)
                 {
                     Debug.Log("Load calibrate scene");
                     sceneFsm.ChangeState(SceneStates.CalibrateScene, StateTransition.Overwrite);
@@ -259,7 +262,7 @@ namespace Assets.NinjaGame.Scripts
                             Debug.Log("SMI ConnectionRoutine done.");
                             if (SMIGazeController.GazeModel.ErrorID == 1) //no error 
                             {
-                                Debug.Log("SMI Vive and working");
+                                Debug.Log("SMI Vive");
                             //Give timeslot for calibration
 
                                 if (Time.time > calibrationTimeSlot)
@@ -363,8 +366,11 @@ namespace Assets.NinjaGame.Scripts
         {
             Debug.Log("Load ExperimentScene");
             SceneManager.LoadSceneAsync(experimentScene, LoadSceneMode.Single);
+            //pauseScreen =GameObject.FindGameObjectWithTag("PauseScreen").gameObject;
+            //if (pauseScreen!=null)
+            //    pauseScreen.SetActive(false);
             ///no controllers, but hands 
-            ChangeAppeareance(false, true);
+            //ChangeAppeareance(false, true);
             ActivateAndStartCapturing();
             //CheckDeactivates();
             DisableSMIScreen();
@@ -380,6 +386,29 @@ namespace Assets.NinjaGame.Scripts
                 sceneFsm.ChangeState(SceneStates.PostScene);
                 if(capScene)
                     capScene.FinishCapture();
+            }
+
+            //freeze the game 
+            if (Input.GetKey(KeyCode.Space))
+            {
+                if (pauseScreen != null)
+                {
+                    if (Time.timeScale == 1.00)
+                    {
+                        Time.timeScale = 0.0f;
+                        experimentMarker.Write("Pause_begin");
+                        pauseScreen.SetActive(true);
+                    }
+                    else
+                    {
+                        pauseScreen.SetActive(false);
+                        experimentMarker.Write("Pause_end");
+                        Time.timeScale = 1.0f;
+                    }
+                }
+                
+
+                
             }
         }
 
@@ -432,31 +461,28 @@ namespace Assets.NinjaGame.Scripts
         void ChangeAppeareance(bool showModel, bool showHands)
         {
             //can be optimized later on....
-            var modell = controllerLeft.transform.FindChild("Model").gameObject;
-            if (modell != null)
+            var modelOne = controllerOne.transform.FindChild("HandCursor_edited").gameObject;
+            if (modelOne != null)
             {
-                Debug.LogWarning("Found model:" + modell.name);
-                modell.SetActive(showModel);
-            }
-            var modelr = controllerRight.transform.FindChild("Model").gameObject;
-            if (modelr != null)
+                Debug.LogWarning("Found model:" + modelOne.name);
+                modelOne.SetActive(showModel);
+            } else
             {
-                Debug.LogWarning("Found model:" + modelr.name);
-                modelr.SetActive(showModel);
-            }
-            var handl = controllerLeft.transform.FindChild("HandCursor_edited").gameObject;
-            if (handl != null)
-            {
-                Debug.LogWarning("Found model:" + handl.name);
-                modell.SetActive(showHands);
-            }
-            var handr = controllerRight.transform.FindChild("HandCursor_edited").gameObject;
-            if (handr != null)
-            {
-                Debug.LogWarning("Found model:" + handr.name);
-                handr.SetActive(showHands);
+                Debug.Log("DEBUG " + controllerOne.ToString()+ " "+ modelOne.ToString()); 
+                    
             }
 
+            var modelTwo = controllerTwo.transform.FindChild("HandCursor_edited").gameObject;
+            if (modelTwo != null)
+            {
+                Debug.LogWarning("Found model:" + modelTwo.name);
+                modelTwo.SetActive(showModel);
+            }
+            else
+            {
+                Debug.Log("DEBUG " + controllerOne.ToString() + " " + modelTwo.ToString());
+
+            }
         }
 
 
@@ -469,7 +495,7 @@ namespace Assets.NinjaGame.Scripts
             {
                 camCap.SetActive(true);
                 Debug.Log("Activate campCap" + camCap.ToString());
-                capScene = cameraRig.GetComponent<CaptureScene>();
+                capScene = player.GetComponent<CaptureScene>();
                 if (capScene)
                 {
                     capScene.enabled = true;

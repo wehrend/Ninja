@@ -210,14 +210,6 @@ namespace Assets.NinjaGame.Scripts
         {
             if (sampling == MomentForSampling.Update)
                 pushSample();
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                ToogleEyeMonitor();
-            }
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                ToggleStreaming();
-            }
         }
 
         void LateUpdate()
@@ -228,39 +220,7 @@ namespace Assets.NinjaGame.Scripts
                 
         }
 
-        bool showeyeImages = true;
-        public void ToogleEyeMonitor()
-        {
-            showeyeImages = !showeyeImages;
-            if (showeyeImages)
-            {
-                Debug.Log("smi_ShowEyeImageMonitor");
-                SMIGazeController.SMIcWrapper.smi_showEyeImageMonitor();
-            }
-            else
-            {
-                Debug.Log("smi_HideEyeImageMonitor");
-                SMIGazeController.SMIcWrapper.smi_hideEyeImageMonitor();
-            }
-        }
-        //Test streaming start/stop
-        bool isStreaming = true;
-        public void ToggleStreaming()
-        {
-            bool simulate = false;
-            System.IntPtr trackingInfo = System.IntPtr.Zero;
-            if (!isStreaming)
-            {
-                SMI.SMIGazeController.SMIcWrapper.smi_startStreaming(simulate, trackingInfo);
-                isStreaming = true;
-            }
-            else
-            {
-                SMI.SMIGazeController.SMIcWrapper.smi_stopStreaming();
-                isStreaming = false;
-            }
-        }
-
+     
 
         public static RBeyetrackingStream Instance
         {

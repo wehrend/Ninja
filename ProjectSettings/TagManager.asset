@@ -12,6 +12,7 @@ TagManager:
   - TeleportIgnore
   - CalibrationCamera
   - MainController
+  - PauseScreen
   layers:
   - Default
   - TransparentFX

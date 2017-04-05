@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 54000013464383600}
   - component: {fileID: 114000010597440812}
   m_Layer: 0
-  m_Name: 6
+  m_Name: BasicPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,6 +74,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33000011146156386
 MeshFilter:
@@ -109,7 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distance: 8
-  startPoint: {x: 6.0376763, y: 2, z: 5.248472}
+  startPoint: {x: 2.0705523, y: 2, z: 7.7274065}
   color:
     serializedVersion: 2
     rgba: 4278255360

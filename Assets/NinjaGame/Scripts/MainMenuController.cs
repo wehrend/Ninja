@@ -18,8 +18,8 @@ namespace Assets.NinjaGame.Scripts
         {
             esc = GameObject.Find("[ExperimentSceneController]").GetComponent<ExperimentSceneController>();
             mainMenu = this.transform.Find("MainMenu").gameObject;
-            startButton = this.transform.Find("Start").GetComponent<Button>();
-            quitButton = this.transform.Find("Quit").GetComponent<Button>();
+            startButton = mainMenu.transform.Find("Start").GetComponent<Button>();
+            quitButton = mainMenu.transform.Find("Quit").GetComponent<Button>();
 
             AddButtonEvent(startButton);
             AddButtonEvent(quitButton);
@@ -44,6 +44,9 @@ namespace Assets.NinjaGame.Scripts
                     case "Start":
                         Start();
                         break;
+                    case "ChooseConfig":
+                        ChooseConfig();
+                        break;
                     case "Quit":
                         Exit();
                         break;
@@ -61,6 +64,11 @@ namespace Assets.NinjaGame.Scripts
         private void Start()
         {
             esc.startGame = true;
+        }
+
+        private void ChooseConfig()
+        {
+            
         }
 
         void Exit()

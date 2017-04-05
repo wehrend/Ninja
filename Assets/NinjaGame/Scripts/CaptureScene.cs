@@ -52,7 +52,7 @@ namespace Assets.NinjaGame.Scripts
             if (captureVideoInstance == null)
             {
                 //Debug.Log(cameraGO.ToString());
-                captureVideoInstance = cameraGO.transform.FindChild("CaptureCamera").gameObject;
+                captureVideoInstance = cameraGO.gameObject;//.transform.FindChild("CaptureCamera").gameObject;
                 //Debug.Log(captureVideoInstance.ToString());
             }
             captureVideo = captureVideoInstance.GetComponentInChildren<VRCaptureVideo>();

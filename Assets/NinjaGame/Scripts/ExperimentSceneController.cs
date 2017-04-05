@@ -369,8 +369,7 @@ namespace Assets.NinjaGame.Scripts
             //pauseScreen =GameObject.FindGameObjectWithTag("PauseScreen").gameObject;
             //if (pauseScreen!=null)
             //    pauseScreen.SetActive(false);
-            ///no controllers, but hands 
-            //ChangeAppeareance(false, true);
+
             ActivateAndStartCapturing();
             //CheckDeactivates();
             DisableSMIScreen();
@@ -424,8 +423,6 @@ namespace Assets.NinjaGame.Scripts
         void PostScene() {
             waitflag = false;
             Debug.Log("Load post experiment scene");
-            //hands, no controllers
-            ChangeAppeareance(true, false);
             SceneManager.LoadSceneAsync(postExperimentScene, LoadSceneMode.Single);
             
            // CheckDeactivates();
@@ -457,33 +454,6 @@ namespace Assets.NinjaGame.Scripts
 
             }
         }*/
-
-        void ChangeAppeareance(bool showModel, bool showHands)
-        {
-            //can be optimized later on....
-            var modelOne = controllerOne.transform.FindChild("HandCursor_edited").gameObject;
-            if (modelOne != null)
-            {
-                Debug.LogWarning("Found model:" + modelOne.name);
-                modelOne.SetActive(showModel);
-            } else
-            {
-                Debug.Log("DEBUG " + controllerOne.ToString()+ " "+ modelOne.ToString()); 
-                    
-            }
-
-            var modelTwo = controllerTwo.transform.FindChild("HandCursor_edited").gameObject;
-            if (modelTwo != null)
-            {
-                Debug.LogWarning("Found model:" + modelTwo.name);
-                modelTwo.SetActive(showModel);
-            }
-            else
-            {
-                Debug.Log("DEBUG " + controllerOne.ToString() + " " + modelTwo.ToString());
-
-            }
-        }
 
 
 

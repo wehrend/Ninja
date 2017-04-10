@@ -20,7 +20,6 @@ namespace Assets.NinjaGame.Scripts
         /// <summary>
         /// capture
         /// </summary>
-        public GameObject cameraGO;
         [Tooltip("Capture cameras for video recording")]
         private VRCaptureVideo captureVideo;
         public static GameObject captureVideoInstance;
@@ -52,7 +51,7 @@ namespace Assets.NinjaGame.Scripts
             if (captureVideoInstance == null)
             {
                 //Debug.Log(cameraGO.ToString());
-                captureVideoInstance = cameraGO.gameObject;//.transform.FindChild("CaptureCamera").gameObject;
+                captureVideoInstance = this.gameObject;//.transform.FindChild("CaptureCamera").gameObject;
                 //Debug.Log(captureVideoInstance.ToString());
             }
             captureVideo = captureVideoInstance.GetComponentInChildren<VRCaptureVideo>();

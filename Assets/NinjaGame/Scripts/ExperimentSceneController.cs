@@ -35,6 +35,7 @@ namespace Assets.NinjaGame.Scripts
         /// Caches for the Camera Prefab  
         /// </summary>
         public GameObject player;
+        public GameObject vrCapture;
         private GameObject cameraRig;
         public GameObject controllerOne;
         public GameObject controllerTwo;
@@ -92,7 +93,7 @@ namespace Assets.NinjaGame.Scripts
             /// Caches the Camer Prefabs
             /// </summary>
             /// 
-            player = GameObject.Find("Player (with Capturing)").gameObject; //ViveCamera_WithEyetracking
+            //player = GameObject.Find("Player (with Capturing)").gameObject; //ViveCamera_WithEyetracking
 
             // now we have the root object, on  which DontDestroyOnLoad() works
             Debug.Log(player.name);
@@ -100,7 +101,8 @@ namespace Assets.NinjaGame.Scripts
             var cameraRig=player.transform.FindChild("SteamVRObjects");
             controllerOne = cameraRig.transform.Find("Hand1").gameObject;
             controllerTwo = cameraRig.transform.Find("Hand2").gameObject;
-            
+            vrCapture = GameObject.Find("VRCapture").gameObject;
+
             ////
             experimentInfo = new ExperimentInfo();
             rbControllerStream = GetComponent<RBControllerStream>();
@@ -116,7 +118,7 @@ namespace Assets.NinjaGame.Scripts
             DontDestroyOnLoad(this.gameObject);
             //Whole CameraRig
             DontDestroyOnLoad(player.gameObject);
-
+            DontDestroyOnLoad(vrCapture);
     }
 
 
@@ -460,20 +462,24 @@ namespace Assets.NinjaGame.Scripts
        void ActivateAndStartCapturing()
         {
 
-            camCap = GameObject.Find("CaptureCamera");
-            if (camCap)
+            
+            if (vrCapture)
             {
-                camCap.SetActive(true);
-                Debug.Log("Activate campCap" + camCap.ToString());
-                capScene = player.GetComponent<CaptureScene>();
+                vrCapture.SetActive(true);
+                Debug.Log("Activate vrCapture" + vrCapture.ToString());
+                capScene = vrCapture.GetComponent<CaptureScene>();
                 if (capScene)
                 {
                     capScene.enabled = true;
                     capScene.StartCapture();
                 }
-                else {
+                else
+                {
                     Debug.Log("Capture Scene not found!");
                 }
+            }
+            else {
+                Debug.Log("VRCamera not found");
             }
         }
         

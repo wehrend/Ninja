@@ -14,6 +14,7 @@ namespace VRCapture {
     /// </summary>
     [RequireComponent(typeof(Camera))]
     public class VRCaptureVideo : MonoBehaviour {
+
         /// <summary>
         /// Format type.
         /// </summary>

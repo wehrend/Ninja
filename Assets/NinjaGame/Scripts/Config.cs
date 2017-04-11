@@ -6,6 +6,30 @@ using System.Collections.Generic;
 
 namespace Assets.NinjaGame.Scripts
 {
+    #region Data classes
+
+    //Setup class
+   /* [Serializable]
+    public class Setup
+    {
+        public float timeUntilBaseline;
+        public float calibrationSceneTime;
+        public float baselineDuration;
+
+    }*/
+
+    //Experiment class
+    [Serializable]
+    public class Experiment
+    {
+        public int maximumAngle;
+        public int parallelSpawns;
+        public float pausetime;
+        public float pausetimeTimingJitter;
+    }
+
+
+    //Trial class
     [Serializable]
     public class Trial
     {
@@ -14,21 +38,27 @@ namespace Assets.NinjaGame.Scripts
         public string trial;
         //public object prefab;
         public Color color;
-        public float scale;
-        public float velocity;
-        public float distance;
+        public float scaleAvg;
+        public float scaleVar;
+        public float velocityAvg; //average
+        public float velocityVar;
+        public float distanceAvg;
+        public float distanceVar;
 
+        #endregion
+
+        #region trialadminstration
         //Constructor for test purposes
-        public Trial( string t, int i, Color c, float s, float v, float d)
-        {
-            //Trial Target or distract
-            this.trial = t;
-            this.instances = i;
-            this.color = c;
-            this.scale = s;
-            this.velocity = v;
-            this.distance = d;
-        }
+        /*   public Trial( string t, int i, Color c, float s, float v, float d)
+           {
+               //Trial Target or distract
+               this.trial = t;
+               this.instances = i;
+               this.color = c;
+               this.scaleAvg = s;
+               this.velocityAvg = v;
+               this.distanceAvg = d;
+           }*/
 
         public static Trial PickAndDelete(List<Trial> trialsList)
         {
@@ -52,19 +82,11 @@ namespace Assets.NinjaGame.Scripts
             return selected;
         }
     }
+#endregion
 
-    [Serializable]
-    public class Experiment
+    public class Config : ScriptableObject
     {
-        //Experiment
-        public int maximumAngle;
-        public int parallelSpawns;
-        public float pausetime;
-    }
-
-    public class TrialsList : ScriptableObject
-    {
-
+        //public Setup setup = new Setup();
  
         public Experiment experiment = new Experiment();
         //exemplaric Trials

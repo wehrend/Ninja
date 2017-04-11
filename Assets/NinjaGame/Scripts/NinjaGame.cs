@@ -21,12 +21,12 @@ namespace Assets.NinjaGame.Scripts
         public static ExperimentSceneController expController;
         [HideInInspector]
         public static string configDataDirectory;
-        public static TrialsList trialsConfig;
+        public static Config config;
         public static List<Trial> generatedTrials;
          
         //public float pausetime = 5;
         public Vector3 objectScale = new Vector3(0.5f,0.5f,0.5f);
-        public float velocity;
+        //public float velocity;
         public float spawnerDistance=5.0f;
         public float spawnerRange = 1.0f;
         public float height = 2.0f;
@@ -48,9 +48,15 @@ namespace Assets.NinjaGame.Scripts
         string expectedTrialsConfig;
         string saveTrialsConfig;
 
+        //actual trial values
+        private float scale;
+        private float distance;
+        private float velocity;
+
         //Experiment
         int angle;
         int parallelSpawns;
+        float pausetimeTimingJitter;
         float pausetime=5;
         int trialNumber;
         public int trialsMax;
@@ -68,21 +74,22 @@ namespace Assets.NinjaGame.Scripts
             expectedTrialsConfig = configDataDirectory + "trialslist.json";
             saveTrialsConfig = configDataDirectory + "trialslist.json";
 
-            if (trialsConfig == null)
+            if (config == null)
             {
-                trialsConfig = new TrialsList();
+                config = new Config();
                 // trialsConfig = ScriptableObject.CreateInstance(typeof(TrialsList)) as TrialsList;
                 //load default trials config
 
-                trialsConfig = ConfigUtil.LoadConfig<TrialsList>(new FileInfo(expectedTrialsConfig), true, () =>
+                config = ConfigUtil.LoadConfig<Config>(new FileInfo(expectedTrialsConfig), true, () =>
                 {
                     Debug.LogError("Something is wrong with the AppConfig. Was not found and I was not able to create one!");
                 });
 
-                angle = trialsConfig.experiment.maximumAngle;
-                parallelSpawns = trialsConfig.experiment.parallelSpawns;
-                pausetime = trialsConfig.experiment.pausetime;
-                generatedTrials =trialsConfig.GenerateTrialsList(trialsConfig.listOfTrials);
+                angle = config.experiment.maximumAngle;
+                parallelSpawns = config.experiment.parallelSpawns;
+                pausetimeTimingJitter = config.experiment.pausetimeTimingJitter;
+                pausetime = config.experiment.pausetime;
+                generatedTrials =config.GenerateTrialsList(config.listOfTrials);
                 trialsMax = generatedTrials.Count;
                 Debug.Log("Config from" + expectedTrialsConfig + "with " + generatedTrials.Count + " trials successfully loaded!");
             }
@@ -168,15 +175,15 @@ namespace Assets.NinjaGame.Scripts
             while (gamePlaying)
             {
                 StartCoroutine(FireFruit());
-                yield return new WaitForSeconds(pausetime);
+                var totalPausetime = pausetime + Random.Range(-pausetimeTimingJitter / 2, pausetimeTimingJitter / 2);
+                yield return new WaitForSeconds(totalPausetime);
             }
         }
 
         IEnumerator FireFruit()
         {
-            if (trialsConfig != null)
+            if (config != null)
             {
-                float previousAngle=0;
                 List<Transform> spawnerInstances = Enumerable.Repeat(transform, parallelSpawns-1).ToList();
                 //Debug.Log(spawnerInstances.Count);
                 var position = Vector3.one + Vector3.up * (height - 1);
@@ -187,10 +194,15 @@ namespace Assets.NinjaGame.Scripts
                     var selected = Trial.PickAndDelete(generatedTrials);
                     if (selected != null)
                     {
+
                         trialNumber = trialsMax - generatedTrials.Count;
-                        Debug.Log("Trials:" + trialNumber + " " + selected.trial + ' ' + selected.color + ' ' + selected.distance);
-                        spawner.position = (position - center).normalized * selected.distance + center;
+                        Debug.Log("Trials:" + trialNumber + " " + selected.trial + ' ' + selected.color + ' ' + selected.distanceAvg);
+                        var halfDistVar = selected.distanceVar / 2;
+                        distance = selected.distanceAvg + Random.Range(-halfDistVar, halfDistVar);
+                        spawner.position = (position - center).normalized * distance + center;
                         float currentAngle = Random.Range(-angle / 2, angle / 2) - angleAlignment;
+                        var halfVelVar = selected.velocityVar / 2;
+                        velocity = selected.velocityAvg + Random.Range(-halfVelVar,halfVelVar);
 
                         //Debug.Log("Transform position:" + spawner.position + "Angle:" +(currentAngle-angleAlignment));
                         spawner.RotateAround(center, Vector3.up, currentAngle);
@@ -198,15 +210,18 @@ namespace Assets.NinjaGame.Scripts
                         target = new Vector3(-startposition.x, startposition.y, -startposition.z);
                         //Debug.Log("TransformPosition:" + startposition + " Target.Position " + target+ " from angle "+ currentAngle- angleAlignment );
                         // wait some small time
+                        var halfScaleVar = selected.scaleVar / 2;
+                        scale = selected.scaleAvg + Random.Range(-halfScaleVar, halfScaleVar);
                         prefab = Resources.Load("BasicPrefab", typeof(MovingRigidbodyPhysics)) as MovingRigidbodyPhysics;
-                        prefab.distance = selected.distance;
-                        prefab.velocity = selected.velocity; //velocity;
+                    
+                        prefab.distance = distance;
+                        prefab.velocity = velocity; //velocity;
                         prefab.startPoint = spawner.position;
                         prefab.color = selected.color;
-                        prefab.transform.localScale = selected.scale * Vector3.one;
+                        prefab.transform.localScale = scale * Vector3.one;
                         Instantiate(prefab, spawner.position, Quaternion.identity);
                         prefab.name = trialNumber.ToString();
-                        experimentMarker.Write("spawn_trial_" + trialNumber + ": name:" + selected.trial + ",color:" + selected.color + " ,distance:" + selected.distance + ",velocity:" + selected.velocity);
+                        experimentMarker.Write("spawn_trial_" + trialNumber + ": name:" + selected.trial + ",color:" + selected.color + " ,distance:" + distance + ",velocity:" + velocity);
 
                         yield return new WaitForFixedUpdate();
                         //Debug.Log("Object " + prefab.transform.name + " instantiated");

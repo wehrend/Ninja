@@ -11,7 +11,7 @@ namespace Assets.NinjaGame.Scripts
 
     public class TrialsListEditorWindow : EditorWindow
     {
-        public TrialsList trialsConfig;
+        public Config trialsConfig;
         private int curIndex;
         public string dataDirectory;
         int trialname;
@@ -19,6 +19,7 @@ namespace Assets.NinjaGame.Scripts
         int angle;
         int numberOfParallelSpawns;
         float pausetime;
+        float pausetimeTimingJitter;
         /// <summary>
         /// Trials properties 
         /// </summary>
@@ -27,9 +28,13 @@ namespace Assets.NinjaGame.Scripts
         string[] trialsname;
         int[] instances;
         Color[] color;
-        float[] velocity;
-        float[] distance;
-        float[] scale;
+        float[] velocityAvg;
+        float[] velocityVar;
+        float[] distanceAvg;
+        float[] distanceVar;
+        float[] scaleAvg;
+        float[] scaleVar;
+
         string[] trialsnameToSelect;
 
         string expectedTrialsConfig;
@@ -53,10 +58,10 @@ namespace Assets.NinjaGame.Scripts
 
             if (trialsConfig == null)
             {
-                trialsConfig = ScriptableObject.CreateInstance(typeof(TrialsList)) as TrialsList;
+                trialsConfig = ScriptableObject.CreateInstance(typeof(Config)) as Config;
                 //load default trials config
 
-                trialsConfig = ConfigUtil.LoadConfig<TrialsList>(new FileInfo(expectedTrialsConfig), true, () =>
+                trialsConfig = ConfigUtil.LoadConfig<Config>(new FileInfo(expectedTrialsConfig), true, () =>
                 {
                     Debug.LogError("Something is wrong with the AppConfig. Was not found and I was not able to create one!");
                 });
@@ -73,7 +78,7 @@ namespace Assets.NinjaGame.Scripts
             } else {
                 Debug.LogWarning("Static GameInfo instance not found, create one!");
                 //ReinitTrials();
-                trialsConfig = new TrialsList();
+                trialsConfig = new Config();
                 NinjaGame.generatedTrials= trialsConfig.GenerateTrialsList(trialsConfig.listOfTrials);
 
             }
@@ -87,15 +92,19 @@ namespace Assets.NinjaGame.Scripts
                 angle = trialsConfig.experiment.maximumAngle;
                 numberOfParallelSpawns = trialsConfig.experiment.parallelSpawns;
                 pausetime = trialsConfig.experiment.pausetime;
+                pausetimeTimingJitter = trialsConfig.experiment.pausetimeTimingJitter;
             ///Trials
             Debug.Log(trialsConfig.listOfTrials.Count); 
             sizeOfTrials = trialsConfig.listOfTrials.Count;
             trialsname = new string[sizeOfTrials];
             instances = new int[sizeOfTrials];
             color = new Color[sizeOfTrials];
-            velocity = new float[sizeOfTrials];
-            distance = new float[sizeOfTrials];
-            scale = new float[sizeOfTrials];
+            velocityAvg = new float[sizeOfTrials];
+            velocityVar = new float[sizeOfTrials];
+            distanceAvg = new float[sizeOfTrials];
+            distanceVar = new float[sizeOfTrials];
+            scaleAvg = new float[sizeOfTrials];
+            scaleVar = new float[sizeOfTrials];
 
             trialsnameToSelect = new string[sizeOfTrials];
             for (int i = 0; i < sizeOfTrials; i++)
@@ -105,9 +114,12 @@ namespace Assets.NinjaGame.Scripts
                 instances[i] = trialsConfig.listOfTrials[i].instances;
                 trialsname[i] = trialsConfig.listOfTrials[i].trial;
                 color[i] = trialsConfig.listOfTrials[i].color;
-                scale[i] = trialsConfig.listOfTrials[i].scale;
-                velocity[i] = trialsConfig.listOfTrials[i].velocity;
-                distance[i] = trialsConfig.listOfTrials[i].distance;
+                scaleAvg[i] = trialsConfig.listOfTrials[i].scaleAvg;
+                scaleVar[i] = trialsConfig.listOfTrials[i].scaleVar;
+                velocityAvg[i] = trialsConfig.listOfTrials[i].velocityAvg;
+                velocityVar[i] = trialsConfig.listOfTrials[i].velocityVar;
+                distanceAvg[i] = trialsConfig.listOfTrials[i].distanceAvg;
+                distanceVar[i] = trialsConfig.listOfTrials[i].distanceVar;
                 sizeOfGeneratedTrials =+ instances[i];
 
             }
@@ -118,7 +130,8 @@ namespace Assets.NinjaGame.Scripts
             //Experiment
             trialsConfig.experiment.maximumAngle = angle;
             trialsConfig.experiment.parallelSpawns = numberOfParallelSpawns;
-            trialsConfig.experiment.pausetime = pausetime; 
+            trialsConfig.experiment.pausetime = pausetime;
+            trialsConfig.experiment.pausetimeTimingJitter = pausetimeTimingJitter;
             //Trials
             for (int i = 0; i < sizeOfTrials; i++)
             {
@@ -126,10 +139,12 @@ namespace Assets.NinjaGame.Scripts
                 trialsConfig.listOfTrials[i].trial = trialsname[i];
                 trialsConfig.listOfTrials[i].instances = instances[i];
                 trialsConfig.listOfTrials[i].color = color[i];
-                trialsConfig.listOfTrials[i].scale = scale[i];
-                trialsConfig.listOfTrials[i].velocity = velocity[i];
-                trialsConfig.listOfTrials[i].distance = distance[i];
-               
+                trialsConfig.listOfTrials[i].scaleAvg = scaleAvg[i];
+                trialsConfig.listOfTrials[i].scaleAvg = scaleVar[i];
+                trialsConfig.listOfTrials[i].velocityAvg = velocityAvg[i];
+                trialsConfig.listOfTrials[i].velocityVar = velocityVar[i];
+                trialsConfig.listOfTrials[i].distanceAvg = distanceAvg[i];
+                trialsConfig.listOfTrials[i].distanceVar = distanceVar[i];
             }
         }
 
@@ -147,6 +162,7 @@ namespace Assets.NinjaGame.Scripts
             angle=EditorGUILayout.IntField("Maximum Angle", angle);
             numberOfParallelSpawns = EditorGUILayout.IntField("Parallel Spawns", numberOfParallelSpawns);
             pausetime = EditorGUILayout.FloatField("Pausetime", pausetime);
+            pausetimeTimingJitter = EditorGUILayout.FloatField("Pausetime (Jitter)", pausetimeTimingJitter);
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Trials properties:");
             EditorGUILayout.LabelField("Size of exemplaric Trials:\t" + trialsConfig.listOfTrials.Count);
@@ -162,14 +178,14 @@ namespace Assets.NinjaGame.Scripts
             }
             curIndex = EditorGUILayout.Popup(curIndex, trialsname);
 
-            if (GUILayout.Button("-"))
+            /*if (GUILayout.Button("-"))
             {
                 //hacky trick
                 Debug.Log(curIndex+","+ trialsConfig.listOfTrials.Capacity);
                 trialsConfig.listOfTrials.RemoveAt(curIndex);
 
                 ReinitTrials();
-            }
+            }*/
 
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginVertical();
@@ -180,17 +196,30 @@ namespace Assets.NinjaGame.Scripts
             trialsname[curIndex]= EditorGUILayout.TextField("Trial", trialsname[curIndex]);
             instances[curIndex] = EditorGUILayout.IntField("Instance", instances[curIndex]);
             color[curIndex] = EditorGUILayout.ColorField("Color", color[curIndex]);
-            velocity[curIndex] = EditorGUILayout.FloatField("Velocity", velocity[curIndex]);
-            distance[curIndex] = EditorGUILayout.FloatField("Distance", distance[curIndex]);
+            EditorGUILayout.BeginHorizontal();
+            scaleAvg[curIndex] = EditorGUILayout.FloatField("Scale (Avg)", scaleAvg[curIndex]);
+            scaleVar[curIndex] = EditorGUILayout.FloatField("Scale (Var)", scaleVar[curIndex]);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            velocityAvg[curIndex] = EditorGUILayout.FloatField("Velocity (Avg)", velocityAvg[curIndex]);
+            velocityVar[curIndex] = EditorGUILayout.FloatField("Velocity (Var)", velocityVar[curIndex]);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            distanceAvg[curIndex] = EditorGUILayout.FloatField("Distance (Avg)", distanceAvg[curIndex]);
+            distanceVar[curIndex] = EditorGUILayout.FloatField("Distance (Var)", distanceVar[curIndex]);
+            EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
 
             EditorGUILayout.Space();
-
+            EditorGUILayout.Space();
             EditorGUILayout.BeginHorizontal();
+
             if (GUILayout.Button("Load JSON Config"))
             {
                 var trialsConfigPath = EditorUtility.OpenFilePanel("Open trials config file (JSON)", expectedTrialsConfig, "json");
-                trialsConfig = ConfigUtil.LoadConfig<TrialsList>(new FileInfo(trialsConfigPath), true, () =>
+                trialsConfig = ConfigUtil.LoadConfig<Config>(new FileInfo(trialsConfigPath), true, () =>
                   {
                       Debug.LogError("Something is wrong with the AppConfig. Was not found and I was not able to create one!");
                   });
@@ -199,22 +228,24 @@ namespace Assets.NinjaGame.Scripts
             EditorGUILayout.Space();
             if (GUILayout.Button("Apply"))
             {
-                if (NinjaGame.trialsConfig != null)
+                if (NinjaGame.config != null)
                 {
-                    NinjaGame.trialsConfig = new TrialsList();
-                    NinjaGame.trialsConfig.experiment.maximumAngle = angle;
-                    NinjaGame.trialsConfig.experiment.parallelSpawns = numberOfParallelSpawns;
-                    NinjaGame.trialsConfig.experiment.pausetime = pausetime;
+                    NinjaGame.config = new Config();
+                    NinjaGame.config.experiment.maximumAngle = angle;
+                    NinjaGame.config.experiment.parallelSpawns = numberOfParallelSpawns;
+                    NinjaGame.config.experiment.pausetime = pausetime;
+                    NinjaGame.config.experiment.pausetimeTimingJitter = pausetimeTimingJitter;
 
                     NinjaGame.generatedTrials = trialsConfig.GenerateTrialsList(trialsConfig.listOfTrials);
                 }
                 else
                 {
                     Debug.LogError("Static GameInfo instance not found, create one!");
-                    NinjaGame.trialsConfig = new TrialsList();
-                    NinjaGame.trialsConfig.experiment.maximumAngle = angle;
-                    NinjaGame.trialsConfig.experiment.parallelSpawns = numberOfParallelSpawns;
-                    NinjaGame.trialsConfig.experiment.pausetime = pausetime;
+                    NinjaGame.config = new Config();
+                    NinjaGame.config.experiment.maximumAngle = angle;
+                    NinjaGame.config.experiment.parallelSpawns = numberOfParallelSpawns;
+                    NinjaGame.config.experiment.pausetime = pausetime;
+                    NinjaGame.config.experiment.pausetimeTimingJitter = pausetimeTimingJitter;
                     NinjaGame.generatedTrials=trialsConfig.GenerateTrialsList(trialsConfig.listOfTrials);
                 }
             }
@@ -222,7 +253,7 @@ namespace Assets.NinjaGame.Scripts
             {
                 SaveTrials();
                 var trialsConfigPath = EditorUtility.SaveFilePanel("Save trials config file (JSON)", saveTrialsConfig, "trialslist", "json");
-                ConfigUtil.SaveAsJson<TrialsList>(new FileInfo(trialsConfigPath), trialsConfig);
+                ConfigUtil.SaveAsJson<Config>(new FileInfo(trialsConfigPath), trialsConfig);
             }
             EditorGUILayout.EndHorizontal();
 

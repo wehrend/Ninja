@@ -47,13 +47,15 @@ namespace Assets.NinjaGame.Scripts
              {
                  Debug.LogWarning("MainScene not found!");
              }*/
+           
             var expGO = GameObject.Find("[ExperimentSceneController]");
             if (expGO)
             {
                 expSceneCon = expGO.GetComponent<ExperimentSceneController>();
             }
             else {
-                Debug.Log("No Controller found.");
+                //Maybe it was loaded as single scene
+                Debug.Log("No [ExperimentSceneController] found. Assume it was loaded as single scene");
             }
             expMarker = FindObjectOfType(typeof(LSLMarkerStream)) as LSLMarkerStream;
         }

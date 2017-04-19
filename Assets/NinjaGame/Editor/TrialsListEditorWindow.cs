@@ -170,12 +170,12 @@ namespace Assets.NinjaGame.Scripts
             //LabelField("Size of Generated Trials:\t" + trialsConfig.generatedTrials.Count);
             EditorGUILayout.LabelField("Select trial to edit:");
             EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("+"))
+           /* if (GUILayout.Button("+"))
             {
                 trialsConfig.listOfTrials.Add(new Trial("New Trial "+trialname, 1, Color.white, 0.5f, 5.0f, 10.0f));
                 trialname++;
                 ReinitTrials();
-            }
+            }*/
             curIndex = EditorGUILayout.Popup(curIndex, trialsname);
 
             /*if (GUILayout.Button("-"))

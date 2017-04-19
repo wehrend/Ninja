@@ -65,7 +65,7 @@ namespace Assets.NinjaGame.Scripts
             experimentMarker = FindObjectsOfType(typeof(LSLMarkerStream)).FirstOrDefault() as LSLMarkerStream;
             if (experimentMarker != null)
                 Debug.Log("Found LSL Stream"+experimentMarker.lslStreamName);   
-            ExperimentSceneController.experimentInfo.triggerPressed = false;
+           
 #if (UNITY_EDITOR)
             configDataDirectory = Application.dataPath + "/NinjaGame/Config/";
 #else
@@ -221,8 +221,10 @@ namespace Assets.NinjaGame.Scripts
                         prefab.transform.localScale = scale * Vector3.one;
                         Instantiate(prefab, spawner.position, Quaternion.identity);
                         prefab.name = trialNumber.ToString();
-                        experimentMarker.Write("spawn_trial_" + trialNumber + ": name:" + selected.trial + ",color:" + selected.color + " ,distance:" + distance + ",velocity:" + velocity);
-
+                        if (experimentMarker != null)
+                        {
+                            experimentMarker.Write("spawn_trial_" + trialNumber + ": name:" + selected.trial + ",color:" + selected.color + " ,distance:" + distance + ",velocity:" + velocity);
+                        }
                         yield return new WaitForFixedUpdate();
                         //Debug.Log("Object " + prefab.transform.name + " instantiated");
                     }

@@ -24,8 +24,11 @@ namespace Assets.NinjaGame.Scripts
         public float distance;
         public Vector3 startPoint;
         public Color32 color = Color.white;
-        public float hoverStrenght = 140f;
-        public float hoverHeight = 2.5f;
+        public float hoverStrenght = 10f;
+        public float hoverHeight = 2.2f;
+        public float environmentCorrection = -0.6f;
+        float hoverHeightWithEnvironment;
+        public float range = 0.005f;
         public float velocity = 5.0f;//Random.Range(1,20);
         [HideInInspector]
         public Vector3 target;
@@ -48,13 +51,15 @@ namespace Assets.NinjaGame.Scripts
         {
             experimentMarker = FindObjectsOfType(typeof(LSLMarkerStream)).FirstOrDefault() as LSLMarkerStream;
             //if (experimentMarker != null)
-               // Debug.Log("Found expMarker for touch trial");
+            // Debug.Log("Found expMarker for touch trial");
+            meshrenderer.enabled = false;
             meshrenderer.material.color = color;
 
             //Todo: Get rid of this logic, currently necessary to let objects fly
             //by beyond the subject 
             target = -transform.position;
             target.y = -target.y;
+            hoverHeightWithEnvironment = hoverHeight + environmentCorrection;
         }
 
 
@@ -66,13 +71,25 @@ namespace Assets.NinjaGame.Scripts
          
             RaycastHit hit;
             // Check if we are over floor right now.
-            if (Physics.Raycast(ray, out hit, hoverHeight,layermask))
+            if (Physics.Raycast(ray, out hit, hoverHeight, layermask))
             {
                 float propHeight = (hoverHeight - hit.distance) / hoverHeight;
                 Vector3 appliedHovering = Vector3.up * propHeight * hoverStrenght;
                 Body.AddForce(appliedHovering, ForceMode.Acceleration);
 
             }
+          /*  else
+            {
+                //stabilizing 
+                if (transform.position.y > hoverHeight)
+                {
+                    Body.AddForce(Vector3.up * hoverStrenght);
+                }
+                else
+                {
+                    Body.AddForce(Vector3.up * (-hoverStrenght));
+                }
+            }*/
             // startpoint is signinverted of target 
             Vector3 currentDistance = (transform.position - startPoint);
             //Destroy if we have passed the subject. Distance is the radius
@@ -85,9 +102,14 @@ namespace Assets.NinjaGame.Scripts
             //Sword sword = FindObjectOfType<Sword>();
             //TODO: We want event mnessaging here
             //if (sword.IsGrabbed()) 
-            if (Time.realtimeSinceStartup > 5)
-                Body.AddRelativeForce(Vector3.forward * velocity, ForceMode.Force);
+            Body.AddRelativeForce(Vector3.forward * velocity, ForceMode.Force);
 
+            if ( ((hoverHeightWithEnvironment - range) < Body.transform.position.y) && (Body.transform.position.y < ((hoverHeightWithEnvironment + range))))
+            {
+                meshrenderer.enabled = true;
+                //meshrenderer.material.color = Color.blue; //Debug
+                      
+            }
 
         }
 

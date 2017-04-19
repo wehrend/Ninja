@@ -366,6 +366,9 @@ namespace Assets.NinjaGame.Scripts
 
         void ExperimentScene_Enter()
         {
+            //explicit needed(?)
+            ExperimentSceneController.experimentInfo.triggerPressed = false;
+
             Debug.Log("Load ExperimentScene");
             SceneManager.LoadSceneAsync(experimentScene, LoadSceneMode.Single);
             //pauseScreen =GameObject.FindGameObjectWithTag("PauseScreen").gameObject;

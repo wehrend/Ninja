@@ -38,12 +38,14 @@ namespace Assets.NinjaGame.Scripts
         public string trial;
         //public object prefab;
         public Color color;
+        public float heigth;
         public float scaleAvg;
         public float scaleVar;
         public float velocityAvg; //average
         public float velocityVar;
         public float distanceAvg;
         public float distanceVar;
+
 
         #endregion
 

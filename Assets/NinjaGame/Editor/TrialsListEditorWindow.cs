@@ -34,7 +34,7 @@ namespace Assets.NinjaGame.Scripts
         float[] distanceVar;
         float[] scaleAvg;
         float[] scaleVar;
-
+        float[] heigth;
         string[] trialsnameToSelect;
 
         string expectedTrialsConfig;
@@ -99,6 +99,7 @@ namespace Assets.NinjaGame.Scripts
             trialsname = new string[sizeOfTrials];
             instances = new int[sizeOfTrials];
             color = new Color[sizeOfTrials];
+            heigth = new float[sizeOfTrials];
             velocityAvg = new float[sizeOfTrials];
             velocityVar = new float[sizeOfTrials];
             distanceAvg = new float[sizeOfTrials];
@@ -114,6 +115,7 @@ namespace Assets.NinjaGame.Scripts
                 instances[i] = trialsConfig.listOfTrials[i].instances;
                 trialsname[i] = trialsConfig.listOfTrials[i].trial;
                 color[i] = trialsConfig.listOfTrials[i].color;
+                heigth[i] = trialsConfig.listOfTrials[i].heigth;
                 scaleAvg[i] = trialsConfig.listOfTrials[i].scaleAvg;
                 scaleVar[i] = trialsConfig.listOfTrials[i].scaleVar;
                 velocityAvg[i] = trialsConfig.listOfTrials[i].velocityAvg;
@@ -139,6 +141,7 @@ namespace Assets.NinjaGame.Scripts
                 trialsConfig.listOfTrials[i].trial = trialsname[i];
                 trialsConfig.listOfTrials[i].instances = instances[i];
                 trialsConfig.listOfTrials[i].color = color[i];
+                trialsConfig.listOfTrials[i].heigth = heigth[i];
                 trialsConfig.listOfTrials[i].scaleAvg = scaleAvg[i];
                 trialsConfig.listOfTrials[i].scaleAvg = scaleVar[i];
                 trialsConfig.listOfTrials[i].velocityAvg = velocityAvg[i];
@@ -163,6 +166,8 @@ namespace Assets.NinjaGame.Scripts
             numberOfParallelSpawns = EditorGUILayout.IntField("Parallel Spawns", numberOfParallelSpawns);
             pausetime = EditorGUILayout.FloatField("Pausetime", pausetime);
             pausetimeTimingJitter = EditorGUILayout.FloatField("Pausetime (Jitter)", pausetimeTimingJitter);
+
+
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Trials properties:");
             EditorGUILayout.LabelField("Size of exemplaric Trials:\t" + trialsConfig.listOfTrials.Count);
@@ -196,6 +201,7 @@ namespace Assets.NinjaGame.Scripts
             trialsname[curIndex]= EditorGUILayout.TextField("Trial", trialsname[curIndex]);
             instances[curIndex] = EditorGUILayout.IntField("Instance", instances[curIndex]);
             color[curIndex] = EditorGUILayout.ColorField("Color", color[curIndex]);
+            heigth[curIndex] = EditorGUILayout.FloatField("Heigth", heigth[curIndex]);
             EditorGUILayout.BeginHorizontal();
             scaleAvg[curIndex] = EditorGUILayout.FloatField("Scale (Avg)", scaleAvg[curIndex]);
             scaleVar[curIndex] = EditorGUILayout.FloatField("Scale (Var)", scaleVar[curIndex]);

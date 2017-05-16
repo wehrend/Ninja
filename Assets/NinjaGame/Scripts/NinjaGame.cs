@@ -93,6 +93,9 @@ namespace Assets.NinjaGame.Scripts
                 trialsMax = generatedTrials.Count;
                 Debug.Log("Config from" + expectedTrialsConfig + "with " + generatedTrials.Count + " trials successfully loaded!");
             }
+            prefab = Resources.Load("BasicPrefab", typeof(MovingRigidbodyPhysics)) as MovingRigidbodyPhysics;
+            if (prefab == null)
+                Debug.LogError("Coudn't load BasicPrefab");
         }
 
         void Start()
@@ -196,7 +199,11 @@ namespace Assets.NinjaGame.Scripts
                     {
 
                         trialNumber = trialsMax - generatedTrials.Count;
+#if UNITY_EDITOR
                         Debug.Log("Trials:" + trialNumber + " " + selected.trial + ' ' + selected.color + ' ' + selected.distanceAvg);
+#else
+                        Debug.LogError("Trials:" + trialNumber + " " + selected.trial + ' ' + selected.color + ' ' + selected.distanceAvg);
+#endif                        
                         var halfDistVar = selected.distanceVar / 2;
                         distance = selected.distanceAvg + Random.Range(-halfDistVar, halfDistVar);
                         spawner.position = (position - center).normalized * distance + center;
@@ -212,15 +219,18 @@ namespace Assets.NinjaGame.Scripts
                         // wait some small time
                         var halfScaleVar = selected.scaleVar / 2;
                         scale = selected.scaleAvg + Random.Range(-halfScaleVar, halfScaleVar);
-                        prefab = Resources.Load("BasicPrefab", typeof(MovingRigidbodyPhysics)) as MovingRigidbodyPhysics;
-                    
+                        
                         prefab.distance = distance;
                         prefab.velocity = velocity; //velocity;
                         prefab.startPoint = spawner.position;
                         prefab.color = selected.color;
+                        prefab.hoverHeight = selected.heigth;
                         prefab.transform.localScale = scale * Vector3.one;
                         Instantiate(prefab, spawner.position, Quaternion.identity);
                         prefab.name = trialNumber.ToString();
+#if UNITY_STANDALONE
+                        Debug.LogError("Trial spawned");
+#endif                        
                         if (experimentMarker != null)
                         {
                             experimentMarker.Write("spawn_trial_" + trialNumber + ": name:" + selected.trial + ",color:" + selected.color + " ,distance:" + distance + ",velocity:" + velocity);

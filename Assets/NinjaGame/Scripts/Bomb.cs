@@ -19,7 +19,7 @@ namespace Assets.NinjaGame.Scripts
    
 
             //particleSystem.Play();
-            Destroy(Body.gameObject, 0.5f);
+            //Destroy(Body.gameObject, 0.5f);
             // if (gameController)
             //     gameController.issueDamage(damage);
 

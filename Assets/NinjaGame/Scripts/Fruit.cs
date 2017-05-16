@@ -11,7 +11,7 @@ namespace Assets.NinjaGame.Scripts
 
         public override void CollisionWithForce( float collisionForce)
         {
-            Destroy(Body.gameObject, 0.5f);
+            //Destroy(Body.gameObject, 0.5f);
             /* if (gameController)
              {
                  Debug.Log("Game Controller found");

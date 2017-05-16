@@ -136,11 +136,11 @@ PlayerSettings:
   protectGraphicsMemory: 0
   useHDRDisplay: 0
   applicationIdentifier:
-    Android: com.unity.sampleassets
+    Android: com.Company.ProductName
     Standalone: unity.DefaultCompany.2013_10 - Sample Assets
-    Tizen: com.unity.sampleassets
-    iOS: com.unity.sampleassets
-    tvOS: com.unity.sampleassets
+    Tizen: com.Company.ProductName
+    iOS: com.Company.ProductName
+    tvOS: com.Company.ProductName
   buildNumber:
     iOS: 0
   AndroidBundleVersionCode: 1

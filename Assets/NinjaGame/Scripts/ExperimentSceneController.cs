@@ -47,7 +47,8 @@ namespace Assets.NinjaGame.Scripts
         public string experimentScene;
         public string postExperimentScene;
         public int waitTimeAfterLastTrialSpawn = 7;
-        public float userInitTime = 15.00f;
+        //public float userInitTime = 15.00f;
+        private float startBaselineTime;
         public float calibrationTimeSlot = 30.0f;
         public float baselineDuration = 180.00f;
         private float timeOfEnterRoomScene;
@@ -311,7 +312,8 @@ namespace Assets.NinjaGame.Scripts
 
         void PreScene_Enter()
         {
-
+            startBaselineTime = 0f;
+            Debug.LogError("Press Spacebar to start the Baseline recording");
             if (sceneFsm.LastState == SceneStates.CalibrateScene)
             {
                 Debug.Log("Unload calibrationScene");
@@ -328,13 +330,14 @@ namespace Assets.NinjaGame.Scripts
 
         void PreScene_Update()
         {
-           
-                if (Time.time - timeOfEnterRoomScene > userInitTime)
-                {
+            if (Input.GetKeyDown(KeyCode.Space))
+                startBaselineTime = Time.time;
+            if (startBaselineTime > 1f)
+            {
                     //Debug.Log(Time.time);
                     InitBaseline();
 
-                    if (((Time.time - timeOfEnterRoomScene) - userInitTime) > baselineDuration)
+                    if ((Time.time - startBaselineTime) > baselineDuration)
 
                         EndBaseline();
 

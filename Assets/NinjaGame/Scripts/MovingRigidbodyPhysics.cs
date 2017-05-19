@@ -25,9 +25,9 @@ namespace Assets.NinjaGame.Scripts
         public Vector3 startPoint;
         public Color32 color = Color.white;
         public float hoverStrenght = 10f;
-        public float hoverHeight = 2.2f;
+        //public float hoverHeight = 1.6f;
         public float environmentCorrection = -0.6f;
-        float hoverHeightWithEnvironment;
+        //float hoverHeightWithEnvironment;
         public float range = 0.005f;
         public float velocity = 5.0f;//Random.Range(1,20);
         [HideInInspector]
@@ -40,7 +40,6 @@ namespace Assets.NinjaGame.Scripts
 
         private void Awake()
         {
-
             Body = GetComponent<Rigidbody>();
             meshrenderer = GetComponent<MeshRenderer>();
             ninjaControl = FindObjectOfType(typeof(NinjaGameEventController)) as NinjaGameEventController;
@@ -52,22 +51,23 @@ namespace Assets.NinjaGame.Scripts
             experimentMarker = FindObjectsOfType(typeof(LSLMarkerStream)).FirstOrDefault() as LSLMarkerStream;
             //if (experimentMarker != null)
             // Debug.Log("Found expMarker for touch trial");
-            meshrenderer.enabled = false;
+            //meshrenderer.enabled = false;
             meshrenderer.material.color = color;
 
             //Todo: Get rid of this logic, currently necessary to let objects fly
             //by beyond the subject 
             target = -transform.position;
             target.y = -target.y;
-            hoverHeightWithEnvironment = hoverHeight + environmentCorrection;
+            //hoverHeightWithEnvironment = hoverHeight + environmentCorrection;
         }
 
 
         void FixedUpdate()
         {
+            
             //constant choosen by testing, may vary between 1.6 to 1.9
             const float hideMultiplier = 1.75f;
-            Ray ray = new Ray(Body.transform.position, -transform.up);
+            /*Ray ray = new Ray(Body.transform.position, -transform.up);
          
             RaycastHit hit;
             // Check if we are over floor right now.
@@ -77,7 +77,7 @@ namespace Assets.NinjaGame.Scripts
                 Vector3 appliedHovering = Vector3.up * propHeight * hoverStrenght;
                 Body.AddForce(appliedHovering, ForceMode.Acceleration);
 
-            }
+            }*/
           /*  else
             {
                 //stabilizing 
@@ -104,12 +104,12 @@ namespace Assets.NinjaGame.Scripts
             //if (sword.IsGrabbed()) 
             Body.AddRelativeForce(Vector3.forward * velocity, ForceMode.Force);
 
-            if ( ((hoverHeightWithEnvironment - range) < Body.transform.position.y) && (Body.transform.position.y < ((hoverHeightWithEnvironment + range))))
+            /*if ( ((hoverHeightWithEnvironment - range) < Body.transform.position.y) && (Body.transform.position.y < ((hoverHeightWithEnvironment + range))))
             {
                 meshrenderer.enabled = true;
                 //meshrenderer.material.color = Color.blue; //Debug
                       
-            }
+            }*/
 
         }
 

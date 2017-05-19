@@ -43,7 +43,7 @@
 		UNITY_INSTANCING_CBUFFER_END
 
 		void surf (Input IN, inout SurfaceOutputStandard o) {
-			float2 position = (IN.uv_MainTex - float2(0, 0.5)) - float2(_Collision.x, _Collision.y);
+			float2 position = (IN.uv_MainTex - float2(0, 0.5)) + float2(_Collision.x, _Collision.y);
 			// Albedo comes from a texture tinted by color
 			fixed4 c = tex2D (_MainTex, position) * _Color;
 			o.Albedo = c.rgb;

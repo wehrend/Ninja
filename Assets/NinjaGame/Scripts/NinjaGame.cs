@@ -189,15 +189,15 @@ namespace Assets.NinjaGame.Scripts
             {
                 List<Transform> spawnerInstances = Enumerable.Repeat(transform, parallelSpawns-1).ToList();
                 //Debug.Log(spawnerInstances.Count);
-                var position = Vector3.one + Vector3.up * (height - 1);
-                center = new Vector3(0, 2.0f, 0);
+
                 foreach (var spawner in spawnerInstances)
                 {
 
                     var selected = Trial.PickAndDelete(generatedTrials);
                     if (selected != null)
                     {
-
+                        var position = Vector3.one + Vector3.up * (selected.heigth - 1);
+                        center = new Vector3(0, selected.heigth, 0);
                         trialNumber = trialsMax - generatedTrials.Count;
 #if UNITY_EDITOR
                         Debug.Log("Trials:" + trialNumber + " " + selected.trial + ' ' + selected.color + ' ' + selected.distanceAvg);
@@ -219,12 +219,11 @@ namespace Assets.NinjaGame.Scripts
                         // wait some small time
                         var halfScaleVar = selected.scaleVar / 2;
                         scale = selected.scaleAvg + Random.Range(-halfScaleVar, halfScaleVar);
-                        
                         prefab.distance = distance;
                         prefab.velocity = velocity; //velocity;
                         prefab.startPoint = spawner.position;
                         prefab.color = selected.color;
-                        prefab.hoverHeight = selected.heigth;
+                        // prefab.hoverHeight = selected.heigth;
                         prefab.transform.localScale = scale * Vector3.one;
                         Instantiate(prefab, spawner.position, Quaternion.identity);
                         prefab.name = trialNumber.ToString();

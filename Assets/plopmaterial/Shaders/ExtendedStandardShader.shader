@@ -26,6 +26,8 @@
 
 		struct Input {
 			float2 uv_MainTex;
+			float3 viewDir;
+			float3 worldNormal;
 		};
 
 		half _Glossiness;
@@ -43,22 +45,24 @@
 		UNITY_INSTANCING_CBUFFER_END
 
 		void surf (Input IN, inout SurfaceOutputStandard o) {
-			float2 position = (IN.uv_MainTex - float2(0, 0.5)) + float2(_Collision.x, _Collision.y);
+			float2 position = IN.uv_MainTex; // - float2(0, 0.5)); //+ float2(_Collision.x, _Collision.y);
 			// Albedo comes from a texture tinted by color
 			fixed4 c = tex2D (_MainTex, position) * _Color;
-			o.Albedo = c.rgb;
+			//o.Albedo = c.rgb;
+			float3 reflectionDir = reflect(-IN.viewDir, IN.worldNormal)*0.25f;
+			o.Albedo = c*DotClamped(IN.viewDir,reflectionDir);
 			// Metallic and smoothness come from slider variables
 			o.Metallic = _Metallic;
 			o.Smoothness = _Glossiness;
 			o.Alpha = c.a;
 			if (_Collision.w > 0.2f) {
-				clip(c.a - _AlphaCutoff);
+				clip(reflectionDir - _AlphaCutoff*0.5);
 			}
 		}
 		ENDCG
-/*
+
 		//Render Back side
-		Cull Front
+		/*Cull Front
 
 		CGPROGRAM
 		// Physically based Standard lighting model, and enable shadows on all light types
@@ -71,6 +75,7 @@
 
 		struct Input {
 			float2 uv_MainTex;
+
 		};
 
 		half _Glossiness;
@@ -106,8 +111,8 @@
 				clip(c.a - _AlphaCutoff);
 			}
 		}	
-		ENDCG
-		*/
+		ENDCG*/
+		
 	}
 	FallBack "Diffuse"
 }

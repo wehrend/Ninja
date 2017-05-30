@@ -8,7 +8,6 @@ namespace Assets.NinjaGame.Scripts
 
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(Mesh))]
-    [RequireComponent(typeof(ParticleSystem))]
     public abstract class MovingRigidbodyPhysics : MonoBehaviour
     {
 

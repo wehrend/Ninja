@@ -7,19 +7,22 @@ public class FadeObjectOnCollision : MonoBehaviour {
 
     float distance;
     float time;
-    public float alpha=1f;
+    public float fade=1f;
     bool flag = false;
     float stepwidth;
-    public int frameSteps;
+    public int frameSteps=10;
     public float waitTime;
     [Tooltip("Total Animation Time (ms)")]
     public int animationTimeDuration=100;
     private Vector4 objPos;
     MeshRenderer renderer;
     Rigidbody body;
+    AudioSource audio;
 
+    //[RequireComponent(typeof(AudioSource))]
 	// Use this for initialization
 	void Start () {
+        audio =GetComponent<AudioSource>();
         //animation time duration in milliseconds for 100 steps
         waitTime = animationTimeDuration / (1000f*frameSteps);
         stepwidth = 1f / frameSteps;
@@ -29,51 +32,83 @@ public class FadeObjectOnCollision : MonoBehaviour {
 	
 	// Update is called once per frame
 	void OnCollisionEnter(Collision collisionInfo) {
-        alpha = 0f;
+        fade = 0f;
         flag = true;
         ContactPoint contact;
         Vector3 localPoint;
         // theres only one contact point
         contact = collisionInfo.contacts[0];
-        localPoint = contact.thisCollider.transform.localPosition;
-        time = Time.realtimeSinceStartup;
-        var collision = new Vector4(contact.point.x, contact.point.y, contact.point.z, time);
-        //Debug.Log("DEBUG:"+collision);
-        renderer.material.SetVector("_Collision", collision);
-        
 
-    }
-
-    private void Update()
-    {
-        if (flag)
+        System.String collidername = contact.otherCollider.name;
+        if (collidername.Contains("HandCursor"))
         {
-            alpha += stepwidth;
-            if (renderer)
-            renderer.material.SetVector("_AlphaCutoff", new Vector4(alpha, 0f, 0f, 0f));
-        }
-        if (Mathf.Approximately(alpha, 1f))
-        {
+            localPoint = contact.thisCollider.transform.localPosition;
+            time = Time.realtimeSinceStartup;
+            //var collision = new Vector4(contact.point.x, contact.point.y, contact.point.z, time);
+            //Debug.Log("DEBUG:"+collision);
+            //renderer.material.SetVector("_Collision", collision);
+            audio.Play();
+            StartCoroutine(FadeAlphaAndScale());
+         } else {
             //Debug.LogWarning("[Destroyed]");
             DestroyObject(body.gameObject, 0.5f);
         }
+
+
     }
 
-
-
-    /*IEnumerator FadeAlpha()
+    IEnumerator FadeAlphaAndScale()
     {
-        for (alpha = 0f; alpha <= 1; alpha += 0.01f)
+        for (fade = 0f; fade <= 1; fade += stepwidth)
         {
-            renderer.material.SetVector("_AlphaCutoff", new Vector4(alpha,0f,0f,0f));
-           
+            transform.localScale += Vector3.one * fade * 0.1f;
+            Color color = renderer.material.color;
+            color.a -= fade;
+            renderer.material.color = color;
             yield return new WaitForSeconds(waitTime);
-            if (Mathf.Approximately(alpha, 1f))
+            if (Mathf.Approximately(fade, 1f))
             {
                 //Debug.LogWarning("[Destroyed]");
                 DestroyObject(body.gameObject, 0.5f);
             }
         }
 
-    }*/
+    }
 }
+
+/* old
+// Update is called once per frame
+void OnCollisionEnter(Collision collisionInfo)
+{
+    alpha = 0f;
+    flag = true;
+    ContactPoint contact;
+    Vector3 localPoint;
+    // theres only one contact point
+    contact = collisionInfo.contacts[0];
+    localPoint = contact.thisCollider.transform.localPosition;
+    time = Time.realtimeSinceStartup;
+    var collision = new Vector4(contact.point.x, contact.point.y, contact.point.z, time);
+    //Debug.Log("DEBUG:"+collision);
+    renderer.material.SetVector("_Collision", collision);
+    audio.Play();
+
+}
+/*
+private void Update()
+{
+    if (flag)
+    {
+        transform.localScale += Vector3.one * 0.001f;
+        alpha += stepwidth;
+        if (renderer)
+            renderer.material.SetVector("_AlphaCutoff", new Vector4(alpha, 0f, 0f, 0f));
+    }
+    if (Mathf.Approximately(alpha, 1f))
+    {
+        //Debug.LogWarning("[Destroyed]");
+        DestroyObject(body.gameObject, 0.5f);
+    }
+}
+
+*/

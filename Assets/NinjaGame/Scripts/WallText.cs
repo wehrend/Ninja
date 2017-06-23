@@ -4,18 +4,21 @@ using UnityEngine.SceneManagement;
 using MonsterLove.StateMachine;
 using Assets.LSL4Unity.Scripts;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Assets.NinjaGame.Scripts
 {
-    public class ScoreAndStats : MonoBehaviour
+    public class WallText : MonoBehaviour
     {
-        public Text instructionText;
-        public Text scoresText;
+        public Text wallText;
+        public Text instructionsText;
         public Scrollbar healthBar;
         public Scene scene;
+        public InstructionLists instructionlists;
         private static ExperimentSceneController expSceneCon;
 
-      //  private NinjaGame.GameInfo scores; 
+        //  private NinjaGame.GameInfo scores; 
         [HideInInspector]
         private NinjaGameEventController ninjaGameEvent;
         [HideInInspector]
@@ -58,6 +61,8 @@ namespace Assets.NinjaGame.Scripts
                 Debug.Log("No [ExperimentSceneController] found. Assume it was loaded as single scene");
             }
             expMarker = FindObjectOfType(typeof(LSLMarkerStream)) as LSLMarkerStream;
+
+           
         }
 
 
@@ -72,39 +77,66 @@ namespace Assets.NinjaGame.Scripts
                 {
 
                     // Debug.Log("Found expscenecontroller");
-                    if (scoresText)
+                    if (instructionsText)
                     {
                         if (expSceneCon.recordingflag)
                         {
-                            scoresText.color = Color.red;
-                            scoresText.text = "Baseline Recording.\nPlease follow the instructions of lab assistant.";
+                            showInstructions(instructionlists.onBaseline, "onBaseline");
+                            // "Baseline Recording.\nPlease follow the instructions of lab assistant.";
                         }
                         else if((!expSceneCon.recordingflag) && (expSceneCon.initflag) ) //back top normal (whit, not text)
                         {
-                            scoresText.color = Color.white;
-                            scoresText.text = "Now please press the trigger button, to start the experiment...";
+                            showInstructions(instructionlists.postBaseline, "postBaseline");
+                            // "Now please press the trigger button, to start the experiment...";
                         }
                     }
                 }
                 else if (expSceneCon.sceneFsm.State == ExperimentSceneController.SceneStates.ExperimentScene)
                 {
                     // aka experiment scene is loaded
-                    if (scoresText && NinjaGame.generatedTrials != null)
-                        scoresText.text = "Counting Trials :\n" + NinjaGame.generatedTrials.Count;
+                    if (instructionsText && NinjaGame.generatedTrials != null)
+                        showInstructions(instructionlists.onExperiment, "onExperiment");
+                
+                        instructionsText.text += "\n" + NinjaGame.generatedTrials.Count;
                     //healthBar.size = (float) NinjaGame.game.health / 1000f;
                 }
             
                 else if (expSceneCon.sceneFsm.State == ExperimentSceneController.SceneStates.PostScene)
                 {
-                    if ((scoresText) && (!expSceneCon.waitflag)) 
+                    if ((instructionsText) && (!expSceneCon.waitflag)) 
                     {
-                        scoresText.color = Color.blue;
-                        scoresText.text = "Ok. Experiment is finished. Thanks for being part of it";
+                        showInstructions(instructionlists.postExperiment, "postExperiment");
+                        //"Ok. Experiment is finished. Thanks for being part of it";
                     }
                 }
            }
        }
-        
+
+        void showInstructions(List<Instruction> instructionList,string name)
+        {
+            if ( instructionList != null && instructionList.Any())
+            {
+               // Debug.LogWarning("Instructions list"+instructionList.Count());
+                foreach (Instruction inst in instructionList)
+                {
+
+                    instructionsText.text = inst.instruction;
+                    instructionsText.color = inst.color;
+                    //StartCoroutine(WaitForAnyKey());
+                  }
+                } else{
+                instructionsText.color = Color.red;
+                instructionsText.text = name +": No instruction(s) available";
+                Debug.Log("No instructions list");
+            }
+        }
+
+        IEnumerator WaitForAnyKey()
+        {
+            while (!Input.anyKey) {
+                yield return null;
+            }
+        }
 
        /* void updateFruitCollision(object sender, NinjaGameEventArgs eve) {
             if (scoresText && NinjaGame.generatedTrials != null)
@@ -127,4 +159,5 @@ namespace Assets.NinjaGame.Scripts
             instructionText.text = "Game Over!";
         }*/
     }
+
 }

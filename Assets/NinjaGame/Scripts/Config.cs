@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+
 using System.Collections.Generic;
 
 
@@ -8,15 +9,51 @@ namespace Assets.NinjaGame.Scripts
 {
     #region Data classes
 
+    /// <summary>
+    /// Scheme of Config Version Number 1
+    /// </summary>
+
     //Setup class
-   /* [Serializable]
+    [Serializable]
     public class Setup
     {
-        public float timeUntilBaseline;
-        public float calibrationSceneTime;
-        public float baselineDuration;
+        //some hack to make it downwardscompatible
+        public int? configVersionNumber;
+        public Boolean releaseMode;
+        public String videoFilePath;
+        public String environmentFilePath;
+        public Boolean useForceFeedback;
+    }
 
-    }*/
+    //Instructions class
+    [Serializable]
+    public class InstructionLists
+    {
+        // and make this fallback / defaul        
+        public Instruction permanentWallTextonTop;
+        public List<Instruction> preBaseline;
+        public List<Instruction> onBaseline;
+        public List<Instruction> postBaseline;
+        public List<Instruction> preExperiment;
+        public List<Instruction> onExperiment;
+        public List<Instruction> postExperiment;
+     }
+    [Serializable]
+    public class Instruction
+    {
+        public String instruction;
+        public int fontsize;
+        public Color color;
+        private Color white;
+
+        public Instruction(string instruction, Color color, int fontsize)
+        {
+            this.instruction = instruction;
+            this.color = color;
+            this.fontsize = fontsize;
+        }
+    }
+
 
     //Experiment class
     [Serializable]
@@ -26,6 +63,8 @@ namespace Assets.NinjaGame.Scripts
         public int parallelSpawns;
         public float pausetime;
         public float pausetimeTimingJitter;
+        public int animationDuration;
+        public String instructionsFilePath;
     }
 
 
@@ -45,7 +84,6 @@ namespace Assets.NinjaGame.Scripts
         public float velocityVar;
         public float distanceAvg;
         public float distanceVar;
-
 
         #endregion
 
@@ -88,8 +126,8 @@ namespace Assets.NinjaGame.Scripts
 
     public class Config : ScriptableObject
     {
-        //public Setup setup = new Setup();
- 
+        public Setup setup = new Setup();
+        public InstructionLists  instructionlists = new InstructionLists();
         public Experiment experiment = new Experiment();
         //exemplaric Trials
         public List<Trial> listOfTrials = new List<Trial>();

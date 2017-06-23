@@ -10,6 +10,9 @@ using Assets.LSL4Unity.Scripts;
 using UnityEngine.Assertions;
 using SMI;
 using VRCapture;
+using System.IO;
+using Assets.VREF.Scripts;
+using System.Linq;
 
 namespace Assets.NinjaGame.Scripts
 {
@@ -62,8 +65,18 @@ namespace Assets.NinjaGame.Scripts
         public bool preflag, postflag;
         RBControllerStream rbControllerStream;
         RBHmdStream rbHmdStream;
-        ScoreAndStats texts;
-        public GameObject pauseScreen; 
+        WallText wallText;
+        public GameObject pauseScreen;
+
+        //Load function
+        string expectedTrialsConfig;
+        string saveTrialsConfig;
+        public static string configDataDirectory;
+        public static Config config;
+        public static List<Trial> generatedTrials;
+
+
+
 
         public static LSLMarkerStream experimentMarker;
         //private bool initialized;
@@ -89,6 +102,9 @@ namespace Assets.NinjaGame.Scripts
         // Use this for initialization
         void Awake()
         {
+            wallText = FindObjectsOfType(typeof(WallText)).FirstOrDefault() as WallText;
+            if (wallText != null)
+                Debug.Log("Found wallText " + wallText.ToString());
 
             /// <summary>
             /// Caches the Camer Prefabs
@@ -122,7 +138,67 @@ namespace Assets.NinjaGame.Scripts
             DontDestroyOnLoad(vrCapture);
     }
 
+      public ConfigValues LoadConfig() {
+            ConfigValues configVal = new ConfigValues();
+#if (UNITY_EDITOR)
+            configDataDirectory = Application.dataPath + "/NinjaGame/Config/";
+#else
+            configDataDirectory = Application.streamingAssetsPath + "/Config/";
+#endif
+            expectedTrialsConfig = configDataDirectory + "trialslist.json";
+            saveTrialsConfig = configDataDirectory + "trialslist.json";
 
+            if (config == null)
+            {
+                config = new Config();
+                // trialsConfig = ScriptableObject.CreateInstance(typeof(TrialsList)) as TrialsList;
+                //load default trials config
+
+                config = ConfigUtil.LoadConfig<Config>(new FileInfo(expectedTrialsConfig), true, () =>
+                {
+                    Debug.LogError("Something is wrong with the AppConfig. Was not found and I was not able to create one!");
+                });
+                //check if fields exists aka config scheme is new enough
+
+                try
+                {
+                    configVal.releaseMode = config.setup.releaseMode;
+                    configVal.videoFilePath = config.setup.videoFilePath;
+                    configVal.environmentFilePath = config.setup.environmentFilePath;
+                    configVal.useForceFeedback = config.setup.useForceFeedback;
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogException(ex, this);
+                }
+                configVal.angle = config.experiment.maximumAngle;
+                configVal.parallelSpawns = config.experiment.parallelSpawns;
+                configVal.pausetimeTimingJitter = config.experiment.pausetimeTimingJitter;
+                configVal.pausetime = config.experiment.pausetime;
+                try
+                {
+                    configVal.animationDuration = config.experiment.animationDuration;
+                    ///instructions
+                    if (wallText != null)
+                    {
+                        Debug.LogWarning("Loaded instructionlists");
+                        wallText.instructionlists = config.instructionlists;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogException(ex, this);
+                }
+
+                /////
+                generatedTrials = config.GenerateTrialsList(config.listOfTrials);
+                var trialsMax = generatedTrials.Count;
+                Debug.Log("Config from" + expectedTrialsConfig + "with " + generatedTrials.Count + " trials successfully loaded!");
+                configVal.generatedTrials = generatedTrials;
+                configVal.trialsMax = trialsMax;
+            }
+            return configVal;
+        }
 
         void MenuScene_Enter()
         {
@@ -508,6 +584,24 @@ namespace Assets.NinjaGame.Scripts
          {
              game.ListOfTrials = trials;
          }*/
+    }
+
+    public class ConfigValues : ScriptableObject
+    {
+        //setup
+        public bool releaseMode;
+        public string videoFilePath;
+        public string environmentFilePath;
+        public int animationDuration;
+        public bool useForceFeedback;
+
+        //Experiment
+        public int angle;
+        public int parallelSpawns;
+        public float pausetimeTimingJitter;
+        public float pausetime;
+        public List<Trial> generatedTrials;
+        public int trialsMax;
     }
 
 }

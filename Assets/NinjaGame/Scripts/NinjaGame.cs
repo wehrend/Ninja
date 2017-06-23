@@ -19,9 +19,11 @@ namespace Assets.NinjaGame.Scripts
     public class NinjaGame : MonoBehaviour
     {
         public static ExperimentSceneController expController;
+        public static WallText wallText;
         [HideInInspector]
         public static string configDataDirectory;
         public static Config config;
+        ConfigValues val;
         public static List<Trial> generatedTrials;
          
         //public float pausetime = 5;
@@ -47,25 +49,45 @@ namespace Assets.NinjaGame.Scripts
 
         string expectedTrialsConfig;
         string saveTrialsConfig;
-
+        
         //actual trial values
         private float scale;
         private float distance;
         private float velocity;
 
-        //Experiment
-        int angle;
-        int parallelSpawns;
-        float pausetimeTimingJitter;
-        float pausetime=5;
         int trialNumber;
-        public int trialsMax;
+
+
+
+
         void Awake()
         {
+            wallText = FindObjectsOfType(typeof(WallText)).FirstOrDefault() as WallText;
+            if (wallText!= null)
+                Debug.Log("Found wallText " + wallText.ToString());
+
             experimentMarker = FindObjectsOfType(typeof(LSLMarkerStream)).FirstOrDefault() as LSLMarkerStream;
             if (experimentMarker != null)
-                Debug.Log("Found LSL Stream"+experimentMarker.lslStreamName);   
-           
+                Debug.Log("Found LSL Stream"+experimentMarker.lslStreamName);
+
+            if (expController) //Get gloabl config if we are in multi scenes
+            {
+                val = expController.LoadConfig();
+                //Debug.Log("Loaded ExpController Config" + val.ToString());
+            }else {
+              val=LoadConfig(); //local load config function for single scene
+              //Debug.Log("Loaded Ninja Config" + val.ToString());
+            }
+          
+            prefab = Resources.Load("BasicPrefab", typeof(MovingRigidbodyPhysics)) as MovingRigidbodyPhysics;
+            if (prefab == null)
+                Debug.LogError("Coudn't load BasicPrefab");
+        }
+
+
+        public ConfigValues LoadConfig()
+        {
+            ConfigValues configVal = new ConfigValues();
 #if (UNITY_EDITOR)
             configDataDirectory = Application.dataPath + "/NinjaGame/Config/";
 #else
@@ -84,18 +106,46 @@ namespace Assets.NinjaGame.Scripts
                 {
                     Debug.LogError("Something is wrong with the AppConfig. Was not found and I was not able to create one!");
                 });
+                //check if fields exists aka config scheme is new enough
 
-                angle = config.experiment.maximumAngle;
-                parallelSpawns = config.experiment.parallelSpawns;
-                pausetimeTimingJitter = config.experiment.pausetimeTimingJitter;
-                pausetime = config.experiment.pausetime;
-                generatedTrials =config.GenerateTrialsList(config.listOfTrials);
-                trialsMax = generatedTrials.Count;
-                Debug.Log("Config from" + expectedTrialsConfig + "with " + generatedTrials.Count + " trials successfully loaded!");
+                try
+                {
+                    configVal.releaseMode = config.setup.releaseMode;
+                    configVal.videoFilePath = config.setup.videoFilePath;
+                    configVal.environmentFilePath = config.setup.environmentFilePath;
+                    configVal.useForceFeedback = config.setup.useForceFeedback;
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogException(ex, this);
+                }
+                configVal.angle = config.experiment.maximumAngle;
+                configVal.parallelSpawns = config.experiment.parallelSpawns;
+                configVal.pausetimeTimingJitter = config.experiment.pausetimeTimingJitter;
+                configVal.pausetime = config.experiment.pausetime;
+                try
+                {
+                    configVal.animationDuration = config.experiment.animationDuration;
+                    ///instructions
+                    if (wallText != null)
+                    {
+                        Debug.LogWarning("Loaded instructionlists");
+                        wallText.instructionlists = config.instructionlists;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogException(ex, this);
+                }
+
+                /////
+                generatedTrials = config.GenerateTrialsList(config.listOfTrials);
+                var trialsMax = generatedTrials.Count;
+                Debug.Log("Config from" + expectedTrialsConfig + "with " +generatedTrials.Count + " trials successfully loaded!");
+                configVal.generatedTrials = generatedTrials;
+                configVal.trialsMax = trialsMax;
             }
-            prefab = Resources.Load("BasicPrefab", typeof(MovingRigidbodyPhysics)) as MovingRigidbodyPhysics;
-            if (prefab == null)
-                Debug.LogError("Coudn't load BasicPrefab");
+            return configVal;
         }
 
         void Start()
@@ -178,16 +228,16 @@ namespace Assets.NinjaGame.Scripts
             while (gamePlaying)
             {
                 StartCoroutine(FireFruit());
-                var totalPausetime = pausetime + Random.Range(-pausetimeTimingJitter / 2, pausetimeTimingJitter / 2);
+                var totalPausetime = val.pausetime + Random.Range(-val.pausetimeTimingJitter / 2, val.pausetimeTimingJitter / 2);
                 yield return new WaitForSeconds(totalPausetime);
             }
         }
 
         IEnumerator FireFruit()
         {
-            if (config != null)
+            if (val != null)
             {
-                List<Transform> spawnerInstances = Enumerable.Repeat(transform, parallelSpawns-1).ToList();
+                List<Transform> spawnerInstances = Enumerable.Repeat(transform, val.parallelSpawns-1).ToList();
                 //Debug.Log(spawnerInstances.Count);
 
                 foreach (var spawner in spawnerInstances)
@@ -198,7 +248,7 @@ namespace Assets.NinjaGame.Scripts
                     {
                         var position = Vector3.one + Vector3.up * (selected.heigth - 1);
                         center = new Vector3(0, selected.heigth, 0);
-                        trialNumber = trialsMax - generatedTrials.Count;
+                        trialNumber = val.trialsMax - generatedTrials.Count;
 #if UNITY_EDITOR
                         Debug.Log("Trials:" + trialNumber + " " + selected.trial + ' ' + selected.color + ' ' + selected.distanceAvg);
 #else
@@ -207,7 +257,7 @@ namespace Assets.NinjaGame.Scripts
                         var halfDistVar = selected.distanceVar / 2;
                         distance = selected.distanceAvg + Random.Range(-halfDistVar, halfDistVar);
                         spawner.position = (position - center).normalized * distance + center;
-                        float currentAngle = Random.Range(-angle / 2, angle / 2) - angleAlignment;
+                        float currentAngle = Random.Range(-val.angle / 2, val.angle / 2) - angleAlignment;
                         var halfVelVar = selected.velocityVar / 2;
                         velocity = selected.velocityAvg + Random.Range(-halfVelVar,halfVelVar);
 

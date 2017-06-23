@@ -1209,6 +1209,36 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1051102147509302, guid: 4c9ebb1f7d5ace54188d821f80d55609, type: 2}
+      propertyPath: m_Name
+      value: permanentWallText
+      objectReference: {fileID: 0}
+    - target: {fileID: 1061943969212050, guid: 4c9ebb1f7d5ace54188d821f80d55609, type: 2}
+      propertyPath: m_Name
+      value: instructionsText
+      objectReference: {fileID: 0}
+    - target: {fileID: 114776796393346046, guid: 4c9ebb1f7d5ace54188d821f80d55609,
+        type: 2}
+      propertyPath: wallText
+      value: 
+      objectReference: {fileID: 2018496347}
+    - target: {fileID: 114776796393346046, guid: 4c9ebb1f7d5ace54188d821f80d55609,
+        type: 2}
+      propertyPath: instructionsText
+      value: 
+      objectReference: {fileID: 2018496346}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4c9ebb1f7d5ace54188d821f80d55609, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &2018496346 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114173985936670314, guid: 4c9ebb1f7d5ace54188d821f80d55609,
+    type: 2}
+  m_PrefabInternal: {fileID: 2018496345}
+  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+--- !u!114 &2018496347 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114168002613521096, guid: 4c9ebb1f7d5ace54188d821f80d55609,
+    type: 2}
+  m_PrefabInternal: {fileID: 2018496345}
+  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}

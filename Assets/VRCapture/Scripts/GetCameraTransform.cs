@@ -9,9 +9,13 @@ public class GetCameraTransform : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        this.transform.position = camera.transform.position;
-        this.transform.rotation = camera.transform.rotation;
-        this.transform.position = audioListener.transform.position;
-        this.transform.rotation = audioListener.transform.rotation;
+            this.transform.position = camera.transform.position;
+            this.transform.rotation = camera.transform.rotation;
+   
+      /*  if (audioListener != null)
+        {
+            this.transform.position = audioListener.transform.position;
+            this.transform.rotation = audioListener.transform.rotation;
+        }*/
     }
 }

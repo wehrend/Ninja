@@ -11,15 +11,41 @@ namespace Assets.NinjaGame.Scripts
 
     public class TrialsListEditorWindow : EditorWindow
     {
+        public Setup setup;
+        public Experiment experiment;
+        public InstructionLists instLists;
         public Config trialsConfig;
         private int curIndex;
         public string dataDirectory;
         int trialname;
-        //Experiment properties
+        /// <summary>
+        /// Setup properties 
+        /// </summary>
+        public int? configVersionNumber=1;
+        public Boolean releaseMode;
+        public String videoFilePath;
+        public String environmentFilePath;
+        public Boolean useForceFeedback;
+
+        /// <summary>
+        /// Experiment properties 
+        /// </summary>
         int angle;
         int numberOfParallelSpawns;
         float pausetime;
         float pausetimeTimingJitter;
+
+        /// <summary>
+        /// Instruction properties
+        /// </summary>
+        public Instruction permanentWallTextonTop;
+        public List<Instruction> preBaseline;
+        public List<Instruction> onBaseline;
+        public List<Instruction> postBaseline;
+        public List<Instruction> preExperiment;
+        public List<Instruction> onExperiment;
+        public List<Instruction> postExperiment;
+
         /// <summary>
         /// Trials properties 
         /// </summary>
@@ -39,7 +65,7 @@ namespace Assets.NinjaGame.Scripts
 
         string expectedTrialsConfig;
         string saveTrialsConfig;
-
+        //private bool showFields;
 
         [MenuItem("NinjaGame / Editing Trials List ")]
         public static void Init()
@@ -53,8 +79,8 @@ namespace Assets.NinjaGame.Scripts
         {
             trialname = 1;
             dataDirectory = Application.dataPath + "/NinjaGame/Config/";
-            expectedTrialsConfig = dataDirectory + "trialslist.json";
-            saveTrialsConfig = dataDirectory + "trialslist.json";
+            expectedTrialsConfig = dataDirectory + "trialslist_v1.0.json";
+            saveTrialsConfig = dataDirectory + "trialslist_v1.0.json";
 
             if (trialsConfig == null)
             {
@@ -66,7 +92,9 @@ namespace Assets.NinjaGame.Scripts
                     Debug.LogError("Something is wrong with the AppConfig. Was not found and I was not able to create one!");
                 });
                 Debug.Log("Loaded Config");
+                ReinitInstructions();
                 ReinitTrials();
+        
             }
 
 
@@ -81,6 +109,28 @@ namespace Assets.NinjaGame.Scripts
                 trialsConfig = new Config();
                 NinjaGame.generatedTrials= trialsConfig.GenerateTrialsList(trialsConfig.listOfTrials);
 
+            }
+        }
+
+        private void SaveSetup()
+        {
+            //Setup
+            trialsConfig.setup.configVersionNumber = configVersionNumber;
+            trialsConfig.setup.releaseMode = releaseMode;
+            trialsConfig.setup.videoFilePath = videoFilePath;
+            trialsConfig.setup.environmentFilePath = environmentFilePath;
+            trialsConfig.setup.useForceFeedback = useForceFeedback;
+        }
+
+        private void ReinitInstructions()
+        {
+            if (trialsConfig.instructionlists != null) {
+                permanentWallTextonTop = trialsConfig.instructionlists.permanentWallTextonTop;
+                preBaseline = trialsConfig.instructionlists.preBaseline;
+                onBaseline = trialsConfig.instructionlists.onBaseline;
+                postBaseline = trialsConfig.instructionlists.postBaseline;
+                preExperiment = trialsConfig.instructionlists.preExperiment;
+                postExperiment = trialsConfig.instructionlists.postExperiment;
             }
         }
 
@@ -151,6 +201,15 @@ namespace Assets.NinjaGame.Scripts
             }
         }
 
+        private void SaveInstructions()
+        {
+            trialsConfig.instructionlists.preBaseline = preBaseline;
+            trialsConfig.instructionlists.onBaseline = onBaseline;
+            trialsConfig.instructionlists.postBaseline = postBaseline;
+            trialsConfig.instructionlists.onExperiment = onExperiment;
+            trialsConfig.instructionlists.postExperiment = postExperiment;
+        }
+
 
 
         public void Update()
@@ -161,13 +220,36 @@ namespace Assets.NinjaGame.Scripts
 
 
         public void OnGUI() {
-            EditorGUILayout.LabelField("Experiment properties:");
+
+            EditorGUILayout.LabelField("Setup properties:");
+            configVersionNumber = 1;
+            releaseMode = EditorGUILayout.Toggle("Release Mode",releaseMode);
+            videoFilePath = EditorGUILayout.TextField("VideoFilePath", videoFilePath);
+            environmentFilePath = EditorGUILayout.TextField("Path of Environment Model", environmentFilePath);
+            useForceFeedback = EditorGUILayout.Toggle("Activate Force Feedback", useForceFeedback);
+            EditorGUILayout.Space();
+      
+            EditorGUILayout.LabelField("Experiment properties");
             angle=EditorGUILayout.IntField("Maximum Angle", angle);
             numberOfParallelSpawns = EditorGUILayout.IntField("Parallel Spawns", numberOfParallelSpawns);
             pausetime = EditorGUILayout.FloatField("Pausetime", pausetime);
             pausetimeTimingJitter = EditorGUILayout.FloatField("Pausetime (Jitter)", pausetimeTimingJitter);
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Instruction properties");
 
+            EditorGUILayout.BeginHorizontal();
+            permanentWallTextonTop.instruction = EditorGUILayout.TextField("Permanent Wall Text", permanentWallTextonTop.instruction, GUILayout.Width(500));
+            permanentWallTextonTop.color = EditorGUILayout.ColorField(permanentWallTextonTop.color, GUILayout.MaxWidth(50));
+            permanentWallTextonTop.fontsize = EditorGUILayout.IntField("Font Size",permanentWallTextonTop.fontsize, GUILayout.Width(50));
+            EditorGUILayout.EndHorizontal();
 
+            showInstructionList("preBaseline", preBaseline);
+            showInstructionList("onBaseline", onBaseline);
+            showInstructionList("postBaseline", postBaseline);
+            showInstructionList("preExperiment", preExperiment);
+            showInstructionList("onExperiment", onExperiment);
+            showInstructionList("postExperiment", postExperiment);
+            
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Trials properties:");
             EditorGUILayout.LabelField("Size of exemplaric Trials:\t" + trialsConfig.listOfTrials.Count);
@@ -197,72 +279,105 @@ namespace Assets.NinjaGame.Scripts
             //hacky trick #2
             if (curIndex < 0)
                 curIndex = 1;
+            try{
+                trialsname[curIndex] = EditorGUILayout.TextField("Trial", trialsname[curIndex]);
+                instances[curIndex] = EditorGUILayout.IntField("Instance", instances[curIndex]);
+                color[curIndex] = EditorGUILayout.ColorField("Color", color[curIndex]);
+                heigth[curIndex] = EditorGUILayout.FloatField("Heigth", heigth[curIndex]);
+                EditorGUILayout.BeginHorizontal();
+                scaleAvg[curIndex] = EditorGUILayout.FloatField("Scale (Avg)", scaleAvg[curIndex]);
+                scaleVar[curIndex] = EditorGUILayout.FloatField("Scale (Var)", scaleVar[curIndex]);
+                EditorGUILayout.EndHorizontal();
 
-            trialsname[curIndex]= EditorGUILayout.TextField("Trial", trialsname[curIndex]);
-            instances[curIndex] = EditorGUILayout.IntField("Instance", instances[curIndex]);
-            color[curIndex] = EditorGUILayout.ColorField("Color", color[curIndex]);
-            heigth[curIndex] = EditorGUILayout.FloatField("Heigth", heigth[curIndex]);
-            EditorGUILayout.BeginHorizontal();
-            scaleAvg[curIndex] = EditorGUILayout.FloatField("Scale (Avg)", scaleAvg[curIndex]);
-            scaleVar[curIndex] = EditorGUILayout.FloatField("Scale (Var)", scaleVar[curIndex]);
-            EditorGUILayout.EndHorizontal();
+                EditorGUILayout.BeginHorizontal();
+                velocityAvg[curIndex] = EditorGUILayout.FloatField("Velocity (Avg)", velocityAvg[curIndex]);
+                velocityVar[curIndex] = EditorGUILayout.FloatField("Velocity (Var)", velocityVar[curIndex]);
+                EditorGUILayout.EndHorizontal();
 
-            EditorGUILayout.BeginHorizontal();
-            velocityAvg[curIndex] = EditorGUILayout.FloatField("Velocity (Avg)", velocityAvg[curIndex]);
-            velocityVar[curIndex] = EditorGUILayout.FloatField("Velocity (Var)", velocityVar[curIndex]);
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.BeginHorizontal();
-            distanceAvg[curIndex] = EditorGUILayout.FloatField("Distance (Avg)", distanceAvg[curIndex]);
-            distanceVar[curIndex] = EditorGUILayout.FloatField("Distance (Var)", distanceVar[curIndex]);
-            EditorGUILayout.EndHorizontal();
-            EditorGUILayout.EndVertical();
-
-            EditorGUILayout.Space();
-            EditorGUILayout.Space();
-            EditorGUILayout.BeginHorizontal();
-
-            if (GUILayout.Button("Load JSON Config"))
-            {
-                var trialsConfigPath = EditorUtility.OpenFilePanel("Open trials config file (JSON)", expectedTrialsConfig, "json");
-                trialsConfig = ConfigUtil.LoadConfig<Config>(new FileInfo(trialsConfigPath), true, () =>
-                  {
-                      Debug.LogError("Something is wrong with the AppConfig. Was not found and I was not able to create one!");
-                  });
-                ReinitTrials();
+                EditorGUILayout.BeginHorizontal();
+                distanceAvg[curIndex] = EditorGUILayout.FloatField("Distance (Avg)", distanceAvg[curIndex]);
+                distanceVar[curIndex] = EditorGUILayout.FloatField("Distance (Var)", distanceVar[curIndex]);
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.EndVertical();
             }
-            EditorGUILayout.Space();
-            if (GUILayout.Button("Apply"))
-            {
-                if (NinjaGame.config != null)
+            catch(Exception ex) {
+
+                Debug.LogException(ex,this);
+            }
+                EditorGUILayout.Space();
+                EditorGUILayout.Space();
+                EditorGUILayout.BeginHorizontal();
+
+                if (GUILayout.Button("Load JSON Config"))
                 {
-                    NinjaGame.config = new Config();
-                    NinjaGame.config.experiment.maximumAngle = angle;
-                    NinjaGame.config.experiment.parallelSpawns = numberOfParallelSpawns;
-                    NinjaGame.config.experiment.pausetime = pausetime;
-                    NinjaGame.config.experiment.pausetimeTimingJitter = pausetimeTimingJitter;
-
-                    NinjaGame.generatedTrials = trialsConfig.GenerateTrialsList(trialsConfig.listOfTrials);
+                    var trialsConfigPath = EditorUtility.OpenFilePanel("Open trials config file (JSON)", expectedTrialsConfig, "json");
+                    trialsConfig = ConfigUtil.LoadConfig<Config>(new FileInfo(trialsConfigPath), true, () =>
+                      {
+                          Debug.LogError("Something is wrong with the AppConfig. Was not found and I was not able to create one!");
+                      });
+                    ReinitTrials();
                 }
-                else
+                EditorGUILayout.Space();
+                if (GUILayout.Button("Apply"))
                 {
-                    Debug.LogError("Static GameInfo instance not found, create one!");
-                    NinjaGame.config = new Config();
-                    NinjaGame.config.experiment.maximumAngle = angle;
-                    NinjaGame.config.experiment.parallelSpawns = numberOfParallelSpawns;
-                    NinjaGame.config.experiment.pausetime = pausetime;
-                    NinjaGame.config.experiment.pausetimeTimingJitter = pausetimeTimingJitter;
-                    NinjaGame.generatedTrials=trialsConfig.GenerateTrialsList(trialsConfig.listOfTrials);
-                }
-            }
-            if (GUILayout.Button("Save JSON Config As"))
-            {
-                SaveTrials();
-                var trialsConfigPath = EditorUtility.SaveFilePanel("Save trials config file (JSON)", saveTrialsConfig, "trialslist", "json");
-                ConfigUtil.SaveAsJson<Config>(new FileInfo(trialsConfigPath), trialsConfig);
-            }
-            EditorGUILayout.EndHorizontal();
+                    if (NinjaGame.config != null)
+                    {
+                        NinjaGame.config = new Config();
+                        NinjaGame.config.experiment.maximumAngle = angle;
+                        NinjaGame.config.experiment.parallelSpawns = numberOfParallelSpawns;
+                        NinjaGame.config.experiment.pausetime = pausetime;
+                        NinjaGame.config.experiment.pausetimeTimingJitter = pausetimeTimingJitter;
 
+                        NinjaGame.generatedTrials = trialsConfig.GenerateTrialsList(trialsConfig.listOfTrials);
+                    }
+                    else
+                    {
+                        Debug.LogError("Static GameInfo instance not found, create one!");
+                        NinjaGame.config = new Config();
+                        NinjaGame.config.experiment.maximumAngle = angle;
+                        NinjaGame.config.experiment.parallelSpawns = numberOfParallelSpawns;
+                        NinjaGame.config.experiment.pausetime = pausetime;
+                        NinjaGame.config.experiment.pausetimeTimingJitter = pausetimeTimingJitter;
+                        NinjaGame.generatedTrials = trialsConfig.GenerateTrialsList(trialsConfig.listOfTrials);
+                    }
+                }
+                if (GUILayout.Button("Save JSON Config As"))
+                {
+                    SaveTrials();
+                    SaveSetup();
+                    SaveInstructions();
+                    var trialsConfigPath = EditorUtility.SaveFilePanel("Save trials config file (JSON)", saveTrialsConfig, "trialslist", "json");
+                    ConfigUtil.SaveAsJson<Config>(new FileInfo(trialsConfigPath), trialsConfig);
+                }
+                EditorGUILayout.EndHorizontal();
+        }
+
+        void showInstructionList(String label, List<Instruction> instructionList)
+        {
+
+           // var showFields = EditorGUILayout.Foldout(showFields, "show "+label);
+           // if (showFields)
+           // {
+                EditorGUILayout.LabelField(label);
+
+            if (instructionList == null)
+                instructionList = new List<Instruction>(); 
+            foreach (Instruction inst in instructionList)
+                {
+
+                    EditorGUILayout.BeginHorizontal();
+                    inst.instruction = EditorGUILayout.TextField(inst.instruction, GUILayout.Width(500));
+                    inst.color = EditorGUILayout.ColorField(inst.color, GUILayout.MaxWidth(50));
+                    inst.fontsize = EditorGUILayout.IntField("Font Size", inst.fontsize, GUILayout.Width(80));
+                    EditorGUILayout.EndHorizontal();
+                }
+                EditorGUILayout.Space();
+                if (GUILayout.Button("+"))
+                {
+                    instructionList.Add(new Instruction("New Instruction", Color.white, 40));
+                }
+
+            //}
         }
 
     }

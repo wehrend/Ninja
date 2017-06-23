@@ -1,13 +1,93 @@
 {
+    "setup": {
+        "releaseMode": true,
+        "videoFilePath": "C:\\Users\\sven\\Ninja2\\Assets\\NinjaCaptureStreams",
+        "environmentFilePath": "",
+        "useForceFeedback": true
+    },
+    "instructionlists": {
+        "permanentWallTextonTop": {
+            "instruction": "",
+            "fontsize": 0,
+            "color": {
+                "r": 0.0,
+                "g": 0.0,
+                "b": 0.0,
+                "a": 0.0
+            }
+        },
+        "preBaseline": [
+            {
+                "instruction": "Testing multiple... (1/2)",
+                "fontsize": 40,
+                "color": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                }
+            },
+            {
+                "instruction": "...instruction to slide! (2/2)",
+                "fontsize": 40,
+                "color": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                }
+            }
+        ],
+        "onBaseline": [
+            {
+                "instruction": "Baseline Recording.\\nPlease follow the instructions of lab assistant.",
+                "fontsize": 40,
+                "color": {
+                    "r": 1.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 1.0
+                }
+            }
+        ],
+        "postBaseline": [
+            {
+                "instruction": "Now please press the trigger button, to start the experiment...",
+                "fontsize": 40,
+                "color": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                }
+            }
+        ],
+        "preExperiment": [],
+        "onExperiment": [],
+        "postExperiment": [
+            {
+                "instruction": "Ok. Experiment is finished. Thanks for being part of it",
+                "fontsize": 40,
+                "color": {
+                    "r": 0.24482758343219758,
+                    "g": 0.0,
+                    "b": 1.0,
+                    "a": 1.0
+                }
+            }
+        ]
+    },
     "experiment": {
         "maximumAngle": 200,
         "parallelSpawns": 3,
         "pausetime": 5.0,
-        "pausetimeTimingJitter": 0.5
+        "pausetimeTimingJitter": 0.5,
+        "animationDuration": 0,
+        "instructionsFilePath": ""
     },
-    "listOfTrials": [
+	"listOfTrials": [
         {
-            "instances": 5,
+            "instances": 10,
             "trial": "Distract",
             "color": {
                 "r": 1.0,
@@ -15,15 +95,16 @@
                 "b": 0.0,
                 "a": 1.0
             },
-            "scaleAvg": 0.3,
-            "scaleVar": 0.15,
+            "heigth": 1.6,
+            "scaleAvg": 0.3000000596046449,
+            "scaleVar": 0.01000000596046449,
             "velocityAvg": 7.0,
             "velocityVar": 2.0,
             "distanceAvg": 9.0,
             "distanceVar": 1.0
         },
         {
-            "instances": 5,
+            "instances": 10,
             "trial": "Target",
             "color": {
                 "r": 0.0,
@@ -31,8 +112,9 @@
                 "b": 0.0,
                 "a": 1.0
             },
-            "scaleAvg": 0.6,
-            "scaleVar": 0.2,
+            "heigth": 1.3999999523162842,
+            "scaleAvg": 0.60000000298023225,
+            "scaleVar": 0.1000000298023225,
             "velocityAvg": 5.0,
             "velocityVar": 3.0,
             "distanceAvg": 8.0,

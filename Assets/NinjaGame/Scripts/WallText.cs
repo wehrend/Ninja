@@ -55,6 +55,9 @@ namespace Assets.NinjaGame.Scripts
             if (expGO)
             {
                 expSceneCon = expGO.GetComponent<ExperimentSceneController>();
+                instructionlists = expSceneCon.configValues.instructionlists;
+                //Debug.LogWarning("["+scene.name +"] Count of loaded instructionlists " + instructionlists.onBaseline.Count());
+                //Debug.LogWarning("[" + scene.name + "] instructionlists " + instructionlists.onBaseline.ToString());
             }
             else {
                 //Maybe it was loaded as single scene
@@ -75,7 +78,7 @@ namespace Assets.NinjaGame.Scripts
                 // // aka if no experiment scene loaded 
                 if (expSceneCon.sceneFsm.State == ExperimentSceneController.SceneStates.PreScene)
                 {
-
+                    
                     // Debug.Log("Found expscenecontroller");
                     if (instructionsText)
                     {
@@ -88,6 +91,8 @@ namespace Assets.NinjaGame.Scripts
                         {
                             showInstructions(instructionlists.postBaseline, "postBaseline");
                             // "Now please press the trigger button, to start the experiment...";
+                        }else {
+                            showInstructions(instructionlists.preBaseline, "preBaseline");
                         }
                     }
                 }
@@ -112,29 +117,45 @@ namespace Assets.NinjaGame.Scripts
            }
        }
 
-        void showInstructions(List<Instruction> instructionList,string name)
+        void showInstructions(List<Instruction> instructionList, string name)
         {
-            if ( instructionList != null && instructionList.Any())
+            if (instructionList != null)
             {
-               // Debug.LogWarning("Instructions list"+instructionList.Count());
-                foreach (Instruction inst in instructionList)
+                if (instructionList.Count() == 0)
                 {
 
+                    instructionsText.color = Color.red;
+                    instructionsText.fontSize = 100;
+                    instructionsText.text = name + ": No instruction(s) available";
+                    Debug.Log("No instructions list");
+                }
+                else
+                {
+                    //TODO: enable multipart instructions, scrollable
+                   // foreach (Instruction inst in instructionList)
+                   // {
+                    Instruction inst = instructionList.First();
                     instructionsText.text = inst.instruction;
                     instructionsText.color = inst.color;
-                    //StartCoroutine(WaitForAnyKey());
-                  }
-                } else{
-                instructionsText.color = Color.red;
-                instructionsText.text = name +": No instruction(s) available";
-                Debug.Log("No instructions list");
+                    instructionsText.fontSize = inst.fontsize;
+                    //Debug.Log("First instruction of " + name + " is " +inst.instruction); 
+                    StartCoroutine(WaitForAnyKey());
+                   // }
+
+                }
             }
         }
 
         IEnumerator WaitForAnyKey()
         {
-            while (!Input.anyKey) {
-                yield return null;
+           
+            if (expSceneCon.controllerInput != null)
+            {
+                var touchbutton = expSceneCon.controllerInput.GetPressDown(SteamVR_Controller.ButtonMask.Touchpad);
+                    while (!touchbutton)
+                    {
+                        yield return null;
+                    }
             }
         }
 

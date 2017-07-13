@@ -18,18 +18,8 @@
         },
         "preBaseline": [
             {
-                "instruction": "Testing multiple... (1/2)",
-                "fontsize": 40,
-                "color": {
-                    "r": 1.0,
-                    "g": 1.0,
-                    "b": 1.0,
-                    "a": 1.0
-                }
-            },
-            {
-                "instruction": "...instruction to slide! (2/2)",
-                "fontsize": 40,
+                "instruction": "Waiting",
+                "fontsize": 100,
                 "color": {
                     "r": 1.0,
                     "g": 1.0,
@@ -40,8 +30,8 @@
         ],
         "onBaseline": [
             {
-                "instruction": "Baseline Recording.\\nPlease follow the instructions of lab assistant.",
-                "fontsize": 40,
+                "instruction": "Baseline Recording.\nPlease follow the instructions of lab assistant.",
+                "fontsize": 100,
                 "color": {
                     "r": 1.0,
                     "g": 0.0,
@@ -53,7 +43,7 @@
         "postBaseline": [
             {
                 "instruction": "Now please press the trigger button, to start the experiment...",
-                "fontsize": 40,
+                "fontsize": 100,
                 "color": {
                     "r": 1.0,
                     "g": 1.0,
@@ -63,11 +53,22 @@
             }
         ],
         "preExperiment": [],
-        "onExperiment": [],
+        "onExperiment": [
+		 {
+                "instruction": "Trials to go:",
+                "fontsize": 100,
+                "color": {
+                    "r": 0.24482758343219758,
+                    "g": 0.0,
+                    "b": 1.0,
+                    "a": 1.0
+                }
+            }
+			],
         "postExperiment": [
             {
                 "instruction": "Ok. Experiment is finished. Thanks for being part of it",
-                "fontsize": 40,
+                "fontsize": 100,
                 "color": {
                     "r": 0.24482758343219758,
                     "g": 0.0,

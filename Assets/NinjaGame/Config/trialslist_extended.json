@@ -28,7 +28,17 @@
                 }
             },
             {
-                "instruction": "...instruction to slide! (2/2)",
+                "instruction": "...instruction to slide... (2/2)",
+                "fontsize": 40,
+                "color": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                }
+            },
+			{
+                "instruction": "Waiting for Baseline",
                 "fontsize": 40,
                 "color": {
                     "r": 1.0,
@@ -63,7 +73,18 @@
             }
         ],
         "preExperiment": [],
-        "onExperiment": [],
+        "onExperiment": [
+			{
+                "instruction": "Trials to go:",
+                "fontsize": 40,
+                "color": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                }
+            }
+		],
         "postExperiment": [
             {
                 "instruction": "Ok. Experiment is finished. Thanks for being part of it",

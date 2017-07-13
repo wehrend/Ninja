@@ -43,6 +43,8 @@ namespace Assets.NinjaGame.Scripts
         public GameObject controllerOne;
         public GameObject controllerTwo;
         private GameObject model, hand;
+        public Color debugColor = Color.green;
+        public String debugstring;
         ////
         public double rbStreamDataRate = 90.00;
         public string calibrationScene;
@@ -73,6 +75,7 @@ namespace Assets.NinjaGame.Scripts
         string saveTrialsConfig;
         public static string configDataDirectory;
         public static Config config;
+        public ConfigValues configValues;
         public static List<Trial> generatedTrials;
 
 
@@ -97,6 +100,7 @@ namespace Assets.NinjaGame.Scripts
         private GameObject camCap;
         private static CaptureScene capScene;
         private GameObject gazeCursor;
+        public  SteamVR_Controller.Device controllerInput;
 
 
         // Use this for initialization
@@ -105,6 +109,7 @@ namespace Assets.NinjaGame.Scripts
             wallText = FindObjectsOfType(typeof(WallText)).FirstOrDefault() as WallText;
             if (wallText != null)
                 Debug.Log("Found wallText " + wallText.ToString());
+            configValues = LoadConfig();
 
             /// <summary>
             /// Caches the Camer Prefabs
@@ -133,6 +138,7 @@ namespace Assets.NinjaGame.Scripts
 
             //experiment scene controller
             DontDestroyOnLoad(this.gameObject);
+
             //Whole CameraRig
             DontDestroyOnLoad(player.gameObject);
             DontDestroyOnLoad(vrCapture);
@@ -150,6 +156,7 @@ namespace Assets.NinjaGame.Scripts
 
             if (config == null)
             {
+                Debug.Log("[Exp controller] load config...");
                 config = new Config();
                 // trialsConfig = ScriptableObject.CreateInstance(typeof(TrialsList)) as TrialsList;
                 //load default trials config
@@ -175,20 +182,23 @@ namespace Assets.NinjaGame.Scripts
                 configVal.parallelSpawns = config.experiment.parallelSpawns;
                 configVal.pausetimeTimingJitter = config.experiment.pausetimeTimingJitter;
                 configVal.pausetime = config.experiment.pausetime;
-                try
-                {
+               // try
+                //{
                     configVal.animationDuration = config.experiment.animationDuration;
+                    configVal.instructionlists = config.instructionlists;
                     ///instructions
-                    if (wallText != null)
-                    {
-                        Debug.LogWarning("Loaded instructionlists");
-                        wallText.instructionlists = config.instructionlists;
-                    }
-                }
+                    ///                        
+
+                    //if (wallText != null)
+                    //{
+
+                    //   wallText.instructionlists = config.instructionlists;
+                    //}
+               /* }
                 catch (Exception ex)
                 {
                     Debug.LogException(ex, this);
-                }
+                }*/
 
                 /////
                 generatedTrials = config.GenerateTrialsList(config.listOfTrials);
@@ -238,7 +248,8 @@ namespace Assets.NinjaGame.Scripts
                 deviceIndex = SteamVR_Controller.GetDeviceIndex(SteamVR_Controller.DeviceRelation.Rightmost);
                 if (deviceIndex == -1)
                     Debug.LogError("Please switch controller on!");
-
+                else
+                    controllerInput = SteamVR_Controller.Input(deviceIndex);
 
             }
             else
@@ -431,6 +442,7 @@ namespace Assets.NinjaGame.Scripts
                 }
                 else
                 {
+                    
                     triggerPressed = SteamVR_Controller.Input(deviceIndex).GetPressDown(SteamVR_Controller.ButtonMask.Trigger);
                 }
                 //Debug.Log("trigger status: " + triggerPressed);
@@ -586,7 +598,8 @@ namespace Assets.NinjaGame.Scripts
          }*/
     }
 
-    public class ConfigValues : ScriptableObject
+    [Serializable]
+    public class ConfigValues 
     {
         //setup
         public bool releaseMode;
@@ -594,6 +607,9 @@ namespace Assets.NinjaGame.Scripts
         public string environmentFilePath;
         public int animationDuration;
         public bool useForceFeedback;
+
+        //instructions 
+        public InstructionLists instructionlists; 
 
         //Experiment
         public int angle;

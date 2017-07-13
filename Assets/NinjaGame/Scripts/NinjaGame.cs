@@ -72,7 +72,7 @@ namespace Assets.NinjaGame.Scripts
 
             if (expController) //Get gloabl config if we are in multi scenes
             {
-                val = expController.LoadConfig();
+                val = expController.configValues;
                 //Debug.Log("Loaded ExpController Config" + val.ToString());
             }else {
               val=LoadConfig(); //local load config function for single scene

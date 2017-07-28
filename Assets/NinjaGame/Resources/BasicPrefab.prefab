@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 199955283818541828}
   - component: {fileID: 82157873558221574}
   m_Layer: 0
-  m_Name: 4
+  m_Name: 20
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,7 +73,7 @@ Transform:
   m_GameObject: {fileID: 1968786382149728}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -9.735066, y: 2.155848, z: 7.650001}
-  m_LocalScale: {x: 0.30076182, y: 0.30076182, z: 0.30076182}
+  m_LocalScale: {x: 0.5831956, y: 0.5831956, z: 0.5831956}
   m_Children:
   - {fileID: 4086393888950828}
   m_Father: {fileID: 0}
@@ -239,15 +239,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5f5ff8ebc1ca944eb87dcc341be4d71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distance: 8.80819
-  startPoint: {x: -8.808189, y: 1.6, z: 0.00000037123746}
+  distance: 7.061363
+  startPoint: {x: -2.0645437, y: 1.4, z: 6.7528152}
   color:
     serializedVersion: 2
-    rgba: 4278190335
+    rgba: 4278255360
   hoverStrenght: 100
   environmentCorrection: -0.6
   range: 0.003
-  velocity: 6.6500196
+  velocity: 5.2727475
   target: {x: 0, y: 0, z: 0}
   layermask: 256
   breakForce: 50

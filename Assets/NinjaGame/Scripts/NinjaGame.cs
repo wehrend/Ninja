@@ -159,9 +159,11 @@ namespace Assets.NinjaGame.Scripts
                 ExperimentSceneController.experimentInfo.health = startHealth;
                 ExperimentSceneController.experimentInfo.totalscore = startScore;
             }
+
+            ninjaControl = gameObject.GetComponent<NinjaGameEventController>();
             if (ninjaControl == null)
             {
-                Debug.LogError("The NinjaGameController needs the NinjaGameEventController script to be attached to it");
+                Debug.LogError("[" + this.GetType().Name + "] The NinjaGameController needs the NinjaGameEventController script to be attached to it");
                 return;
             }
             ninjaControl.FruitCollision += new NinjaGameEventHandler(fruitCollision);
@@ -277,6 +279,7 @@ namespace Assets.NinjaGame.Scripts
                         prefab.transform.localScale = scale * Vector3.one;
                         Instantiate(prefab, spawner.position, Quaternion.identity);
                         prefab.name = trialNumber.ToString();
+                        prefab.type = selected.trial;
 #if UNITY_STANDALONE
                         Debug.LogError("Trial spawned");
 #endif                        

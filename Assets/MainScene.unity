@@ -349,19 +349,43 @@ MonoBehaviour:
   vrCapture: {fileID: 0}
   controllerOne: {fileID: 0}
   controllerTwo: {fileID: 0}
+  debugColor: {r: 0, g: 1, b: 0, a: 1}
+  debugstring: 
   rbStreamDataRate: 90
   calibrationScene: BoxRoom
   preExperimentScene: 
   experimentScene: 
   postExperimentScene: 
   waitTimeAfterLastTrialSpawn: 7
-  userInitTime: 15
   calibrationTimeSlot: 30
   baselineDuration: 30
   startCalibrationTime: 0
   preflag: 0
   postflag: 0
   pauseScreen: {fileID: 0}
+  configValues:
+    releaseMode: 0
+    videoFilePath: 
+    environmentFilePath: 
+    animationDuration: 0
+    useForceFeedback: 0
+    instructionlists:
+      permanentWallTextonTop:
+        instruction: 
+        fontsize: 0
+        color: {r: 0, g: 0, b: 0, a: 0}
+      preBaseline: []
+      onBaseline: []
+      postBaseline: []
+      preExperiment: []
+      onExperiment: []
+      postExperiment: []
+    angle: 0
+    parallelSpawns: 0
+    pausetimeTimingJitter: 0
+    pausetime: 0
+    generatedTrials: []
+    trialsMax: 0
   startGame: 0
   initflag: 0
   endflag: 0
@@ -531,6 +555,18 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 114713330364524620, guid: 828af4de8ac223044865d68f24cfea31,
+        type: 2}
+      propertyPath: itemPrefab
+      value: 
+      objectReference: {fileID: 1161034632545972, guid: ff5840f5068843d49a7d01034cf29a13,
+        type: 2}
+    - target: {fileID: 114417965926423082, guid: 828af4de8ac223044865d68f24cfea31,
+        type: 2}
+      propertyPath: itemPrefab
+      value: 
+      objectReference: {fileID: 1161034632545972, guid: ff5840f5068843d49a7d01034cf29a13,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 828af4de8ac223044865d68f24cfea31, type: 2}
   m_IsPrefabParent: 0

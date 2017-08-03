@@ -13,6 +13,10 @@ namespace Assets.NinjaGame.Scripts
     {
         public Text wallText;
         public Text instructionsText;
+
+        public GameObject money;
+        public static int score;
+        public List<GameObject> moneyClones;
         public Scrollbar healthBar;
         public Scene scene;
         public InstructionLists instructionlists;
@@ -20,15 +24,14 @@ namespace Assets.NinjaGame.Scripts
 
         //  private NinjaGame.GameInfo scores; 
         [HideInInspector]
-        private NinjaGameEventController ninjaGameEvent;
-        [HideInInspector]
-        public NinjaGameEventArgs eve;
+        private NinjaGameEventController ninjaEvent;
         private LSLMarkerStream expMarker;
         private bool initflag, recordingflag, endflag;
         // Use this for initialization
 
         void Start()
         {
+
             scene = SceneManager.GetActiveScene();
             recordingflag = false;
 
@@ -65,13 +68,43 @@ namespace Assets.NinjaGame.Scripts
             }
             expMarker = FindObjectOfType(typeof(LSLMarkerStream)) as LSLMarkerStream;
 
-           
+            money = Resources.Load("Money") as GameObject;
+            if (money)
+            {
+               Debug.Log("Load resource" + money.name); 
+            }
+
+            ninjaEvent = gameObject.GetComponent<NinjaGameEventController>();
+            if (ninjaEvent == null)
+            {
+                Debug.LogError("["+this.GetType().Name+"] The NinjaGameController needs the NinjaGameEventController script to be attached to it");
+                return;
+            }
+            ninjaEvent.FruitCollision += new NinjaGameEventHandler(incrementScore);
+            ninjaEvent.BombCollision += new NinjaGameEventHandler(shrinkScore);
+        }
+
+        void incrementScore(object sender, NinjaGameEventArgs eve)
+        {
+            score = score + 1;
+            showMoneyAfterScoreUpdate();
+        }
+
+        void shrinkScore(object sender, NinjaGameEventArgs eve)
+        {
+            score = score / 2;
+            showMoneyAfterScoreUpdate();
         }
 
 
 
         void Update()
         {
+
+            for (int i =0; i < moneyClones.Count(); i++) {
+               moneyClones[i].transform.Rotate( Vector3.forward,5f);
+            }
+
             if (expSceneCon)
             {
 
@@ -102,7 +135,7 @@ namespace Assets.NinjaGame.Scripts
                     if (instructionsText && NinjaGame.generatedTrials != null)
                         showInstructions(instructionlists.onExperiment, "onExperiment");
                 
-                        instructionsText.text += "\n" + NinjaGame.generatedTrials.Count;
+                        instructionsText.text += "\n" + NinjaGame.generatedTrials.Count+"\nScore\t\t"+score;
                     //healthBar.size = (float) NinjaGame.game.health / 1000f;
                 }
             
@@ -159,26 +192,44 @@ namespace Assets.NinjaGame.Scripts
             }
         }
 
-       /* void updateFruitCollision(object sender, NinjaGameEventArgs eve) {
-            if (scoresText && NinjaGame.generatedTrials != null)
-                scoresText.text = "Counting Trials :\n" + NinjaGame.generatedTrials.Count +"Score:"+ eve.score;
-        }
-
-        void updateBombCollision(object sender, NinjaGameEventArgs eve)
+       void showMoneyAfterScoreUpdate()
         {
-            if (scoresText && NinjaGame.generatedTrials != null)
+            if (moneyClones.Count() < score)
             {
-                eve.score = eve.score / 2;
-                scoresText.text = "Counting Trials :\n" + NinjaGame.generatedTrials.Count + "Score:" + eve.score;
+                //instatiate
+                var moneyClone = Instantiate(money, money.transform.position + new Vector3(0f, 0f, (moneyClones.Count() + 1) * -1f), Quaternion.AngleAxis(90, Vector3.right));
+                //Debug.Log("Instantiated money: "i+" " + transform.position);
+                moneyClones.Add(moneyClone);
             }
+            else if (moneyClones.Count() > score) {
+                //delete
+                var toDelete=moneyClones.Last();
+                moneyClones.Remove(toDelete);
+
+            }
+            money.SetActive(true);
         }
 
-    
-        void gameOver(object sender, NinjaGameEventArgs eve)
-        {
-            instructionText.color = Color.red;
-            instructionText.text = "Game Over!";
-        }*/
+         void updateFruitCollision(object sender) {
+            // if (scoresText && NinjaGame.generatedTrials != null)
+                 //scoresText.text = "Counting Trials :\n" + NinjaGame.generatedTrials.Count +"Score:"+ eve.score;
+         }
+
+       /*  void updateBombCollision(object sender, NinjaGameEventArgs eve)
+         {
+             if (scoresText && NinjaGame.generatedTrials != null)
+             {
+                 eve.score = eve.score / 2;
+                 scoresText.text = "Counting Trials :\n" + NinjaGame.generatedTrials.Count + "Score:" + eve.score;
+             }
+         }
+
+
+         void gameOver(object sender, NinjaGameEventArgs eve)
+         {
+             instructionText.color = Color.red;
+             instructionText.text = "Game Over!";
+         }*/
     }
 
 }

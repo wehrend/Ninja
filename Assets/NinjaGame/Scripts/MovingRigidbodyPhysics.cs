@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 using System.Linq;
 using Assets.LSL4Unity.Scripts;
@@ -15,20 +16,20 @@ namespace Assets.NinjaGame.Scripts
         [HideInInspector]
         public Rigidbody Body { get; private set; }
         [HideInInspector]
-        protected NinjaGameEventController ninjaControl;
-        [HideInInspector]
-        protected NinjaGameEventArgs eve;
+        public NinjaGameEventController ninjaEvents;
         [HideInInspector]
         private MeshRenderer meshrenderer;
         public float distance;
+        public float velocity = 5.0f;//Random.Range(1,20);
         public Vector3 startPoint;
         public Color32 color = Color.white;
+        public string type;
         public float hoverStrenght = 10f;
         //public float hoverHeight = 1.6f;
         public float environmentCorrection = -0.6f;
         //float hoverHeightWithEnvironment;
         public float range = 0.005f;
-        public float velocity = 5.0f;//Random.Range(1,20);
+
         [HideInInspector]
         public Vector3 target;
         //floor is layermask 8, this is needed for raycasting 
@@ -41,7 +42,7 @@ namespace Assets.NinjaGame.Scripts
         {
             Body = GetComponent<Rigidbody>();
             meshrenderer = GetComponent<MeshRenderer>();
-            ninjaControl = FindObjectOfType(typeof(NinjaGameEventController)) as NinjaGameEventController;
+            ninjaEvents = FindObjectOfType(typeof(NinjaGameEventController)) as NinjaGameEventController;
             Body.collisionDetectionMode = CollisionDetectionMode.Continuous;
         }
 
@@ -133,8 +134,6 @@ namespace Assets.NinjaGame.Scripts
                 CollisionWithForce(collisionForce);
             }
         }
-
-
 
         abstract public void CollisionWithForce(float force);
 

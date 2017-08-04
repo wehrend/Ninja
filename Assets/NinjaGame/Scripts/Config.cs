@@ -145,7 +145,8 @@ namespace Assets.NinjaGame.Scripts
                 {
                 for (int i = 0; i < e.instances; i++)
                     trials.Add(e);
-                }
+
+            }
             return trials;
         }
 

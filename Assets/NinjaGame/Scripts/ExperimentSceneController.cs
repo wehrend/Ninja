@@ -202,6 +202,11 @@ namespace Assets.NinjaGame.Scripts
 
                 /////
                 generatedTrials = config.GenerateTrialsList(config.listOfTrials);
+                foreach (Trial t in generatedTrials)
+                {
+                    Debug.LogWarning(t.trial  +" "+ t.color);
+                }
+
                 var trialsMax = generatedTrials.Count;
                 Debug.Log("Config from" + expectedTrialsConfig + "with " + generatedTrials.Count + " trials successfully loaded!");
                 configVal.generatedTrials = generatedTrials;

@@ -108,7 +108,24 @@
     },
 	"listOfTrials": [
         {
-            "instances": 10,
+            "instances": 25,
+            "trial": "Target",
+            "color": {
+                "r": 0.0,
+                "g": 1.0,
+                "b": 0.0,
+                "a": 1.0
+            },
+            "heigth": 1.3999999523162842,
+            "scaleAvg": 0.60000000298023225,
+            "scaleVar": 0.1000000298023225,
+            "velocityAvg": 5.0,
+            "velocityVar": 3.0,
+            "distanceAvg": 8.0,
+            "distanceVar": 2.0
+        },
+		{
+            "instances": 25,
             "trial": "Distract",
             "color": {
                 "r": 1.0,
@@ -124,22 +141,5 @@
             "distanceAvg": 9.0,
             "distanceVar": 1.0
         },
-        {
-            "instances": 10,
-            "trial": "Target",
-            "color": {
-                "r": 0.0,
-                "g": 1.0,
-                "b": 0.0,
-                "a": 1.0
-            },
-            "heigth": 1.3999999523162842,
-            "scaleAvg": 0.60000000298023225,
-            "scaleVar": 0.1000000298023225,
-            "velocityAvg": 5.0,
-            "velocityVar": 3.0,
-            "distanceAvg": 8.0,
-            "distanceVar": 2.0
-        }
     ]
 }

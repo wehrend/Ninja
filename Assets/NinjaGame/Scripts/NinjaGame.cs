@@ -246,6 +246,7 @@ namespace Assets.NinjaGame.Scripts
                 {
 
                     var selected = Trial.PickAndDelete(generatedTrials);
+                    Debug.LogWarning(coloredLogString(selected.trial, selected.color));
                     if (selected != null)
                     {
                         var position = Vector3.one + Vector3.up * (selected.heigth - 1);
@@ -277,9 +278,11 @@ namespace Assets.NinjaGame.Scripts
                         prefab.color = selected.color;
                         // prefab.hoverHeight = selected.heigth;
                         prefab.transform.localScale = scale * Vector3.one;
-                        Instantiate(prefab, spawner.position, Quaternion.identity);
                         prefab.name = trialNumber.ToString();
                         prefab.type = selected.trial;
+                        // now, after all assigns, we can spawn! 
+                        Instantiate(prefab, spawner.position, Quaternion.identity);
+
 #if UNITY_STANDALONE
                         Debug.LogError("Trial spawned");
 #endif                        
@@ -300,6 +303,13 @@ namespace Assets.NinjaGame.Scripts
         }
 
 #endregion
+        //Utils
+        String coloredLogString(String str,Color c)
+        {
+           return string.Format("<color=#{0:X2}{1:X2}{2:X2}>{3}</color>",
+               (byte)(c.r * 255f), (byte)(c.g * 255f), (byte)(c.b * 255f), str);
+        }
+
 
       
     }

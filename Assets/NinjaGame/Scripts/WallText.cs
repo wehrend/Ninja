@@ -15,7 +15,7 @@ namespace Assets.NinjaGame.Scripts
         public Text instructionsText;
 
         public GameObject money;
-        public static int score;
+        public int score;
         public List<GameObject> moneyClones;
         public Scrollbar healthBar;
         public Scene scene;
@@ -82,6 +82,7 @@ namespace Assets.NinjaGame.Scripts
             }
             ninjaEvent.FruitCollision += new NinjaGameEventHandler(incrementScore);
             ninjaEvent.BombCollision += new NinjaGameEventHandler(shrinkScore);
+            score = 0;
         }
 
         void incrementScore(object sender, NinjaGameEventArgs eve)
@@ -135,7 +136,7 @@ namespace Assets.NinjaGame.Scripts
                     if (instructionsText && NinjaGame.generatedTrials != null)
                         showInstructions(instructionlists.onExperiment, "onExperiment");
                 
-                        instructionsText.text += "\n" + NinjaGame.generatedTrials.Count+"\nScore\t\t"+score;
+                        instructionsText.text += "\n" + NinjaGame.generatedTrials.Count;
                     //healthBar.size = (float) NinjaGame.game.health / 1000f;
                 }
             
@@ -198,12 +199,14 @@ namespace Assets.NinjaGame.Scripts
             {
                 //instatiate
                 var moneyClone = Instantiate(money, money.transform.position + new Vector3(0f, 0f, (moneyClones.Count() + 1) * -1f), Quaternion.AngleAxis(90, Vector3.right));
-                //Debug.Log("Instantiated money: "i+" " + transform.position);
+                Debug.Log("Instantiated money: "+" " + transform.position);
                 moneyClones.Add(moneyClone);
             }
             else if (moneyClones.Count() > score) {
                 //delete
                 var toDelete=moneyClones.Last();
+                Debug.Log("Deleted money: " + " " + transform.position);
+                Destroy(toDelete);
                 moneyClones.Remove(toDelete);
 
             }

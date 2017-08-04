@@ -5,7 +5,7 @@
         "environmentFilePath": "",
         "useForceFeedback": true
     },
-    "instructionlists": {
+ "instructionlists": {
         "permanentWallTextonTop": {
             "instruction": "",
             "fontsize": 0,
@@ -88,24 +88,7 @@
     },
 	"listOfTrials": [
         {
-            "instances": 10,
-            "trial": "Distract",
-            "color": {
-                "r": 1.0,
-                "g": 0.0,
-                "b": 0.0,
-                "a": 1.0
-            },
-            "heigth": 1.6,
-            "scaleAvg": 0.3000000596046449,
-            "scaleVar": 0.01000000596046449,
-            "velocityAvg": 7.0,
-            "velocityVar": 2.0,
-            "distanceAvg": 9.0,
-            "distanceVar": 1.0
-        },
-        {
-            "instances": 10,
+            "instances": 25,
             "trial": "Target",
             "color": {
                 "r": 0.0,
@@ -120,6 +103,23 @@
             "velocityVar": 3.0,
             "distanceAvg": 8.0,
             "distanceVar": 2.0
+        },
+		{
+            "instances": 25,
+            "trial": "Distract",
+            "color": {
+                "r": 1.0,
+                "g": 0.0,
+                "b": 0.0,
+                "a": 1.0
+            },
+            "heigth": 1.6,
+            "scaleAvg": 0.3000000596046449,
+            "scaleVar": 0.01000000596046449,
+            "velocityAvg": 7.0,
+            "velocityVar": 2.0,
+            "distanceAvg": 9.0,
+            "distanceVar": 1.0
         }
     ]
 }

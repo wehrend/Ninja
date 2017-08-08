@@ -15,7 +15,10 @@ namespace Assets.NinjaGame.Scripts
         public Text instructionsText;
 
         public GameObject money;
+        public GameObject smallMoney;
         public int score;
+        public float scoreProgressValue;
+
         public List<GameObject> moneyClones;
         public Scrollbar healthBar;
         public Scene scene;
@@ -68,11 +71,18 @@ namespace Assets.NinjaGame.Scripts
             }
             expMarker = FindObjectOfType(typeof(LSLMarkerStream)) as LSLMarkerStream;
 
+            Image scoreProgress = GetComponentInChildren<Image>();
+            if (scoreProgress != null)
+            {
+                Debug.Log("Found " + scoreProgress.name);
+                scoreProgress.fillAmount = 0.0f;
+            }
             money = Resources.Load("Money") as GameObject;
             if (money)
             {
-               Debug.Log("Load resource" + money.name); 
+                Debug.Log("Load resource" + money.name);
             }
+
 
             ninjaEvent = gameObject.GetComponent<NinjaGameEventController>();
             if (ninjaEvent == null)
@@ -82,8 +92,12 @@ namespace Assets.NinjaGame.Scripts
             }
             ninjaEvent.FruitCollision += new NinjaGameEventHandler(incrementScore);
             ninjaEvent.BombCollision += new NinjaGameEventHandler(shrinkScore);
-            score = 0;
+            score = 10; //you get a start score of 10 to get an effect for red trials to begin.
+
+
         }
+
+
 
         void incrementScore(object sender, NinjaGameEventArgs eve)
         {
@@ -101,6 +115,7 @@ namespace Assets.NinjaGame.Scripts
 
         void Update()
         {
+           
 
             for (int i =0; i < moneyClones.Count(); i++) {
                moneyClones[i].transform.Rotate( Vector3.forward,5f);
@@ -195,14 +210,23 @@ namespace Assets.NinjaGame.Scripts
 
        void showMoneyAfterScoreUpdate()
         {
-            if (moneyClones.Count() < score)
+            Image scoreProgress;
+            int mod =  score % 10;
+
+            scoreProgressValue = ((float) mod) /10f;
+            scoreProgress = GetComponentInChildren<Image>();
+            scoreProgress.fillAmount = scoreProgressValue;
+            Debug.Log("ScoreProgress: " + scoreProgressValue);
+            var quotient = score / 10;
+            if (moneyClones.Count() < quotient)
             {
                 //instatiate
                 var moneyClone = Instantiate(money, money.transform.position + new Vector3(0f, 0f, (moneyClones.Count() + 1) * -1f), Quaternion.AngleAxis(90, Vector3.right));
                 Debug.Log("Instantiated money: "+" " + transform.position);
                 moneyClones.Add(moneyClone);
+                                
             }
-            else if (moneyClones.Count() > score) {
+            else if (moneyClones.Count() > quotient) {
                 //delete
                 var toDelete=moneyClones.Last();
                 Debug.Log("Deleted money: " + " " + transform.position);
@@ -211,9 +235,11 @@ namespace Assets.NinjaGame.Scripts
 
             }
             money.SetActive(true);
+
+          
         }
 
-         void updateFruitCollision(object sender) {
+        void updateFruitCollision(object sender) {
             // if (scoresText && NinjaGame.generatedTrials != null)
                  //scoresText.text = "Counting Trials :\n" + NinjaGame.generatedTrials.Count +"Score:"+ eve.score;
          }

@@ -89,7 +89,7 @@ namespace Assets.MobiSA.Scripts
         {
             ConfigValues configVal = new ConfigValues();
 #if (UNITY_EDITOR)
-            configDataDirectory = Application.dataPath + "/NinjaGame/Config/";
+            configDataDirectory = Application.dataPath + "/MobiSA/Config/";
 #else
             configDataDirectory = Application.streamingAssetsPath + "/Config/";
 #endif

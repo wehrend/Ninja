@@ -13,10 +13,10 @@ using Assets.VREF.Scripts;
 /// Main class of the Paradigm-specific code, 
 /// Includes Game controller logic and object spawning
 /// </summary>
-namespace Assets.NinjaGame.Scripts
+namespace Assets.MobiSA.Scripts
 {
-    [RequireComponent(typeof(NinjaGameEventController))]
-    public class NinjaGame : MonoBehaviour
+    [RequireComponent(typeof(MobiSACoreEventController))]
+    public class MobiSACore : MonoBehaviour
     {
         public static ExperimentSceneController expController;
         public static WallText wallText;
@@ -44,7 +44,7 @@ namespace Assets.NinjaGame.Scripts
         public int startHealth = 1000;
         public int startScore = 0;
 
-        public NinjaGameEventController ninjaControl;
+        public MobiSACoreEventController ninjaControl;
         LSLMarkerStream experimentMarker;
 
         string expectedTrialsConfig;
@@ -160,16 +160,16 @@ namespace Assets.NinjaGame.Scripts
                 ExperimentSceneController.experimentInfo.totalscore = startScore;
             }
 
-            ninjaControl = gameObject.GetComponent<NinjaGameEventController>();
+            ninjaControl = gameObject.GetComponent<MobiSACoreEventController>();
             if (ninjaControl == null)
             {
                 Debug.LogError("[" + this.GetType().Name + "] The NinjaGameController needs the NinjaGameEventController script to be attached to it");
                 return;
             }
-            ninjaControl.FruitCollision += new NinjaGameEventHandler(fruitCollision);
-            ninjaControl.BombCollision += new NinjaGameEventHandler(bombCollision);
-            ninjaControl.StartGame += new NinjaGameEventHandler(StartGame);
-            ninjaControl.GameOver += new NinjaGameEventHandler(GameOver);
+            ninjaControl.FruitCollision += new MobiSACoreEventHandler(fruitCollision);
+            ninjaControl.BombCollision += new MobiSACoreEventHandler(bombCollision);
+            ninjaControl.StartGame += new MobiSACoreEventHandler(StartGame);
+            ninjaControl.GameOver += new MobiSACoreEventHandler(GameOver);
 
 #endregion
             //Debug.LogWarning(objectPool);
@@ -181,7 +181,7 @@ namespace Assets.NinjaGame.Scripts
         }
 #region Game Event logic
 
-        void fruitCollision(object sender, NinjaGameEventArgs eve)
+        void fruitCollision(object sender, MobiSACoreEventArgs eve)
         {
             ExperimentSceneController.experimentInfo.score = eve.score;
             ExperimentSceneController.experimentInfo.totalscore += ExperimentSceneController.experimentInfo.score;
@@ -195,7 +195,7 @@ namespace Assets.NinjaGame.Scripts
 
         }
 
-        void bombCollision(object sender, NinjaGameEventArgs eve)
+        void bombCollision(object sender, MobiSACoreEventArgs eve)
         {
             ExperimentSceneController.experimentInfo.damage = eve.damage;
             ExperimentSceneController.experimentInfo.health -= ExperimentSceneController.experimentInfo.damage;
@@ -206,7 +206,7 @@ namespace Assets.NinjaGame.Scripts
         }
 
 
-        void StartGame(object sender, NinjaGameEventArgs eve)
+        void StartGame(object sender, MobiSACoreEventArgs eve)
         {
             //eve.totalscore = startScore;
             //eve.health = startHealth;
@@ -214,7 +214,7 @@ namespace Assets.NinjaGame.Scripts
             ExperimentSceneController.experimentInfo.triggerPressed = true;
         }
 
-        void GameOver(object sender, NinjaGameEventArgs eve)
+        void GameOver(object sender, MobiSACoreEventArgs eve)
         {
             eve.health = 0;
             Debug.Log("GameOver");
@@ -288,7 +288,7 @@ namespace Assets.NinjaGame.Scripts
 #endif                        
                         if (experimentMarker != null)
                         {
-                            experimentMarker.Write("spawn_trial_" + trialNumber + ": name:" + selected.trial + ",color:" + selected.color + " ,distance:" + distance + ",velocity:" + velocity);
+                            experimentMarker.Write("spawn_trial_" + trialNumber + ": name:" + selected.trial + ",color:" + selected.color + ", spawn point:" + spawner.position + ",velocity:" + velocity);
                         }
                         yield return new WaitForFixedUpdate();
                         //Debug.Log("Object " + prefab.transform.name + " instantiated");
@@ -300,6 +300,11 @@ namespace Assets.NinjaGame.Scripts
                     
                 }
             }
+        }
+
+
+        void DestroyNarrowDistracts() {
+
         }
 
 #endregion

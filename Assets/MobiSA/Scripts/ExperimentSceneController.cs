@@ -14,7 +14,7 @@ using System.IO;
 using Assets.VREF.Scripts;
 using System.Linq;
 
-namespace Assets.NinjaGame.Scripts
+namespace Assets.MobiSA.Scripts
 {
     //TODO: Make static / singletone 
 
@@ -147,7 +147,7 @@ namespace Assets.NinjaGame.Scripts
       public ConfigValues LoadConfig() {
             ConfigValues configVal = new ConfigValues();
 #if (UNITY_EDITOR)
-            configDataDirectory = Application.dataPath + "/NinjaGame/Config/";
+            configDataDirectory = Application.dataPath + "/MobiSA/Config/";
 #else
             configDataDirectory = Application.streamingAssetsPath + "/Config/";
 #endif
@@ -481,7 +481,7 @@ namespace Assets.NinjaGame.Scripts
 
         void ExperimentScene_Update()
         {
-            if ((NinjaGame.generatedTrials != null) && (  NinjaGame.generatedTrials.Count == 0))
+            if ((MobiSACore.generatedTrials != null) && (  MobiSACore.generatedTrials.Count == 0))
             {
                 sceneFsm.ChangeState(SceneStates.PostScene);
                 if(capScene)

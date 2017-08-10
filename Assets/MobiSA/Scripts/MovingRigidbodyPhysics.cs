@@ -4,7 +4,7 @@ using System.Collections;
 using System.Linq;
 using Assets.LSL4Unity.Scripts;
 
-namespace Assets.NinjaGame.Scripts
+namespace Assets.MobiSA.Scripts
 {
 
     [RequireComponent(typeof(Rigidbody))]
@@ -16,7 +16,7 @@ namespace Assets.NinjaGame.Scripts
         [HideInInspector]
         public Rigidbody Body { get; private set; }
         [HideInInspector]
-        public NinjaGameEventController ninjaEvents;
+        public MobiSACoreEventController ninjaEvents;
         [HideInInspector]
         private MeshRenderer meshrenderer;
         public float distance;
@@ -42,7 +42,7 @@ namespace Assets.NinjaGame.Scripts
         {
             Body = GetComponent<Rigidbody>();
             meshrenderer = GetComponent<MeshRenderer>();
-            ninjaEvents = FindObjectOfType(typeof(NinjaGameEventController)) as NinjaGameEventController;
+            ninjaEvents = FindObjectOfType(typeof(MobiSACoreEventController)) as MobiSACoreEventController;
             Body.collisionDetectionMode = CollisionDetectionMode.Continuous;
         }
 
@@ -127,10 +127,10 @@ namespace Assets.NinjaGame.Scripts
             if (collisionForce > 0)
             {
                 //switch physics of and set velcoitys to zero
-                Body.isKinematic = true;
+               /* Body.isKinematic = true;
                 Body.velocity = Vector3.zero;
                 Body.AddTorque(0f, 0f, 3f);
-
+                */
                 CollisionWithForce(collisionForce);
             }
         }

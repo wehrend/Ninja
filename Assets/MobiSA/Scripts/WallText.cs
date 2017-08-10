@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Assets.NinjaGame.Scripts
+namespace Assets.MobiSA.Scripts
 {
     public class WallText : MonoBehaviour
     {
@@ -27,7 +27,7 @@ namespace Assets.NinjaGame.Scripts
 
         //  private NinjaGame.GameInfo scores; 
         [HideInInspector]
-        private NinjaGameEventController ninjaEvent;
+        private MobiSACoreEventController ninjaEvent;
         private LSLMarkerStream expMarker;
         private bool initflag, recordingflag, endflag;
         // Use this for initialization
@@ -84,14 +84,14 @@ namespace Assets.NinjaGame.Scripts
             }
 
 
-            ninjaEvent = gameObject.GetComponent<NinjaGameEventController>();
+            ninjaEvent = gameObject.GetComponent<MobiSACoreEventController>();
             if (ninjaEvent == null)
             {
                 Debug.LogError("["+this.GetType().Name+"] The NinjaGameController needs the NinjaGameEventController script to be attached to it");
                 return;
             }
-            ninjaEvent.FruitCollision += new NinjaGameEventHandler(incrementScore);
-            ninjaEvent.BombCollision += new NinjaGameEventHandler(shrinkScore);
+            ninjaEvent.FruitCollision += new MobiSACoreEventHandler(incrementScore);
+            ninjaEvent.BombCollision += new MobiSACoreEventHandler(shrinkScore);
             score = 10; //you get a start score of 10 to get an effect for red trials to begin.
 
 
@@ -99,13 +99,13 @@ namespace Assets.NinjaGame.Scripts
 
 
 
-        void incrementScore(object sender, NinjaGameEventArgs eve)
+        void incrementScore(object sender, MobiSACoreEventArgs eve)
         {
             score = score + 1;
             showMoneyAfterScoreUpdate();
         }
 
-        void shrinkScore(object sender, NinjaGameEventArgs eve)
+        void shrinkScore(object sender, MobiSACoreEventArgs eve)
         {
             score = score / 2;
             showMoneyAfterScoreUpdate();
@@ -148,10 +148,10 @@ namespace Assets.NinjaGame.Scripts
                 else if (expSceneCon.sceneFsm.State == ExperimentSceneController.SceneStates.ExperimentScene)
                 {
                     // aka experiment scene is loaded
-                    if (instructionsText && NinjaGame.generatedTrials != null)
+                    if (instructionsText && MobiSACore.generatedTrials != null)
                         showInstructions(instructionlists.onExperiment, "onExperiment");
                 
-                        instructionsText.text += "\n" + NinjaGame.generatedTrials.Count;
+                        instructionsText.text += "\n" + MobiSACore.generatedTrials.Count;
                     //healthBar.size = (float) NinjaGame.game.health / 1000f;
                 }
             

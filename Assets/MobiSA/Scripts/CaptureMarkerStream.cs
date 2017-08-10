@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using LSL;
 
-namespace Assets.NinjaGame.Scripts
+namespace Assets.MobiSA.Scripts
 {
     //Using an own LSLMarkerStream here for the Metadata  
     class CaptureMarkerStream : MonoBehaviour

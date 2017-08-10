@@ -9,18 +9,18 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1000012399126898}
+  m_RootGameObject: {fileID: 1501950028183420}
   m_IsPrefabParent: 1
---- !u!1 &1000012399126898
+--- !u!1 &1501950028183420
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000011120474586}
-  - 114: {fileID: 114000010319542574}
-  - 114: {fileID: 114000010818501814}
+  - component: {fileID: 4794592299705402}
+  - component: {fileID: 114426266581313586}
+  - component: {fileID: 114352528970065522}
   m_Layer: 0
   m_Name: NinjaGame Level2 (Spawner)
   m_TagString: Untagged
@@ -28,45 +28,47 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4000011120474586
+--- !u!4 &4794592299705402
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012399126898}
+  m_GameObject: {fileID: 1501950028183420}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!114 &114000010319542574
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114352528970065522
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012399126898}
+  m_GameObject: {fileID: 1501950028183420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7628d50b80c63402da5519c8f8267c65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114426266581313586
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1501950028183420}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8dadaf6da0c154a918bd9cff44b4c668, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fruitsProbability: 50
-  bombsProbability: 50
-  gapsProbability: 0
-  pausetime: 5
-  angle: 160
-  NumberOfSpawnerInstances: 2
-  velocityAvg: 5
-  velocityRange: 1
-  velocity: 0
+  objectScale: {x: 0.5, y: 0.5, z: 0.5}
   spawnerDistance: 5
   spawnerRange: 2
   height: 2
   gamePlaying: 0
   prefab: {fileID: 0}
-  Colors: []
   center: {x: 0, y: 0, z: 0}
   target: {x: 0, y: 1.7, z: 0}
   guiContent:
@@ -75,20 +77,4 @@ MonoBehaviour:
     m_Tooltip: 
   startHealth: 1000
   startScore: 0
-  health: 0
-  score: 0
-  ninjaControl: {fileID: 114000010818501814}
-  info:
-    totalscore: 0
-    health: 0
---- !u!114 &114000010818501814
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012399126898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7628d50b80c63402da5519c8f8267c65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  ninjaControl: {fileID: 114352528970065522}

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Assets.NinjaGame.Scripts
+namespace Assets.MobiSA.Scripts
 {
     public class CollisionEvent : MonoBehaviour
     {

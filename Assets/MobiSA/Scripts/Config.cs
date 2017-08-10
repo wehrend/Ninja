@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace Assets.NinjaGame.Scripts
+namespace Assets.MobiSA.Scripts
 {
     #region Data classes
 
@@ -22,6 +22,7 @@ namespace Assets.NinjaGame.Scripts
         public Boolean releaseMode;
         public String videoFilePath;
         public String environmentFilePath;
+        public List<String> listOfBlocknames; 
         public Boolean useForceFeedback;
     }
 
@@ -67,6 +68,14 @@ namespace Assets.NinjaGame.Scripts
         public String instructionsFilePath;
     }
 
+    [Serializable]
+    public class Block
+    {
+        //TODO adding instructions
+        public String name;
+        public Trial trial;
+        public int blockPausetime;
+    }
 
     //Trial class
     [Serializable]

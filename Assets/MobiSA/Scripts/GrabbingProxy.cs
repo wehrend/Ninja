@@ -3,7 +3,7 @@ using System.Collections;
 using System;
 using UnityEngine.Events;
 
-namespace Assets.NinjaGame.Scripts
+namespace Assets.MobiSA.Scripts
 {
 
     public class GrabbingProxy : MonoBehaviour

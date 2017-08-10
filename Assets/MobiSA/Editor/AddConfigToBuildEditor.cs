@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace Assets.NinjaGame.Scripts
+namespace Assets.MobiSA.Scripts
 {
     public class AddConfigToBuildEditor
     {
@@ -19,8 +19,8 @@ namespace Assets.NinjaGame.Scripts
                 Directory.CreateDirectory(Application.streamingAssetsPath + "/Config/");
                 Debug.Log("[BUILD] Created Directory " + Application.streamingAssetsPath + "/Config/");
             }
-            Debug.Log("[BUILD] Copy config directory from " + NinjaGame.configDataDirectory + "to " + Application.streamingAssetsPath + "/Config/");
-            FileUtil.CopyFileOrDirectory(NinjaGame.configDataDirectory, Application.streamingAssetsPath + "/Config/");
+            Debug.Log("[BUILD] Copy config directory from " + MobiSACore.configDataDirectory + "to " + Application.streamingAssetsPath + "/Config/");
+            FileUtil.CopyFileOrDirectory(MobiSACore.configDataDirectory, Application.streamingAssetsPath + "/Config/");
         }
 
     }

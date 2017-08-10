@@ -1,9 +1,9 @@
-﻿namespace Assets.NinjaGame.Scripts {
+﻿namespace Assets.MobiSA.Scripts {
     using UnityEngine;
     using System.Collections;
     using LSL4Unity.Scripts;
 
-    public struct NinjaGameEventArgs
+    public struct MobiSACoreEventArgs
     {
         //track event at collision (has tio be abstracted to VREFs IMarkerStream)
         LSLMarkerStream collisionEvent;
@@ -19,18 +19,18 @@
 	}
 
 
-	public delegate void NinjaGameEventHandler(object sender, NinjaGameEventArgs eve);
+	public delegate void MobiSACoreEventHandler(object sender, MobiSACoreEventArgs eve);
 
-    public class NinjaGameEventController : MonoBehaviour {
-
-
-        public event NinjaGameEventHandler FruitCollision;
-        public event NinjaGameEventHandler BombCollision;
-        public event NinjaGameEventHandler StartGame;
-        public event NinjaGameEventHandler GameOver;
+    public class MobiSACoreEventController : MonoBehaviour {
 
 
-        public void OnFruitCollision(NinjaGameEventArgs eve)
+        public event MobiSACoreEventHandler FruitCollision;
+        public event MobiSACoreEventHandler BombCollision;
+        public event MobiSACoreEventHandler StartGame;
+        public event MobiSACoreEventHandler GameOver;
+
+
+        public void OnFruitCollision(MobiSACoreEventArgs eve)
         {
             if (FruitCollision != null)
             {
@@ -38,7 +38,7 @@
             }
         }
 
-        public void OnBombCollision(NinjaGameEventArgs eve)
+        public void OnBombCollision(MobiSACoreEventArgs eve)
         {
             if (BombCollision != null)
             {
@@ -47,7 +47,7 @@
         }
 
 
-        public void OnStartGame(NinjaGameEventArgs eve)
+        public void OnStartGame(MobiSACoreEventArgs eve)
         {
             if (StartGame != null)
             {
@@ -55,7 +55,7 @@
             }
         }
 
-        public void OnGameOver(NinjaGameEventArgs eve)
+        public void OnGameOver(MobiSACoreEventArgs eve)
         {
             if (GameOver != null)
             {

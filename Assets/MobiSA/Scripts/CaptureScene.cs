@@ -7,11 +7,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using LSL;
-using Assets.NinjaGame.Scripts;
+using Assets.MobiSA.Scripts;
 using VRCapture;
 
 
-namespace Assets.NinjaGame.Scripts
+namespace Assets.MobiSA.Scripts
 {
     public class CaptureScene : MonoBehaviour
     {

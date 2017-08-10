@@ -3,14 +3,17 @@ using UnityEngine.Events;
 using System.Collections;
 
 
-namespace Assets.NinjaGame.Scripts
+namespace Assets.MobiSA.Scripts
 {
 
-    public class Fruit : MovingRigidbodyPhysics
+    public class Object : MovingRigidbodyPhysics
     {
-        private NinjaGameEventArgs eve;
+        private MobiSACoreEventArgs eve;
         //public float fruitBreakForce = 50f;  
         public int bonusPoints = 50;
+
+
+
 
         public override void CollisionWithForce( float collisionForce)
         {

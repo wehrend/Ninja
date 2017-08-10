@@ -16,7 +16,7 @@ using SMI;
 /// </summary>
 
 
-namespace Assets.NinjaGame.Scripts
+namespace Assets.MobiSA.Scripts
 {
     public class RBeyetrackingStream : MonoBehaviour
     {

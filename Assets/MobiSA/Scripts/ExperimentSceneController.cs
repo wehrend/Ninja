@@ -27,9 +27,10 @@ namespace Assets.MobiSA.Scripts
             CalibrateScene,
             PreScene,
             ExperimentScene,
+            PauseScene,
             WaitForPostScene,
-            PostScene//,
-           // Pause
+            PostScene,
+
         }
         //[Tooltip("DebugHelper SMI")]
         //public bool noSMI;
@@ -61,6 +62,9 @@ namespace Assets.MobiSA.Scripts
         public float startCalibrationTime;
         // public const string expMarkerStreamName = "ExperimentMarkerStream";
         public StateMachine<SceneStates> sceneFsm;
+        ///private static int blockIndex;
+        public IEnumerator<Block> blockEnum;
+        private Block curBlock;
         //Next todo: using singletones here 
         public static ExperimentInfo experimentInfo;
         [HideInInspector]
@@ -69,13 +73,13 @@ namespace Assets.MobiSA.Scripts
         RBHmdStream rbHmdStream;
         WallText wallText;
         public GameObject pauseScreen;
-
+        public float startPausetime;
         //Load function
         string expectedTrialsConfig;
         string saveTrialsConfig;
         public static string configDataDirectory;
-        public static Config config;
-        public ConfigValues configValues;
+        public Config config;
+        //public Config configValues;
         public static List<Trial> generatedTrials;
 
 
@@ -109,7 +113,39 @@ namespace Assets.MobiSA.Scripts
             wallText = FindObjectsOfType(typeof(WallText)).FirstOrDefault() as WallText;
             if (wallText != null)
                 Debug.Log("Found wallText " + wallText.ToString());
-            configValues = LoadConfig();
+            //configValues = LoadConfig();
+#if UNITY_EDITOR
+
+            Config configAsset = (Config) UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/DefaultConfig.asset", typeof(Config));
+#else 
+            Config configAsset = (Config) Resources.Load("DefaultConfig.asset", typeof(Config));
+#endif
+            if (configAsset != null)
+            {
+               
+                blockEnum = configAsset.blocks.GetEnumerator();
+                blockEnum.MoveNext();
+                //curBlock = blockEnum.Current;
+                foreach (Block b in configAsset.blocks)
+                {
+                    b.generatedTrials = b.GenerateTrialsList(b.listOfTrials);
+                    /*foreach (Trial t in b.generatedTrials)
+                    {
+                        Debug.LogWarning(t.trial + " " + t.color);
+                    }*/
+
+                    var trialsMax = b.generatedTrials.Count;
+                    Debug.Log("[Config] " + configAsset.experiment.parallelSpawns);
+                    Debug.Log("Config for Block" + b.name + " with " + b.generatedTrials.Count + " trials successfully loaded!");
+                    b.trialsMax = trialsMax;
+                }
+            } else {
+                Debug.Log("ConfigAsset not instantiated");
+            }
+            config = configAsset;
+           
+           
+            //Debug.Log("[Config] " + config.experiment.parallelSpawns);
 
             /// <summary>
             /// Caches the Camer Prefabs
@@ -131,6 +167,7 @@ namespace Assets.MobiSA.Scripts
             rbHmdStream = GetComponent<RBHmdStream>();
             experimentMarker = gameObject.GetComponent<LSLMarkerStream>();
             sceneFsm = StateMachine<SceneStates>.Initialize(this, SceneStates.MenuScene);
+            //blockIndex = 0;
             if (sceneFsm!=null)
                 Debug.Log("Scene FSM found");
             // calibViz = GameObject.FindObjectOfType(typeof(SMICalibrationVisualizer)) as SMICalibrationVisualizer;
@@ -144,8 +181,8 @@ namespace Assets.MobiSA.Scripts
             DontDestroyOnLoad(vrCapture);
     }
 
-      public ConfigValues LoadConfig() {
-            ConfigValues configVal = new ConfigValues();
+       public Config LoadConfig() {
+            Config configVal = new Config();
 #if (UNITY_EDITOR)
             configDataDirectory = Application.dataPath + "/MobiSA/Config/";
 #else
@@ -166,51 +203,33 @@ namespace Assets.MobiSA.Scripts
                     Debug.LogError("Something is wrong with the AppConfig. Was not found and I was not able to create one!");
                 });
                 //check if fields exists aka config scheme is new enough
+                ///instructions
+                ///                        
 
-                try
-                {
-                    configVal.releaseMode = config.setup.releaseMode;
-                    configVal.videoFilePath = config.setup.videoFilePath;
-                    configVal.environmentFilePath = config.setup.environmentFilePath;
-                    configVal.useForceFeedback = config.setup.useForceFeedback;
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogException(ex, this);
-                }
-                configVal.angle = config.experiment.maximumAngle;
-                configVal.parallelSpawns = config.experiment.parallelSpawns;
-                configVal.pausetimeTimingJitter = config.experiment.pausetimeTimingJitter;
-                configVal.pausetime = config.experiment.pausetime;
-               // try
+                //if (wallText != null)
                 //{
-                    configVal.animationDuration = config.experiment.animationDuration;
-                    configVal.instructionlists = config.instructionlists;
-                    ///instructions
-                    ///                        
 
-                    //if (wallText != null)
-                    //{
-
-                    //   wallText.instructionlists = config.instructionlists;
-                    //}
-               /* }
-                catch (Exception ex)
-                {
-                    Debug.LogException(ex, this);
-                }*/
+                //   wallText.instructionlists = config.instructionlists;
+                //}
+                /* }
+                 catch (Exception ex)
+                 {
+                     Debug.LogException(ex, this);
+                 }*/
 
                 /////
-                generatedTrials = config.GenerateTrialsList(config.listOfTrials);
-                foreach (Trial t in generatedTrials)
+                foreach (Block b in config.blocks)
                 {
-                    Debug.LogWarning(t.trial  +" "+ t.color);
-                }
+                    b.generatedTrials = b.GenerateTrialsList(b.listOfTrials);
+                    /*foreach (Trial t in b.generatedTrials)
+                    {
+                        Debug.LogWarning(t.trial + " " + t.color);
+                    }*/
 
-                var trialsMax = generatedTrials.Count;
-                Debug.Log("Config from" + expectedTrialsConfig + "with " + generatedTrials.Count + " trials successfully loaded!");
-                configVal.generatedTrials = generatedTrials;
-                configVal.trialsMax = trialsMax;
+                    var trialsMax = b.generatedTrials.Count;
+                    Debug.Log("Config from" + expectedTrialsConfig + "with " + b.generatedTrials.Count + " trials successfully loaded!");
+                    b.trialsMax = trialsMax;
+                }
             }
             return configVal;
         }
@@ -462,7 +481,9 @@ namespace Assets.MobiSA.Scripts
 
         void ExperimentScene_Enter()
         {
-            //explicit needed(?)
+            Debug.Log(blockEnum.Current.name);
+            curBlock = blockEnum.Current;
+            Debug.LogError(" to " + blockEnum.Current.name);
             ExperimentSceneController.experimentInfo.triggerPressed = false;
 
             Debug.Log("Load ExperimentScene");
@@ -481,36 +502,44 @@ namespace Assets.MobiSA.Scripts
 
         void ExperimentScene_Update()
         {
-            if ((MobiSACore.generatedTrials != null) && (  MobiSACore.generatedTrials.Count == 0))
-            {
-                sceneFsm.ChangeState(SceneStates.PostScene);
-                if(capScene)
-                    capScene.FinishCapture();
-            }
-
-            //freeze the game 
-            if (Input.GetKey(KeyCode.Space))
-            {
-                if (pauseScreen != null)
+                if ((curBlock.generatedTrials != null) && (curBlock.generatedTrials.Count == 0))
                 {
-                    if (Time.timeScale == 1.00)
+                    sceneFsm.ChangeState(SceneStates.PauseScene);
+                    if (capScene)
+                        capScene.FinishCapture();
+                }
+        }
+
+        void PauseScene_Enter()
+        {
+            int startPausetime = (int) Time.realtimeSinceStartup;
+        }
+
+        void PauseScene_Update()
+        {
+
+            //if (((int)Time.realtimeSinceStartup-startPausetime) % 10 ==0)
+            //    Debug.Log(startPausetime +" + " +  curBlock.blockPausetime * 60.0 +" != " + ((int) Time.realtimeSinceStartup)); 
+            if (curBlock != null)
+            {
+                if ((int)(startPausetime + (curBlock.blockPausetime * 60.0)) == (int)Time.realtimeSinceStartup)
+                {
+                    Debug.LogError("Change state from " + curBlock.name);
+
+                    if (blockEnum.MoveNext())
                     {
-                        Time.timeScale = 0.0f;
-                        experimentMarker.Write("Pause_begin");
-                        pauseScreen.SetActive(true);
+                        Debug.LogError(" to " + blockEnum.Current.name);
+                        sceneFsm.ChangeState(SceneStates.ExperimentScene);
                     }
                     else
                     {
-                        pauseScreen.SetActive(false);
-                        experimentMarker.Write("Pause_end");
-                        Time.timeScale = 1.0f;
+                        Debug.LogError(" to " + blockEnum.Current.name);
+                        sceneFsm.ChangeState(SceneStates.WaitForPostScene);
                     }
                 }
-                
-
-                
             }
         }
+
 
 
 
@@ -603,7 +632,7 @@ namespace Assets.MobiSA.Scripts
          }*/
     }
 
-    [Serializable]
+  /*  [Serializable]
     public class ConfigValues 
     {
         //setup
@@ -621,8 +650,8 @@ namespace Assets.MobiSA.Scripts
         public int parallelSpawns;
         public float pausetimeTimingJitter;
         public float pausetime;
+        public List<Block> blocks;
         public List<Trial> generatedTrials;
-        public int trialsMax;
     }
-
+    */
 }

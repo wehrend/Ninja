@@ -17,6 +17,7 @@ namespace Assets.MobiSA.Scripts
         public GameObject money;
         public GameObject smallMoney;
         public int score;
+        public IEnumerator blockEnum;
         public float scoreProgressValue;
 
         public List<GameObject> moneyClones;
@@ -61,7 +62,9 @@ namespace Assets.MobiSA.Scripts
             if (expGO)
             {
                 expSceneCon = expGO.GetComponent<ExperimentSceneController>();
-                instructionlists = expSceneCon.configValues.instructionlists;
+                Config config = expSceneCon.config;
+                instructionlists = config.instructionlists;
+                blockEnum = expSceneCon.blockEnum;
                 //Debug.LogWarning("["+scene.name +"] Count of loaded instructionlists " + instructionlists.onBaseline.Count());
                 //Debug.LogWarning("[" + scene.name + "] instructionlists " + instructionlists.onBaseline.ToString());
             }
@@ -147,11 +150,14 @@ namespace Assets.MobiSA.Scripts
                 }
                 else if (expSceneCon.sceneFsm.State == ExperimentSceneController.SceneStates.ExperimentScene)
                 {
+                    Block curBlock = (Block)blockEnum.Current;
                     // aka experiment scene is loaded
-                    if (instructionsText && MobiSACore.generatedTrials != null)
+                    if (instructionsText && curBlock.generatedTrials != null)
                         showInstructions(instructionlists.onExperiment, "onExperiment");
-                
-                        instructionsText.text += "\n" + MobiSACore.generatedTrials.Count;
+                        instructionsText.fontSize = 80;
+                        instructionsText.color = Color.white;
+                        instructionsText.text += "\n" +"Current Block: "+ curBlock.name;
+                        instructionsText.text += "\n" + "Objects to go: "+curBlock.generatedTrials.Count;
                     //healthBar.size = (float) NinjaGame.game.health / 1000f;
                 }
             
@@ -163,7 +169,13 @@ namespace Assets.MobiSA.Scripts
                         //"Ok. Experiment is finished. Thanks for being part of it";
                     }
                 }
-           }
+                else if (expSceneCon.sceneFsm.State == ExperimentSceneController.SceneStates.PauseScene)
+                {
+
+                    instructionsText.text = "Pause ";
+                    instructionsText.text += (int) (Time.realtimeSinceStartup - expSceneCon.startPausetime) +" seconds";
+                }
+            }
        }
 
         void showInstructions(List<Instruction> instructionList, string name)
@@ -176,7 +188,7 @@ namespace Assets.MobiSA.Scripts
                     instructionsText.color = Color.red;
                     instructionsText.fontSize = 100;
                     instructionsText.text = name + ": No instruction(s) available";
-                    Debug.Log("No instructions list");
+                    //Debug.Log("No instructions list");
                 }
                 else
                 {

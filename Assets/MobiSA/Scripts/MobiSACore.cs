@@ -23,7 +23,9 @@ namespace Assets.MobiSA.Scripts
         [HideInInspector]
         public static string configDataDirectory;
         public static Config config;
-        ConfigValues val;
+        private Config val;
+        private Experiment experiment;
+        private Block curBlock;
         public static List<Trial> generatedTrials;
          
         //public float pausetime = 5;
@@ -70,24 +72,31 @@ namespace Assets.MobiSA.Scripts
             if (experimentMarker != null)
                 Debug.Log("Found LSL Stream"+experimentMarker.lslStreamName);
 
+
+            expController = FindObjectOfType(typeof(ExperimentSceneController)) as ExperimentSceneController;
             if (expController) //Get gloabl config if we are in multi scenes
             {
-                val = expController.configValues;
+                val = expController.config;
+                curBlock = expController.blockEnum.Current;
+
                 //Debug.Log("Loaded ExpController Config" + val.ToString());
-            }else {
-              val=LoadConfig(); //local load config function for single scene
-              //Debug.Log("Loaded Ninja Config" + val.ToString());
+                experiment = val.experiment;
+            // }else {
+            //  val=LoadConfig(); //local load config function for single scene
+                                //Debug.Log("Loaded Ninja Config" + val.ToString());
+             
             }
-          
+            Debug.Log("BLOCK " +  curBlock.name + " with " + curBlock.generatedTrials.Count+" Trials/Objects");
+
             prefab = Resources.Load("BasicPrefab", typeof(MovingRigidbodyPhysics)) as MovingRigidbodyPhysics;
             if (prefab == null)
                 Debug.LogError("Coudn't load BasicPrefab");
         }
 
 
-        public ConfigValues LoadConfig()
+        public Config LoadConfig()
         {
-            ConfigValues configVal = new ConfigValues();
+            Config configVal = new Config();
 #if (UNITY_EDITOR)
             configDataDirectory = Application.dataPath + "/MobiSA/Config/";
 #else
@@ -108,51 +117,35 @@ namespace Assets.MobiSA.Scripts
                 });
                 //check if fields exists aka config scheme is new enough
 
-                try
-                {
-                    configVal.releaseMode = config.setup.releaseMode;
-                    configVal.videoFilePath = config.setup.videoFilePath;
-                    configVal.environmentFilePath = config.setup.environmentFilePath;
-                    configVal.useForceFeedback = config.setup.useForceFeedback;
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogException(ex, this);
-                }
-                configVal.angle = config.experiment.maximumAngle;
-                configVal.parallelSpawns = config.experiment.parallelSpawns;
-                configVal.pausetimeTimingJitter = config.experiment.pausetimeTimingJitter;
-                configVal.pausetime = config.experiment.pausetime;
-                try
-                {
-                    configVal.animationDuration = config.experiment.animationDuration;
+              
                     ///instructions
                     if (wallText != null)
                     {
                         Debug.LogWarning("Loaded instructionlists");
                         wallText.instructionlists = config.instructionlists;
                     }
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogException(ex, this);
-                }
 
-                /////
-                generatedTrials = config.GenerateTrialsList(config.listOfTrials);
-                var trialsMax = generatedTrials.Count;
-                Debug.Log("Config from" + expectedTrialsConfig + "with " +generatedTrials.Count + " trials successfully loaded!");
-                configVal.generatedTrials = generatedTrials;
-                configVal.trialsMax = trialsMax;
+                foreach (Block b in config.blocks)
+                {
+                    b.generatedTrials = b.GenerateTrialsList(b.listOfTrials);
+                    /*foreach (Trial t in b.generatedTrials)
+                    {
+                        Debug.LogWarning(t.trial + " " + t.color);
+                    }*/
+
+                    var trialsMax = b.generatedTrials.Count;
+                    Debug.Log("Config from" + expectedTrialsConfig + "with " + b.generatedTrials.Count + " trials successfully loaded!");
+                    b.trialsMax = trialsMax;
+                }
+                //configVal.blocks = config.listOfBlocks;
             }
             return configVal;
         }
 
         void Start()
         {
-
 #region Experiment Event logic
-   
+
 
             if (ExperimentSceneController.experimentInfo)
             {
@@ -230,28 +223,29 @@ namespace Assets.MobiSA.Scripts
             while (gamePlaying)
             {
                 StartCoroutine(FireFruit());
-                var totalPausetime = val.pausetime + Random.Range(-val.pausetimeTimingJitter / 2, val.pausetimeTimingJitter / 2);
+                var totalPausetime = experiment.pausetime + Random.Range(-experiment.pausetimeTimingJitter / 2, experiment.pausetimeTimingJitter / 2);
                 yield return new WaitForSeconds(totalPausetime);
             }
         }
 
         IEnumerator FireFruit()
         {
-            if (val != null)
+            if (experiment != null)
             {
-                List<Transform> spawnerInstances = Enumerable.Repeat(transform, val.parallelSpawns-1).ToList();
+                //Debug.Log("parallelspawns "+experiment.parallelSpawns);
+                List<Transform> spawnerInstances = Enumerable.Repeat(transform, experiment.parallelSpawns).ToList();
                 //Debug.Log(spawnerInstances.Count);
 
                 foreach (var spawner in spawnerInstances)
                 {
 
-                    var selected = Trial.PickAndDelete(generatedTrials);
+                    var selected = Trial.PickAndDelete(curBlock.generatedTrials);
                     Debug.LogWarning(coloredLogString(selected.trial, selected.color));
                     if (selected != null)
                     {
                         var position = Vector3.one + Vector3.up * (selected.heigth - 1);
                         center = new Vector3(0, selected.heigth, 0);
-                        trialNumber = val.trialsMax - generatedTrials.Count;
+                        trialNumber = expController.blockEnum.Current.trialsMax - expController.blockEnum.Current.generatedTrials.Count;
 #if UNITY_EDITOR
                         Debug.Log("Trials:" + trialNumber + " " + selected.trial + ' ' + selected.color + ' ' + selected.distanceAvg);
 #else
@@ -260,7 +254,7 @@ namespace Assets.MobiSA.Scripts
                         var halfDistVar = selected.distanceVar / 2;
                         distance = selected.distanceAvg + Random.Range(-halfDistVar, halfDistVar);
                         spawner.position = (position - center).normalized * distance + center;
-                        float currentAngle = Random.Range(-val.angle / 2, val.angle / 2) - angleAlignment;
+                        float currentAngle = Random.Range(-experiment.maximumAngle / 2, experiment.maximumAngle / 2) - angleAlignment;
                         var halfVelVar = selected.velocityVar / 2;
                         velocity = selected.velocityAvg + Random.Range(-halfVelVar,halfVelVar);
 

@@ -33,7 +33,7 @@ public class FadeObjectOnCollision : MonoBehaviour {
         deviceID = SteamVR_Controller.GetDeviceIndex(SteamVR_Controller.DeviceRelation.Rightmost);
         if (deviceID == -1)
             Debug.LogWarning("No Controller");
-        Debug.Log("Controller:"+deviceID);
+        Debug.Log("Controller ID:"+deviceID);
         //animation time duration in milliseconds for 100 steps
        // waitTime = animationTimeDuration / (1000f*frameSteps);
         stepwidth = 1f / frameSteps;

@@ -62,7 +62,7 @@ namespace Assets.MobiSA.Scripts
             if (expGO)
             {
                 expSceneCon = expGO.GetComponent<ExperimentSceneController>();
-                Config config = expSceneCon.config;
+                Config config = expSceneCon.configAsset;
                 instructionlists = config.instructionlists;
                 blockEnum = expSceneCon.blockEnum;
                 //Debug.LogWarning("["+scene.name +"] Count of loaded instructionlists " + instructionlists.onBaseline.Count());
@@ -156,7 +156,7 @@ namespace Assets.MobiSA.Scripts
                         showInstructions(instructionlists.onExperiment, "onExperiment");
                         instructionsText.fontSize = 80;
                         instructionsText.color = Color.white;
-                        instructionsText.text += "\n" +"Current Block: "+ curBlock.name;
+                        instructionsText.text += "Block: "+ curBlock.name;
                         instructionsText.text += "\n" + "Objects to go: "+curBlock.generatedTrials.Count;
                     //healthBar.size = (float) NinjaGame.game.health / 1000f;
                 }
@@ -171,9 +171,10 @@ namespace Assets.MobiSA.Scripts
                 }
                 else if (expSceneCon.sceneFsm.State == ExperimentSceneController.SceneStates.PauseScene)
                 {
-
-                    instructionsText.text = "Pause ";
-                    instructionsText.text += (int) (Time.realtimeSinceStartup - expSceneCon.startPausetime) +" seconds";
+                    int countdown  = (int)(expSceneCon.endPausetime - (Time.realtimeSinceStartup - expSceneCon.startPausetime));
+                    int minute = countdown / 60;
+                    int seconds = countdown % 60; 
+                    instructionsText.text = string.Format("Pause {0} m {1}", minute,seconds);
                 }
             }
        }

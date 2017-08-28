@@ -49,8 +49,8 @@ namespace Assets.MobiSA.Scripts
         public MobiSACoreEventController ninjaControl;
         LSLMarkerStream experimentMarker;
 
-        string expectedTrialsConfig;
-        string saveTrialsConfig;
+        string jsonConfig;
+        string saveJsonConfig;
         
         //actual trial values
         private float scale;
@@ -76,7 +76,7 @@ namespace Assets.MobiSA.Scripts
             expController = FindObjectOfType(typeof(ExperimentSceneController)) as ExperimentSceneController;
             if (expController) //Get gloabl config if we are in multi scenes
             {
-                val = expController.config;
+                val = expController.configAsset;
                 curBlock = expController.blockEnum.Current;
 
                 //Debug.Log("Loaded ExpController Config" + val.ToString());
@@ -102,8 +102,8 @@ namespace Assets.MobiSA.Scripts
 #else
             configDataDirectory = Application.streamingAssetsPath + "/Config/";
 #endif
-            expectedTrialsConfig = configDataDirectory + "trialslist.json";
-            saveTrialsConfig = configDataDirectory + "trialslist.json";
+            jsonConfig = configDataDirectory + "DefaultConfig";
+            saveJsonConfig = configDataDirectory + "DefaultConfig";
 
             if (config == null)
             {
@@ -111,7 +111,9 @@ namespace Assets.MobiSA.Scripts
                 // trialsConfig = ScriptableObject.CreateInstance(typeof(TrialsList)) as TrialsList;
                 //load default trials config
 
-                config = ConfigUtil.LoadConfig<Config>(new FileInfo(expectedTrialsConfig), true, () =>
+
+               
+                config = ConfigUtil.LoadConfig<Config>(new FileInfo(jsonConfig), false, () =>
                 {
                     Debug.LogError("Something is wrong with the AppConfig. Was not found and I was not able to create one!");
                 });
@@ -134,7 +136,7 @@ namespace Assets.MobiSA.Scripts
                     }*/
 
                     var trialsMax = b.generatedTrials.Count;
-                    Debug.Log("Config from" + expectedTrialsConfig + "with " + b.generatedTrials.Count + " trials successfully loaded!");
+                    Debug.Log("Config from" + jsonConfig + "with " + b.generatedTrials.Count + " trials successfully loaded!");
                     b.trialsMax = trialsMax;
                 }
                 //configVal.blocks = config.listOfBlocks;

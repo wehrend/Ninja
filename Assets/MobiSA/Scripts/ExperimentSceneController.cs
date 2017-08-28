@@ -39,7 +39,7 @@ namespace Assets.MobiSA.Scripts
         /// Caches for the Camera Prefab  
         /// </summary>
         public GameObject player;
-        public GameObject vrCapture;
+        public GameObject vrCaptureGO;
         private GameObject cameraRig;
         public GameObject controllerOne;
         public GameObject controllerTwo;
@@ -74,11 +74,12 @@ namespace Assets.MobiSA.Scripts
         WallText wallText;
         public GameObject pauseScreen;
         public float startPausetime;
+        public float endPausetime;
         //Load function
-        string expectedTrialsConfig;
+        string jsonConfig;
         string saveTrialsConfig;
         public static string configDataDirectory;
-        public Config config;
+        public Config configAsset;
         //public Config configValues;
         public static List<Trial> generatedTrials;
 
@@ -101,7 +102,6 @@ namespace Assets.MobiSA.Scripts
         private SMICalibrationVisualizer.VisualisationState previousState, currentState;
 
         //capturing Scene
-        private GameObject camCap;
         private static CaptureScene capScene;
         private GameObject gazeCursor;
         public  SteamVR_Controller.Device controllerInput;
@@ -114,36 +114,7 @@ namespace Assets.MobiSA.Scripts
             if (wallText != null)
                 Debug.Log("Found wallText " + wallText.ToString());
             //configValues = LoadConfig();
-#if UNITY_EDITOR
-
-            Config configAsset = (Config) UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/DefaultConfig.asset", typeof(Config));
-#else 
-            Config configAsset = (Config) Resources.Load("DefaultConfig.asset", typeof(Config));
-#endif
-            if (configAsset != null)
-            {
-               
-                blockEnum = configAsset.blocks.GetEnumerator();
-                blockEnum.MoveNext();
-                //curBlock = blockEnum.Current;
-                foreach (Block b in configAsset.blocks)
-                {
-                    b.generatedTrials = b.GenerateTrialsList(b.listOfTrials);
-                    /*foreach (Trial t in b.generatedTrials)
-                    {
-                        Debug.LogWarning(t.trial + " " + t.color);
-                    }*/
-
-                    var trialsMax = b.generatedTrials.Count;
-                    Debug.Log("[Config] " + configAsset.experiment.parallelSpawns);
-                    Debug.Log("Config for Block" + b.name + " with " + b.generatedTrials.Count + " trials successfully loaded!");
-                    b.trialsMax = trialsMax;
-                }
-            } else {
-                Debug.Log("ConfigAsset not instantiated");
-            }
-            config = configAsset;
-           
+            this.configAsset = LoadConfig();
            
             //Debug.Log("[Config] " + config.experiment.parallelSpawns);
 
@@ -159,8 +130,7 @@ namespace Assets.MobiSA.Scripts
             var cameraRig=player.transform.FindChild("SteamVRObjects");
             controllerOne = cameraRig.transform.Find("Hand1").gameObject;
             controllerTwo = cameraRig.transform.Find("Hand2").gameObject;
-            vrCapture = GameObject.Find("VRCapture").gameObject;
-
+            vrCaptureGO = GameObject.Find("VRCapture").gameObject;
             ////
             experimentInfo = new ExperimentInfo();
             rbControllerStream = GetComponent<RBControllerStream>();
@@ -178,60 +148,69 @@ namespace Assets.MobiSA.Scripts
 
             //Whole CameraRig
             DontDestroyOnLoad(player.gameObject);
-            DontDestroyOnLoad(vrCapture);
+            DontDestroyOnLoad(vrCaptureGO);
     }
 
        public Config LoadConfig() {
-            Config configVal = new Config();
 #if (UNITY_EDITOR)
             configDataDirectory = Application.dataPath + "/MobiSA/Config/";
 #else
             configDataDirectory = Application.streamingAssetsPath + "/Config/";
 #endif
-            expectedTrialsConfig = configDataDirectory + "trialslist.json";
-            saveTrialsConfig = configDataDirectory + "trialslist.json";
+            jsonConfig = configDataDirectory + "DefaultConfig.txt";
+            saveTrialsConfig = configDataDirectory + "DefaultConfig.txt";
 
-            if (config == null)
+
+            Debug.Log("[Exp controller] load config...");
+            // trialsConfig = ScriptableObject.CreateInstance(typeof(TrialsList)) as TrialsList;
+            //load default trials config
+
+            FileInfo configFile = new FileInfo(jsonConfig);
+          
+            if (configFile != null && configFile.Exists)
             {
-                Debug.Log("[Exp controller] load config...");
-                config = new Config();
-                // trialsConfig = ScriptableObject.CreateInstance(typeof(TrialsList)) as TrialsList;
-                //load default trials config
-
-                config = ConfigUtil.LoadConfig<Config>(new FileInfo(expectedTrialsConfig), true, () =>
+                configAsset = ConfigUtil.LoadConfig<Config>(configFile, false, () =>
                 {
-                    Debug.LogError("Something is wrong with the AppConfig. Was not found and I was not able to create one!");
+                    Debug.LogError("Could not load existent json config.");
                 });
-                //check if fields exists aka config scheme is new enough
-                ///instructions
-                ///                        
-
-                //if (wallText != null)
-                //{
-
-                //   wallText.instructionlists = config.instructionlists;
-                //}
-                /* }
-                 catch (Exception ex)
-                 {
-                     Debug.LogException(ex, this);
-                 }*/
-
-                /////
-                foreach (Block b in config.blocks)
-                {
-                    b.generatedTrials = b.GenerateTrialsList(b.listOfTrials);
-                    /*foreach (Trial t in b.generatedTrials)
-                    {
-                        Debug.LogWarning(t.trial + " " + t.color);
-                    }*/
-
-                    var trialsMax = b.generatedTrials.Count;
-                    Debug.Log("Config from" + expectedTrialsConfig + "with " + b.generatedTrials.Count + " trials successfully loaded!");
-                    b.trialsMax = trialsMax;
-                }
             }
-            return configVal;
+            else
+            {
+                Debug.LogWarning(string.Format( "Json config {0} exists? {1}", configFile.FullName, configFile.Exists));
+            }
+      
+
+            if (configAsset == null)
+            {
+#if UNITY_EDITOR
+
+                configAsset = (Config)UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/DefaultConfig.asset", typeof(Config));
+#else
+                configAsset = (Config) Resources.Load("DefaultConfig.asset", typeof(Config));
+#endif
+            }
+
+                
+               
+            blockEnum = configAsset.blocks.GetEnumerator();
+            blockEnum.MoveNext();
+            //curBlock = blockEnum.Current;
+            foreach (Block b in configAsset.blocks)
+            {
+                b.generatedTrials = b.GenerateTrialsList(b.listOfTrials);
+                /*foreach (Trial t in b.generatedTrials)
+                {
+                    Debug.LogWarning(t.trial + " " + t.color);
+                }*/
+
+                var trialsMax = b.generatedTrials.Count;
+                Debug.Log("[Config] " + configAsset.experiment.parallelSpawns);
+                Debug.Log("Config for Block" + b.name + " with " + b.generatedTrials.Count + " trials successfully loaded!");
+                b.trialsMax = trialsMax;
+                   
+
+            }
+        return configAsset;
         }
 
         void MenuScene_Enter()
@@ -512,7 +491,8 @@ namespace Assets.MobiSA.Scripts
 
         void PauseScene_Enter()
         {
-            int startPausetime = (int) Time.realtimeSinceStartup;
+            startPausetime = (int) Time.realtimeSinceStartup;
+            endPausetime = curBlock.blockPausetime * 60;
         }
 
         void PauseScene_Update()
@@ -591,11 +571,11 @@ namespace Assets.MobiSA.Scripts
         {
 
             
-            if (vrCapture)
+            if (vrCaptureGO)
             {
-                vrCapture.SetActive(true);
-                Debug.Log("Activate vrCapture" + vrCapture.ToString());
-                capScene = vrCapture.GetComponent<CaptureScene>();
+                vrCaptureGO.SetActive(true);
+                Debug.Log("Activate vrCapture" + vrCaptureGO.ToString());
+                capScene = vrCaptureGO.GetComponent<CaptureScene>();
                 if (capScene)
                 {
                     capScene.enabled = true;

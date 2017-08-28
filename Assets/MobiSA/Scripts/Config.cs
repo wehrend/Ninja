@@ -211,8 +211,6 @@ namespace Assets.MobiSA.Scripts
             new Block("third Level", new List<Trial>(), 5)
         };
 
-        private static Config configAsset;
-
 
 
         public static List<Trial> firstTrialsSet()

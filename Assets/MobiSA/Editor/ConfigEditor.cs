@@ -6,14 +6,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-
-
 using Assets.MobiSA.Scripts;
 
     public class ConfigEditor {
+        private static Config configAsset;
 
 
-        [MenuItem("MoBI SA/EditConfigAsset")]
+    [MenuItem("MoBI SA/EditConfigAsset")]
         public static void Create() {
 
             string assetPathName = AssetDatabase.GenerateUniqueAssetPath("Assets/DefaultConfig.asset");

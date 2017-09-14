@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Assets.LSL4Unity.Scripts;
 using Assets.VREF.Scripts;
 
+
 /// <summary>
 /// Main class of the Paradigm-specific code, 
 /// Includes Game controller logic and object spawning
@@ -27,14 +28,16 @@ namespace Assets.MobiSA.Scripts
         private Experiment experiment;
         private Block curBlock;
         public static List<Trial> generatedTrials;
-         
+       
         //public float pausetime = 5;
         public Vector3 objectScale = new Vector3(0.5f,0.5f,0.5f);
         //public float velocity;
         public float spawnerDistance=5.0f;
         public float spawnerRange = 1.0f;
+        public float distractorDestroyDistance = 1.0f;
         public float height = 2.0f;
         private float angleAlignment = 45;
+
         public bool gamePlaying;
         public MovingRigidbodyPhysics prefab;
 
@@ -81,10 +84,12 @@ namespace Assets.MobiSA.Scripts
 
                 //Debug.Log("Loaded ExpController Config" + val.ToString());
                 experiment = val.experiment;
+                distractorDestroyDistance = experiment.distractorDestroyDistance;
+
             // }else {
             //  val=LoadConfig(); //local load config function for single scene
-                                //Debug.Log("Loaded Ninja Config" + val.ToString());
-             
+            //Debug.Log("Loaded Ninja Config" + val.ToString());
+
             }
             Debug.Log("BLOCK " +  curBlock.name + " with " + curBlock.generatedTrials.Count+" Trials/Objects");
 
@@ -241,7 +246,7 @@ namespace Assets.MobiSA.Scripts
                 foreach (var spawner in spawnerInstances)
                 {
 
-                    var selected = Trial.PickAndDelete(curBlock.generatedTrials);
+                    var selected = Trial.PickAndDelete(curBlock);
                     Debug.LogWarning(coloredLogString(selected.trial, selected.color));
                     if (selected != null)
                     {

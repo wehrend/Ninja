@@ -17,10 +17,13 @@ namespace Assets.MobiSA.Scripts
         public Rigidbody Body { get; private set; }
         [HideInInspector]
         public MobiSACoreEventController ninjaEvents;
+        private MobiSACore core;
+
         [HideInInspector]
         private MeshRenderer meshrenderer;
         public float distance;
         public float velocity = 5.0f;//Random.Range(1,20);
+        public float distractorDestroyDistance;
         public Vector3 startPoint;
         public Color32 color = Color.white;
         public string type;
@@ -41,8 +44,12 @@ namespace Assets.MobiSA.Scripts
         private void Awake()
         {
             Body = GetComponent<Rigidbody>();
+
             meshrenderer = GetComponent<MeshRenderer>();
             ninjaEvents = FindObjectOfType(typeof(MobiSACoreEventController)) as MobiSACoreEventController;
+            core = FindObjectOfType(typeof(MobiSACore)) as MobiSACore;
+            if (core != null)
+                distractorDestroyDistance = core.distractorDestroyDistance;
             Body.collisionDetectionMode = CollisionDetectionMode.Continuous;
         }
 
@@ -93,15 +100,18 @@ namespace Assets.MobiSA.Scripts
             // startpoint is signinverted of target 
             Vector3 currentDistance = (transform.position - startPoint);
             //Destroy if we have passed the subject. Distance is the radius
-            
-       
+                 
             if (currentDistance.magnitude > hideMultiplier * distance)
                 DestroyObject(Body.gameObject, 0.01f);
+            //also destroy if its before eyes (and distractor)
+
+            Vector3 distanceToHead = (Camera.main.transform.position - transform.position);
+            //Debug.Log(type);
+            if ((distanceToHead.magnitude < distractorDestroyDistance) && (type.Equals("distract")))
+                DestroyObject(Body.gameObject, 0.05f);
+
 
             Body.transform.LookAt(target);
-            //Sword sword = FindObjectOfType<Sword>();
-            //TODO: We want event mnessaging here
-            //if (sword.IsGrabbed()) 
             Body.AddRelativeForce(Vector3.forward * velocity, ForceMode.Force);
 
             /*if ( ((hoverHeightWithEnvironment - range) < Body.transform.position.y) && (Body.transform.position.y < ((hoverHeightWithEnvironment + range))))

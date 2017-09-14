@@ -29,7 +29,7 @@ GameObject:
   - component: {fileID: 199301125846173626}
   - component: {fileID: 82577174040989556}
   m_Layer: 0
-  m_Name: BasicPrefab
+  m_Name: 18
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,7 +73,7 @@ Transform:
   m_GameObject: {fileID: 1044568800333810}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -9.735066, y: 2.155848, z: 7.650001}
-  m_LocalScale: {x: 0.6282851, y: 0.6282851, z: 0.6282851}
+  m_LocalScale: {x: 0.59962356, y: 0.59962356, z: 0.59962356}
   m_Children:
   - {fileID: 4559039295980096}
   m_Father: {fileID: 0}
@@ -240,9 +240,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ninjaEvents: {fileID: 0}
-  distance: 8.524979
-  velocity: 4.2053814
-  startPoint: {x: 7.1496487, y: 1.4, z: -4.6430354}
+  distance: 8.664617
+  velocity: 4.2394013
+  startPoint: {x: -8.557941, y: 1.4, z: -1.3554451}
   color:
     serializedVersion: 2
     rgba: 4294901760

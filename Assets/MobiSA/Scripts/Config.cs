@@ -4,7 +4,6 @@ using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 
-
 namespace Assets.MobiSA.Scripts
 {
     #region Data classes
@@ -99,6 +98,7 @@ namespace Assets.MobiSA.Scripts
         public int parallelSpawns;
         public float pausetime;
         public float pausetimeTimingJitter;
+        public float distractorDestroyDistance;
         public int animationDuration;
         public String instructionsFilePath;
 
@@ -107,6 +107,7 @@ namespace Assets.MobiSA.Scripts
             this.parallelSpawns = 3;
             this.pausetime = 5.0f;
             this.pausetimeTimingJitter = 0.25f;
+            this.distractorDestroyDistance = 1.0f;
             this.animationDuration = 0;
         }
     }
@@ -115,12 +116,13 @@ namespace Assets.MobiSA.Scripts
     public class Block
     {
         //TODO adding instructions
+
         public String name;
         public List<Trial> listOfTrials;
         public int blockPausetime;
         public List<Trial> generatedTrials = new List<Trial>();
         public int trialsMax;
-
+       
 
         public Block(string name, List<Trial> trialslist, int pausetime) {
             this.name = name;
@@ -147,7 +149,6 @@ namespace Assets.MobiSA.Scripts
     [Serializable]
     public class Trial
     {
-
         public int instances;
         public string trial;
         //public object prefab;
@@ -175,18 +176,20 @@ namespace Assets.MobiSA.Scripts
                this.distanceAvg = d;
            }*/
 
-        public static Trial PickAndDelete(List<Trial> trialsList)
+        public static Trial PickAndDelete(Block curBlock)
         {
+            //System.Random rand;
             Trial selected;
             int index;
             int minVal = 0;
-            System.Random r = new System.Random();
-            if (trialsList.Count != 0)
+            System.Random rand = new System.Random();
+
+            if (curBlock.generatedTrials.Count != 0)
             {
-                index = r.Next(minVal, trialsList.Count - 1);
+                index = rand.Next(minVal, curBlock.generatedTrials.Count - 1);
                 //Debug.Log("index: " + index + "ListCount: " + (trialsList.Count - 1));
-                selected = trialsList[index];
-                trialsList.RemoveAt(index);
+                selected = curBlock.generatedTrials[index];
+                curBlock.generatedTrials.RemoveAt(index);
             }
             else
             {

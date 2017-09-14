@@ -18,7 +18,7 @@ using Assets.MobiSA.Scripts;
             string assetPathName = AssetDatabase.GenerateUniqueAssetPath("Assets/DefaultConfig.asset");
 
             //Generate default config asset
-            configAsset = CreateInstance<Config>();
+             configAsset = ScriptableObject.CreateInstance<Config>();
             //Default setup
 
             Setup setup = new Setup();
@@ -29,11 +29,11 @@ using Assets.MobiSA.Scripts;
 
             //default experiment
             Experiment experiment = new Experiment();
-            //default blocks with default trials 
-            List<Block> blocks = new List<Block>(3){
+        //default blocks with default trials 
+        List<Block> blocks = new List<Block>(3){
                 new Block("first Level", firstTrialsSet(), 3),
                 new Block("second Level", secondTrialsSet(), 5),
-                new Block("third Level", new List<Trial>(), 5)
+                new Block("third Level", new List<Trial>(), 5),
                 };
 
             configAsset.blocks = blocks;

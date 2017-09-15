@@ -127,7 +127,7 @@ namespace Assets.MobiSA.Scripts
             // now we have the root object, on  which DontDestroyOnLoad() works
             Debug.Log(player.name);
             //not the very best practice, but for the moment
-            var cameraRig=player.transform.FindChild("SteamVRObjects");
+            var cameraRig=player.transform.Find("SteamVRObjects");
             controllerOne = cameraRig.transform.Find("Hand1").gameObject;
             controllerTwo = cameraRig.transform.Find("Hand2").gameObject;
             vrCaptureGO = GameObject.Find("VRCapture").gameObject;

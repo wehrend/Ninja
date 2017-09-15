@@ -49,16 +49,16 @@ namespace VRCapture {
 
         private void Awake() {
             if(rectTransform == null) {
-                rectTransform = transform.FindChild("TooltipCanvas").GetComponent<RectTransform>();
+                rectTransform = transform.Find("TooltipCanvas").GetComponent<RectTransform>();
             }
             if(tmpContainer == null) {
-                tmpContainer = transform.FindChild("TooltipCanvas/UIContainer").gameObject;
+                tmpContainer = transform.Find("TooltipCanvas/UIContainer").gameObject;
             }
             if(tmpText == null) {
-                tmpText = transform.FindChild("TooltipCanvas/UITextFront").GetComponent<Text>();
+                tmpText = transform.Find("TooltipCanvas/UITextFront").GetComponent<Text>();
             }
             if(line == null) {
-                line = transform.FindChild("Line").GetComponent<LineRenderer>();
+                line = transform.Find("Line").GetComponent<LineRenderer>();
             }
         }
         /// <summary>

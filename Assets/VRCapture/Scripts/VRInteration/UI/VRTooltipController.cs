@@ -105,7 +105,7 @@ namespace VRCapture {
         /// <param name="findTransform"></param>
         /// <returns></returns>
         private Transform GetTransform(string findTransform) {
-            return transform.parent.FindChild("Model/" + findTransform + "/attach");
+            return transform.parent.Find("Model/" + findTransform + "/attach");
         }
 
         private void FixedUpdate() {

@@ -23,7 +23,7 @@ using VRCapture.Demo;
             var debugLog = "Video File Path:" + VRCaptureConfig.SaveFolder.ToString() + "\n" +
                 "\n Camera Cache File Path:" + System.IO.Path.GetFullPath(string.Format(@"{0}", "Cache"));
             Debug.LogWarning(debugLog);
-            var captureVideoGO = this.transform.FindChild("Camera (eye)").gameObject;
+            var captureVideoGO = this.transform.Find("Camera (eye)").gameObject;
             Debug.Log(captureVideoGO.ToString());
             captureVideo=captureVideoGO.GetComponentInChildren<VRCaptureVideo>();
             Debug.Log(captureVideo.ToString());

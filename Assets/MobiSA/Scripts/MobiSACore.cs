@@ -284,9 +284,6 @@ namespace Assets.MobiSA.Scripts
                         // now, after all assigns, we can spawn! 
                         Instantiate(prefab, spawner.position, Quaternion.identity);
 
-#if UNITY_STANDALONE
-                        Debug.LogError("Trial spawned");
-#endif                        
                         if (experimentMarker != null)
                         {
                             experimentMarker.Write("spawn_trial_" + trialNumber + ": name:" + selected.trial + ",color:" + selected.color + ", spawn point:" + spawner.position + ",velocity:" + velocity);

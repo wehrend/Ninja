@@ -108,6 +108,114 @@ NavMeshSettings:
     tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &106170774
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4000012462538518, guid: 7fb4eb193786376458450101f3cdd3b3, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012462538518, guid: 7fb4eb193786376458450101f3cdd3b3, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012462538518, guid: 7fb4eb193786376458450101f3cdd3b3, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012462538518, guid: 7fb4eb193786376458450101f3cdd3b3, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012462538518, guid: 7fb4eb193786376458450101f3cdd3b3, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012462538518, guid: 7fb4eb193786376458450101f3cdd3b3, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012462538518, guid: 7fb4eb193786376458450101f3cdd3b3, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012462538518, guid: 7fb4eb193786376458450101f3cdd3b3, type: 2}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 7fb4eb193786376458450101f3cdd3b3, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1 &106170775 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1000014042435618, guid: 7fb4eb193786376458450101f3cdd3b3,
+    type: 2}
+  m_PrefabInternal: {fileID: 106170774}
+--- !u!114 &106170776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 106170775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63fc41a3a3e2c644aa8cc0c145689c0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camera: {fileID: 122208558}
+  audioListener: {fileID: 0}
+--- !u!114 &106170777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 106170775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc1a31d444bac144bb259cdd421ced82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vrCaptureVideos: []
+  doCapture: 0
+  capturing: 0
+--- !u!114 &106170778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 106170775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aa8368f25624554a8febae65da64019, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lslStreamName: CaptureMarkerStream
+  lslStreamType: LSL_Marker_Strings
+--- !u!114 &106170779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 106170775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ce1c4f59cc9242fd926bcc78fcf4ab9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debug: 1
+  _videoCaptures:
+  - {fileID: 106170780}
+  _audioCapture: {fileID: 0}
+--- !u!114 &106170780 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000011981344334, guid: 7fb4eb193786376458450101f3cdd3b3,
+    type: 2}
+  m_PrefabInternal: {fileID: 106170774}
+  m_Script: {fileID: 11500000, guid: f0d01430cb7446d4787e1549b55f0a70, type: 3}
 --- !u!1 &122208558 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1742411612015538, guid: 828af4de8ac223044865d68f24cfea31,
@@ -266,53 +374,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &780286551
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4729425927189190, guid: e8b02cfbf67475044a54d55e8ff240fc, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4729425927189190, guid: e8b02cfbf67475044a54d55e8ff240fc, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4729425927189190, guid: e8b02cfbf67475044a54d55e8ff240fc, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4729425927189190, guid: e8b02cfbf67475044a54d55e8ff240fc, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4729425927189190, guid: e8b02cfbf67475044a54d55e8ff240fc, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4729425927189190, guid: e8b02cfbf67475044a54d55e8ff240fc, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4729425927189190, guid: e8b02cfbf67475044a54d55e8ff240fc, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4729425927189190, guid: e8b02cfbf67475044a54d55e8ff240fc, type: 2}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114769696548472776, guid: e8b02cfbf67475044a54d55e8ff240fc,
-        type: 2}
-      propertyPath: camera
-      value: 
-      objectReference: {fileID: 122208558}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: e8b02cfbf67475044a54d55e8ff240fc, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &847916917
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,7 +407,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 500190320}
-  vrCapture: {fileID: 0}
+  vrCaptureGO: {fileID: 0}
   controllerOne: {fileID: 0}
   controllerTwo: {fileID: 0}
   debugColor: {r: 0, g: 1, b: 0, a: 1}
@@ -363,29 +424,9 @@ MonoBehaviour:
   preflag: 0
   postflag: 0
   pauseScreen: {fileID: 0}
-  configValues:
-    releaseMode: 0
-    videoFilePath: 
-    environmentFilePath: 
-    animationDuration: 0
-    useForceFeedback: 0
-    instructionlists:
-      permanentWallTextonTop:
-        instruction: 
-        fontsize: 0
-        color: {r: 0, g: 0, b: 0, a: 0}
-      preBaseline: []
-      onBaseline: []
-      postBaseline: []
-      preExperiment: []
-      onExperiment: []
-      postExperiment: []
-    angle: 0
-    parallelSpawns: 0
-    pausetimeTimingJitter: 0
-    pausetime: 0
-    generatedTrials: []
-    trialsMax: 0
+  startPausetime: 0
+  endPausetime: 0
+  configAsset: {fileID: 0}
   startGame: 0
   initflag: 0
   endflag: 0

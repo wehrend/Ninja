@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using LSL;
 using Assets.MobiSA.Scripts;
-using VRCapture;
+using RockVR.Video;
 
 
 namespace Assets.MobiSA.Scripts
@@ -21,14 +21,15 @@ namespace Assets.MobiSA.Scripts
         /// capture
         /// </summary>
         [Tooltip("Capture cameras for video recording")]
-        private VRCaptureVideo captureVideo;
+        private VideoCapture captureVideo;
         public static GameObject captureVideoInstance;
         private bool isProcessing;
-        public VRCaptureVideo[] vrCaptureVideos;
+        public VideoCapture[] vrCaptureVideos;
         public bool doCapture;
         public bool capturing;
         //public GameObject capture;
-        private VRCaptureVideo curVideoObj;
+        private VideoCapture curVideoObj;
+        private VideoCaptureCtrl captureCtrl;
         private CaptureMarkerStream captureStream;
         private int framenumber;
         private int encFramenumber;
@@ -54,10 +55,11 @@ namespace Assets.MobiSA.Scripts
                 captureVideoInstance = this.gameObject;//.transform.FindChild("CaptureCamera").gameObject;
                 //Debug.Log(captureVideoInstance.ToString());
             }
-            captureVideo = captureVideoInstance.GetComponentInChildren<VRCaptureVideo>();
+            captureVideo = captureVideoInstance.GetComponentInChildren<VideoCapture>();
+            captureCtrl = captureVideoInstance.GetComponentInChildren<VideoCaptureCtrl>();
             //Debug.Log(captureVideo.ToString());
-            VRCapture.VRCapture.Instance.vrCaptureVideos = new VRCaptureVideo[] { captureVideo };
-            curVideoObj = VRCapture.VRCapture.Instance.vrCaptureVideos[0];
+            VideoCapture[] video = new VideoCapture[] { captureVideo };
+            curVideoObj = video[0];
             Assert.IsNotNull(curVideoObj, "curVideoObject is null");
 
 
@@ -98,20 +100,20 @@ namespace Assets.MobiSA.Scripts
 
         public void StartCapture()
         {
-            var videoFilepathLog = "Video File Path:" + VRCaptureConfig.SaveFolder.ToString() + "\n" +
+            var videoFilepathLog = "Video File Path:" + PathConfig.saveFolder.ToString() + "\n" +
               "\n Camera Cache File Path:" + System.IO.Path.GetFullPath(string.Format(@"{0}", "Cache"));
             Debug.LogWarning(videoFilepathLog);
             Debug.Log("StartCapture()");
             capturing = true;
-            captureStream.Write("Video file path"+VRCaptureConfig.SaveFolder.ToString());
-            VRCapture.VRCapture.Instance.BeginCaptureSession();
+            captureStream.Write("Video file path"+PathConfig.saveFolder.ToString());
+            captureCtrl.StartCapture();
         }
 
         public void FinishCapture()
         {
             Debug.Log("StopCapture");
             capturing = false;
-            VRCapture.VRCapture.Instance.EndCaptureSession();
+            captureCtrl.StopCapture();
 
         }
 

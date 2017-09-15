@@ -9,7 +9,7 @@ using Valve.VR;
 using Assets.LSL4Unity.Scripts;
 using UnityEngine.Assertions;
 using SMI;
-using VRCapture;
+using RockVR;
 using System.IO;
 using Assets.VREF.Scripts;
 using System.Linq;
@@ -130,7 +130,7 @@ namespace Assets.MobiSA.Scripts
             var cameraRig=player.transform.Find("SteamVRObjects");
             controllerOne = cameraRig.transform.Find("Hand1").gameObject;
             controllerTwo = cameraRig.transform.Find("Hand2").gameObject;
-            vrCaptureGO = GameObject.Find("VRCapture").gameObject;
+            vrCaptureGO = GameObject.Find("MainCapture").gameObject;
             ////
             experimentInfo = new ExperimentInfo();
             rbControllerStream = GetComponent<RBControllerStream>();

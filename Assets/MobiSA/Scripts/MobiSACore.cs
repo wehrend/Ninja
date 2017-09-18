@@ -105,7 +105,7 @@ namespace Assets.MobiSA.Scripts
 #if (UNITY_EDITOR)
             configDataDirectory = Application.dataPath + "/MobiSA/Config/";
 #else
-            configDataDirectory = Application.streamingAssetsPath + "/Config/";
+            configDataDirectory = Application.dataPath + "/MobiSA/Config/";
 #endif
             jsonConfig = configDataDirectory + "DefaultConfig";
             saveJsonConfig = configDataDirectory + "DefaultConfig";

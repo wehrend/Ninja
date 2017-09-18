@@ -173,8 +173,11 @@ namespace Assets.MobiSA.Scripts
                 {
                     int countdown  = (int)(expSceneCon.endPausetime - (Time.realtimeSinceStartup - expSceneCon.startPausetime));
                     int minute = countdown / 60;
-                    int seconds = countdown % 60; 
-                    instructionsText.text = string.Format("Pause {0} m {1}", minute,seconds);
+                    int seconds = countdown % 60;
+                    if (countdown != 0)
+                        instructionsText.text = string.Format("Pause {0} m {1}", minute, seconds);
+                    else
+                        instructionsText.text = "";
                 }
             }
        }

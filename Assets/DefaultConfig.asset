@@ -54,35 +54,11 @@ MonoBehaviour:
     parallelSpawns: 3
     pausetime: 5
     pausetimeTimingJitter: 0.25
+    distractorDestroyDistance: 1
     animationDuration: 0
     instructionsFilePath: 
   blocks:
   - name: first Level
-    listOfTrials:
-    - instances: 25
-      trial: Target
-      color: {r: 0, g: 1, b: 0, a: 1}
-      heigth: 1.4
-      scaleAvg: 0.6
-      scaleVar: 0.1
-      velocityAvg: 4
-      velocityVar: 0.5
-      distanceAvg: 8
-      distanceVar: 2
-    - instances: 25
-      trial: Distract
-      color: {r: 1, g: 0, b: 0, a: 1}
-      heigth: 1.6
-      scaleAvg: 0.3
-      scaleVar: 0.01
-      velocityAvg: 5
-      velocityVar: 0.5
-      distanceAvg: 9
-      distanceVar: 3
-    blockPausetime: 3
-    generatedTrials: []
-    trialsMax: 0
-  - name: second Level
     listOfTrials:
     - instances: 5
       trial: Target
@@ -104,11 +80,31 @@ MonoBehaviour:
       velocityVar: 0.5
       distanceAvg: 9
       distanceVar: 3
-    blockPausetime: 5
+    blockPausetime: 3
     generatedTrials: []
     trialsMax: 0
-  - name: third Level
-    listOfTrials: []
+  - name: second Level
+    listOfTrials:
+    - instances: 15
+      trial: Target
+      color: {r: 0, g: 1, b: 0, a: 1}
+      heigth: 1.4
+      scaleAvg: 0.6
+      scaleVar: 0.1
+      velocityAvg: 4
+      velocityVar: 0.5
+      distanceAvg: 8
+      distanceVar: 2
+    - instances: 15
+      trial: Distract
+      color: {r: 1, g: 0, b: 0, a: 1}
+      heigth: 1.6
+      scaleAvg: 0.3
+      scaleVar: 0.01
+      velocityAvg: 5
+      velocityVar: 0.5
+      distanceAvg: 9
+      distanceVar: 3
     blockPausetime: 5
     generatedTrials: []
     trialsMax: 0

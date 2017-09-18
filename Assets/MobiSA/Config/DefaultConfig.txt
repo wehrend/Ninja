@@ -31,7 +31,7 @@
         ],
         "onBaseline": [
             {
-                "instruction": "Baseline Recording.\\nPlease follow the instructions of lab assistant.",
+                "instruction": "Baseline Recording.\nPlease follow the instructions of lab assistant.",
                 "fontsize": 100,
                 "color": {
                     "r": 1.0,
@@ -56,7 +56,7 @@
         "preExperiment": [],
         "onExperiment": [
             {
-                "instruction": "Experiment running...",
+                "instruction": "Experiment running.",
                 "fontsize": 80,
                 "color": {
                     "r": 0.0,
@@ -68,7 +68,7 @@
         ],
         "postExperiment": [
             {
-                "instruction": "Ok. Experiment is finished. Thanks for being part of it",
+                "instruction": "Ok. Experiment is finished. Thanks for being part of it!",
                 "fontsize": 100,
                 "color": {
                     "r": 0.0,
@@ -81,9 +81,10 @@
     },
     "experiment": {
         "maximumAngle": 260,
-        "parallelSpawns": 2,
+        "parallelSpawns": 3,
         "pausetime": 5.0,
         "pausetimeTimingJitter": 0.25,
+        "distractorDestroyDistance": 1.0,
         "animationDuration": 0,
         "instructionsFilePath": ""
     },
@@ -92,50 +93,8 @@
             "name": "first Level",
             "listOfTrials": [
                 {
-                    "instances": 25,
-                    "trial": "target",
-                    "color": {
-                        "r": 0.0,
-                        "g": 0.0,
-                        "b": 1.0,
-                        "a": 1.0
-                    },
-                    "heigth": 1.399999976158142,
-                    "scaleAvg": 0.6000000238418579,
-                    "scaleVar": 0.10000000149011612,
-                    "velocityAvg": 4.0,
-                    "velocityVar": 0.5,
-                    "distanceAvg": 8.0,
-                    "distanceVar": 2.0
-                },
-                {
-                    "instances": 25,
-                    "trial": "distract",
-                    "color": {
-                        "r": 1.0,
-                        "g": 0.0,
-                        "b": 0.0,
-                        "a": 1.0
-                    },
-                    "heigth": 1.600000023841858,
-                    "scaleAvg": 0.30000001192092898,
-                    "scaleVar": 0.009999999776482582,
-                    "velocityAvg": 5.0,
-                    "velocityVar": 0.5,
-                    "distanceAvg": 9.0,
-                    "distanceVar": 3.0
-                }
-            ],
-            "blockPausetime": 3,
-            "generatedTrials": [],
-            "trialsMax": 0
-        },
-        {
-            "name": "second Level",
-            "listOfTrials": [
-                {
                     "instances": 5,
-                    "trial": "target",
+                    "trial": "Target",
                     "color": {
                         "r": 0.0,
                         "g": 1.0,
@@ -152,7 +111,7 @@
                 },
                 {
                     "instances": 5,
-                    "trial": "distract",
+                    "trial": "Distract",
                     "color": {
                         "r": 1.0,
                         "g": 0.0,
@@ -168,13 +127,48 @@
                     "distanceVar": 3.0
                 }
             ],
-            "blockPausetime": 5,
+            "blockPausetime": 3,
             "generatedTrials": [],
             "trialsMax": 0
         },
         {
-            "name": "third Level",
-            "listOfTrials": [],
+            "name": "second Level",
+            "listOfTrials": [
+                {
+                    "instances": 15,
+                    "trial": "Target",
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0,
+                        "a": 1.0
+                    },
+                    "heigth": 1.399999976158142,
+                    "scaleAvg": 0.6000000238418579,
+                    "scaleVar": 0.10000000149011612,
+                    "velocityAvg": 4.0,
+                    "velocityVar": 0.5,
+                    "distanceAvg": 8.0,
+                    "distanceVar": 2.0
+                },
+                {
+                    "instances": 15,
+                    "trial": "Distract",
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0,
+                        "a": 1.0
+                    },
+                    "heigth": 1.600000023841858,
+                    "scaleAvg": 0.30000001192092898,
+                    "scaleVar": 0.009999999776482582,
+                    "velocityAvg": 5.0,
+                    "velocityVar": 0.5,
+                    "distanceAvg": 9.0,
+                    "distanceVar": 3.0
+                }
+            ],
             "blockPausetime": 5,
             "generatedTrials": [],
             "trialsMax": 0

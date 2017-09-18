@@ -28,7 +28,7 @@ namespace Assets.MobiSA.Scripts
             PreScene,
             ExperimentScene,
             PauseScene,
-            WaitForPostScene,
+            //WaitForPostScene,
             PostScene,
 
         }
@@ -115,16 +115,24 @@ namespace Assets.MobiSA.Scripts
                 Debug.Log("Found wallText " + wallText.ToString());
             //configValues = LoadConfig();
             this.configAsset = LoadConfig();
-           
+
+            //configure Capturing plugin
+            var path = configAsset.setup.videoFilePath;
+            if (Directory.Exists(path))
+                RockVR.Video.PathConfig.fullPathname = path;
+            else
+                Debug.LogError(string.Format("Directory {0} not existent.Please create manually or change in config!",path));
+
+
             //Debug.Log("[Config] " + config.experiment.parallelSpawns);
 
-            /// <summary>
-            /// Caches the Camer Prefabs
-            /// </summary>
-            /// 
-            //player = GameObject.Find("Player (with Capturing)").gameObject; //ViveCamera_WithEyetracking
+                /// <summary>
+                /// Caches the Camer Prefabs
+                /// </summary>
+                /// 
+                //player = GameObject.Find("Player (with Capturing)").gameObject; //ViveCamera_WithEyetracking
 
-            // now we have the root object, on  which DontDestroyOnLoad() works
+                // now we have the root object, on  which DontDestroyOnLoad() works
             Debug.Log(player.name);
             //not the very best practice, but for the moment
             var cameraRig=player.transform.Find("SteamVRObjects");
@@ -190,8 +198,9 @@ namespace Assets.MobiSA.Scripts
 #endif
             }
 
-                
-               
+            //set blocktime for last element zero, to load postscene without pause
+            var lastBlock = configAsset.blocks.Last();
+            lastBlock.blockPausetime = 0;
             blockEnum = configAsset.blocks.GetEnumerator();
             blockEnum.MoveNext();
             //curBlock = blockEnum.Current;
@@ -502,7 +511,10 @@ namespace Assets.MobiSA.Scripts
             //    Debug.Log(startPausetime +" + " +  curBlock.blockPausetime * 60.0 +" != " + ((int) Time.realtimeSinceStartup)); 
             if (curBlock != null)
             {
-                if ((int)(startPausetime + (curBlock.blockPausetime * 60.0)) == (int)Time.realtimeSinceStartup)
+                int pauseEndTime = (int)(startPausetime + (curBlock.blockPausetime * 60.0));
+                bool pauseEnded = (pauseEndTime == (int)Time.realtimeSinceStartup);
+                bool canceledBySubject = SteamVR_Controller.Input(deviceIndex).GetPressDown(SteamVR_Controller.ButtonMask.Trigger);
+                if ( pauseEnded || canceledBySubject)
                 {
                     Debug.LogError("Change state from " + curBlock.name);
 
@@ -513,8 +525,8 @@ namespace Assets.MobiSA.Scripts
                     }
                     else
                     {
-                        Debug.LogError(" to " + blockEnum.Current.name);
-                        sceneFsm.ChangeState(SceneStates.WaitForPostScene);
+                        Debug.LogError(" to last Scene");
+                        sceneFsm.ChangeState(SceneStates.PostScene);
                     }
                 }
             }

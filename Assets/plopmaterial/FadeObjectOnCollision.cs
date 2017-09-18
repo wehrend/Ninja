@@ -68,11 +68,7 @@ public class FadeObjectOnCollision : MonoBehaviour {
             SteamVR_Controller.Input(deviceID).TriggerHapticPulse(500);
             contact.thisCollider.enabled = false;
             StartCoroutine(FadeAlphaAndScale());
-         } else {
-            //Debug.LogWarning("[Destroyed]");
-            DestroyObject(body.gameObject, 0.5f);
-        }
-
+         }
 
     }
 
@@ -111,40 +107,3 @@ public class FadeObjectOnCollision : MonoBehaviour {
 
     //}
 }
-
-/* old
-// Update is called once per frame
-void OnCollisionEnter(Collision collisionInfo)
-{
-    alpha = 0f;
-    flag = true;
-    ContactPoint contact;
-    Vector3 localPoint;
-    // theres only one contact point
-    contact = collisionInfo.contacts[0];
-    localPoint = contact.thisCollider.transform.localPosition;
-    time = Time.realtimeSinceStartup;
-    var collision = new Vector4(contact.point.x, contact.point.y, contact.point.z, time);
-    //Debug.Log("DEBUG:"+collision);
-    renderer.material.SetVector("_Collision", collision);
-    audio.Play();
-
-}
-/*
-private void Update()
-{
-    if (flag)
-    {
-        transform.localScale += Vector3.one * 0.001f;
-        alpha += stepwidth;
-        if (renderer)
-            renderer.material.SetVector("_AlphaCutoff", new Vector4(alpha, 0f, 0f, 0f));
-    }
-    if (Mathf.Approximately(alpha, 1f))
-    {
-        //Debug.LogWarning("[Destroyed]");
-        DestroyObject(body.gameObject, 0.5f);
-    }
-}
-
-*/

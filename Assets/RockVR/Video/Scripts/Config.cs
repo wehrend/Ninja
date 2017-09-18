@@ -10,8 +10,10 @@ namespace RockVR.Video
     {
         public static string persistentDataPath = Application.persistentDataPath;
         public static string streamingAssetsPath = Application.streamingAssetsPath;
-        public static string myDocumentsPath = Environment.GetFolderPath(
-            Environment.SpecialFolder.MyDocuments);
+
+        //added to allow conigurable pathnames
+        public static string fullPathname;    
+
         /// <summary>
         /// The video folder, save recorded video.
         /// </summary>
@@ -20,9 +22,9 @@ namespace RockVR.Video
             get
             {
 #if (UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR
-                return Application.dataPath+ "/NinjaCaptureStreams/";
+                return fullPathname;
 #else
-                return Application.dataPath+ "/NinjaCaptureStreams/";
+                return fullPathname;
 #endif
             }
         }

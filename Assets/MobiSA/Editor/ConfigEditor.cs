@@ -33,7 +33,6 @@ using Assets.MobiSA.Scripts;
         List<Block> blocks = new List<Block>(3){
                 new Block("first Level", firstTrialsSet(), 3),
                 new Block("second Level", secondTrialsSet(), 5),
-                new Block("third Level", new List<Trial>(), 5),
                 };
 
             configAsset.blocks = blocks;
@@ -58,40 +57,7 @@ using Assets.MobiSA.Scripts;
             writer.Close();
             writer.Dispose();
         }
-
-
     public static List<Trial> firstTrialsSet()
-    {
-        List<Trial> trialsList = new List<Trial>();
-        Trial target = new Trial();
-        target.instances = 25;
-        target.trial = "Target";
-        target.color = Color.green;
-        target.heigth = 1.4f;
-        target.scaleAvg = 0.6f;
-        target.scaleVar = 0.1f;
-        target.velocityAvg = 4.0f;
-        target.velocityVar = 0.5f;
-        target.distanceAvg = 8.0f;
-        target.distanceVar = 2.0f;
-        trialsList.Add(target);
-        Trial distract = new Trial();
-        distract.instances = 25;
-        distract.trial = "Distract";
-        distract.color = Color.red;
-        distract.heigth = 1.6f;
-        distract.scaleAvg = 0.3f;
-        distract.scaleVar = 0.01f;
-        distract.velocityAvg = 5.0f;
-        distract.velocityVar = 0.5f;
-        distract.distanceAvg = 9.0f;
-        distract.distanceVar = 3.0f;
-        trialsList.Add(distract);
-
-        return trialsList;
-    }
-
-    public static List<Trial> secondTrialsSet()
     {
         List<Trial> trialsList = new List<Trial>();
         Trial target = new Trial();
@@ -121,6 +87,39 @@ using Assets.MobiSA.Scripts;
 
         return trialsList;
     }
+
+    public static List<Trial> secondTrialsSet()
+    {
+        List<Trial> trialsList = new List<Trial>();
+        Trial target = new Trial();
+        target.instances = 15;
+        target.trial = "Target";
+        target.color = Color.green;
+        target.heigth = 1.4f;
+        target.scaleAvg = 0.6f;
+        target.scaleVar = 0.1f;
+        target.velocityAvg = 4.0f;
+        target.velocityVar = 0.5f;
+        target.distanceAvg = 8.0f;
+        target.distanceVar = 2.0f;
+        trialsList.Add(target);
+        Trial distract = new Trial();
+        distract.instances = 15;
+        distract.trial = "Distract";
+        distract.color = Color.red;
+        distract.heigth = 1.6f;
+        distract.scaleAvg = 0.3f;
+        distract.scaleVar = 0.01f;
+        distract.velocityAvg = 5.0f;
+        distract.velocityVar = 0.5f;
+        distract.distanceAvg = 9.0f;
+        distract.distanceVar = 3.0f;
+        trialsList.Add(distract);
+
+        return trialsList;
+    }
+
+   
 }
 
 

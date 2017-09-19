@@ -10,24 +10,11 @@ namespace RockVR.Video
     {
         public static string persistentDataPath = Application.persistentDataPath;
         public static string streamingAssetsPath = Application.streamingAssetsPath;
-
-        //added to allow conigurable pathnames
-        public static string fullPathname;    
-
+        public static string fullpath = Application.dataPath;
         /// <summary>
         /// The video folder, save recorded video.
         /// </summary>
-        public static string saveFolder
-        {
-            get
-            {
-#if (UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR
-                return fullPathname;
-#else
-                return fullPathname;
-#endif
-            }
-        }
+        public static string saveFolder { get { return fullpath; } }
         /// <summary>
         /// The ffmpeg path.
         /// </summary>

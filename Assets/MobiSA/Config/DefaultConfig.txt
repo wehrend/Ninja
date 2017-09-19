@@ -1,7 +1,7 @@
 {
     "setup": {
         "releaseMode": false,
-        "videoFilePath": "C:\\Users\\sven\\Ninja2\\Assets\\NinjaCaptureStreams",
+        "videoFilePath": "C:\\Users\\sven\\Ninja2\\Assets\\NinjaCaptureStreams\\",
         "environmentFilePath": "",
         "listOfBlocknames": [],
         "useForceFeedback": false

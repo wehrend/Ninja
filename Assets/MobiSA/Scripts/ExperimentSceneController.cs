@@ -119,7 +119,7 @@ namespace Assets.MobiSA.Scripts
             //configure Capturing plugin
             var path = configAsset.setup.videoFilePath;
             if (Directory.Exists(path))
-                RockVR.Video.PathConfig.fullPathname = path;
+                RockVR.Video.PathConfig.fullpath = path;
             else
                 Debug.LogError(string.Format("Directory {0} not existent.Please create manually or change in config!",path));
 
@@ -490,12 +490,17 @@ namespace Assets.MobiSA.Scripts
 
         void ExperimentScene_Update()
         {
-                if ((curBlock.generatedTrials != null) && (curBlock.generatedTrials.Count == 0))
+            //if ((curBlock.generatedTrials != null) && (curBlock.generatedTrials.Count == 0)){...}
+            if(curBlock.generatedTrials.Count == 0)
+            {
+                var activeObjects = FindObjectsOfType<Object>();
+                if (activeObjects.Count() == 0)
                 {
                     sceneFsm.ChangeState(SceneStates.PauseScene);
                     if (capScene)
                         capScene.FinishCapture();
                 }
+            }
         }
 
         void PauseScene_Enter()

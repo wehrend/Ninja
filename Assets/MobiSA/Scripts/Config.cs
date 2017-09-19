@@ -27,7 +27,7 @@ namespace Assets.MobiSA.Scripts
 
         public Setup() {
             this.releaseMode = false;
-            this.videoFilePath = "C:\\Users\\sven\\Ninja2\\Assets\\MobiSACaptureStreams";
+            this.videoFilePath = "C:\\Users\\sven\\Ninja2\\Assets\\MobiSACaptureStreams\\";
             this.useForceFeedback = false;
         }
 

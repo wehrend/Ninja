@@ -2,6 +2,7 @@
 using System.IO;
 using System.Runtime.InteropServices;
 using RockVR.Common;
+using Assets.MobiSA.Scripts;
 
 namespace RockVR.Video
 {
@@ -59,7 +60,7 @@ namespace RockVR.Video
             // Init audio save destination.
             if (filePath == null || filePath == string.Empty)
             {
-                filePath = PathConfig.saveFolder + StringUtils.GetWavFileName(StringUtils.GetRandomString(5));
+                filePath = PathConfig.saveFolder + StringUtils.GetWavFileName(CaptureStringUtils.GetBlockName());
             }
             libAPI = AudioCaptureLib_Get(
                 AudioSettings.outputSampleRate,

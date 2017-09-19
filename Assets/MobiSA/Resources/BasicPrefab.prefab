@@ -73,7 +73,7 @@ Transform:
   m_GameObject: {fileID: 1044568800333810}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -9.735066, y: 2.155848, z: 7.650001}
-  m_LocalScale: {x: 0.30034143, y: 0.30034143, z: 0.30034143}
+  m_LocalScale: {x: 0.2994849, y: 0.2994849, z: 0.2994849}
   m_Children:
   - {fileID: 4559039295980096}
   m_Father: {fileID: 0}
@@ -240,10 +240,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ninjaEvents: {fileID: 0}
-  distance: 8.388451
-  velocity: 2.904935
+  distance: 7.5371714
+  velocity: 4.987809
   distractorDestroyDistance: 0
-  startPoint: {x: -6.233833, y: 1.6, z: 5.6129694}
+  startPoint: {x: -7.5268426, y: 1.6, z: 0.39446458}
   color:
     serializedVersion: 2
     rgba: 4278190335

@@ -74,6 +74,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Runtime.InteropServices;
+using Assets.MobiSA.Scripts;
 
 namespace RockVR.Video
 {
@@ -209,7 +210,7 @@ namespace RockVR.Video
             }
             if (mode == ModeType.LOCAL)
             {
-                filePath = PathConfig.saveFolder + StringUtils.GetMp4FileName(StringUtils.GetRandomString(5));
+                filePath = PathConfig.saveFolder + StringUtils.GetMp4FileName(CaptureStringUtils.GetBlockName());
             }
             // Create a RenderTexture with desired frame size for dedicated
             // camera capture to store pixels in GPU.
@@ -689,7 +690,7 @@ namespace RockVR.Video
         /// </summary>
         public bool Muxing()
         {
-            filePath = PathConfig.saveFolder + StringUtils.GetMp4FileName(StringUtils.GetRandomString(5));
+            filePath = PathConfig.saveFolder + StringUtils.GetMp4FileName(CaptureStringUtils.GetBlockName());
             System.IntPtr libAPI = MuxingLib_Get(
                 videoCapture.bitrate,
                 filePath,

@@ -14,8 +14,8 @@ namespace Assets.MobiSA.Scripts
 		
 		public static string GetBlockName()
 		{
-            var expController = GameObject.FindObjectOfType<ExperimentSceneController>() as ExperimentSceneController;
-            return expController.blockEnum.Current.name;
+           var expController = GameObject.FindObjectOfType<ExperimentSceneController>() as ExperimentSceneController;
+           return expController.blockEnum.Current.name;
         }
 		
         public static string GetMp4FileName(string name)

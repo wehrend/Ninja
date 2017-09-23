@@ -1,0 +1,19 @@
+Todo
+=====
+* remove aretefakt prefab - 10m
+* expert features  - 2 h
+		* gaze sphere flag !!! 
+		* audio as flag !
+		* force feedback as flag !
+* video capture path - 1 h!!!! (wo exe liegt / data)
+* on-line scoring feedback flag / !!
+  on-line  objects feedback  flag/ !!
+  postExperiment scoring feedback !
+* stats und  info in standalone - 1h !
+* repeating Test phase - 2h
+
+
+Todo
+=====
+audio - not working
+force feedback - not working

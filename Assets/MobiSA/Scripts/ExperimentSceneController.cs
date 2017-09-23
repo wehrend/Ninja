@@ -116,12 +116,29 @@ namespace Assets.MobiSA.Scripts
             //configValues = LoadConfig();
             this.configAsset = LoadConfig();
 
+            configureAudioSetting();
+
             //configure Capturing plugin
-            var path = configAsset.setup.videoFilePath;
-            if (Directory.Exists(path))
-                RockVR.Video.PathConfig.fullpath = path;
-            else
-                Debug.LogError(string.Format("Directory {0} not existent.Please create manually or change in config!",path));
+            String path = configAsset.setup.capturesStorePath;
+            bool exists = Directory.Exists(path);
+            if (!exists)
+            {
+                if (path.ToString().Equals(""))
+                {
+                    path = Directory.GetParent(Application.dataPath).ToString() + Path.AltDirectorySeparatorChar.ToString();
+                    Debug.LogError(string.Format("No default path, use {0} instead!", path));
+                }
+                else
+                {
+                    Debug.LogWarning(string.Format("Directory {0} does not exist.Will be created!", path));
+                    Directory.CreateDirectory(path);
+                }
+
+            }
+
+            RockVR.Video.PathConfig.fullpath = path;
+          
+               
 
 
             //Debug.Log("[Config] " + config.experiment.parallelSpawns);
@@ -148,16 +165,32 @@ namespace Assets.MobiSA.Scripts
             //blockIndex = 0;
             if (sceneFsm!=null)
                 Debug.Log("Scene FSM found");
-            // calibViz = GameObject.FindObjectOfType(typeof(SMICalibrationVisualizer)) as SMICalibrationVisualizer;
-            // Debug.Log("Found: "+calibViz.ToString());
+            //calibViz = GameObject.FindObjectOfType(typeof(SMICalibrationVisualizer)) as SMICalibrationVisualizer;
+            //Debug.Log("Found: "+calibViz.ToString());
 
             //experiment scene controller
             DontDestroyOnLoad(this.gameObject);
 
             //Whole CameraRig
             DontDestroyOnLoad(player.gameObject);
+
+
             DontDestroyOnLoad(vrCaptureGO);
     }
+
+        public void configureAudioSetting() {
+            
+            AudioListener audioListener = player.GetComponentInChildren<AudioListener>();
+            if (audioListener != null)
+            {
+                audioListener.enabled = configAsset.advanced.useAudio;
+                Debug.Log("[SteamVR] AudioListener state:"+ audioListener.enabled);
+            } else{
+                Debug.LogError("[SteamVR] No AudioListener found...");
+            }
+
+        }
+
 
        public Config LoadConfig() {
 #if (UNITY_EDITOR)
@@ -396,21 +429,41 @@ namespace Assets.MobiSA.Scripts
 
         void LoadPreScene()
         {
-            gazeCursor = GameObject.Find("Example_GazeCursor");
 
-            //GazeCursor
-            if (gazeCursor != null)
-                DontDestroyOnLoad(gazeCursor.gameObject);
             SceneManager.LoadSceneAsync(preExperimentScene, LoadSceneMode.Single);
             Debug.Log("Load Scene preExperimentScene");
             sceneFsm.ChangeState(SceneStates.PreScene);
             //SceneManager.UnloadSceneAsync(calibrationScene);
         }
 
+        void configureGaze() {
+            //configure gaze 
+            //gazeCursor = GameObject.Find("Example_GazeCursor");
+            gazeCursor = GameObject.Find("SMIGazeCursor(Clone)");
+            //GazeCursor
+            if (gazeCursor != null)
+            {
+                // make invisible indstead of inactive as it interacts still 
+                //with the smi backend
+                if (!configAsset.advanced.displaySmiGazeCursor)
+                {
+                    Debug.Log("Disable GazeCursor");
+                    gazeCursor.SetActive(false);
+                    DontDestroyOnLoad(gazeCursor.gameObject);
+
+                }
+                else
+                {
+                    Debug.Log("Enable GazeCursor");
+                    gazeCursor.SetActive(true);
+                }
+            }
+        }
 
 
         void PreScene_Enter()
         {
+            configureGaze();
             startBaselineTime = 0f;
             Debug.LogError("Press Spacebar to start the Baseline recording");
             if (sceneFsm.LastState == SceneStates.CalibrateScene)
@@ -469,6 +522,7 @@ namespace Assets.MobiSA.Scripts
 
         void ExperimentScene_Enter()
         {
+            configureGaze();
             Debug.Log(blockEnum.Current.name);
             curBlock = blockEnum.Current;
             Debug.LogError(" to " + blockEnum.Current.name);

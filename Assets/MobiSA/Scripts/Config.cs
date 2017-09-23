@@ -2,35 +2,43 @@
 using System;
 using System.Collections;
 using System.Linq;
+using System.IO;
 using System.Collections.Generic;
 
 namespace Assets.MobiSA.Scripts
 {
+
     #region Data classes
 
     /// <summary>
     /// Scheme of Config Version Number 1
     /// </summary>
-
     //Setup class
     [Serializable]
     public class Setup
     {
-        //some hack to make it downwardscompatible
-        public int? configVersionNumber;
-        public Boolean releaseMode;
-        public String videoFilePath;
+        // if path empty , its uses the Project ordner in editor mode and the directory of exe in default mode
+        // else it creates the  given directory, 
+
+        //Todo: on standalone build copy the defaultconfig, replace the name with the standalone build path,in the json generation
+        public String capturesStorePath;
         public String environmentFilePath;
         public List<String> listOfBlocknames;
+    }
+    //Advanced setup
+    [Serializable]
+    public class Advanced
+    {
+        public Boolean displaySmiGazeCursor;
+        public Boolean useAudio;
         public Boolean useForceFeedback;
 
-
-        public Setup() {
-            this.releaseMode = false;
-            this.videoFilePath = "C:\\Users\\sven\\Ninja2\\Assets\\MobiSACaptureStreams\\";
-            this.useForceFeedback = false;
+        public Advanced() {
+            this.displaySmiGazeCursor = false;
+            this.useAudio = true;
+            this.useForceFeedback = true;
         }
-
+        
     }
 
     //Instructions class
@@ -161,9 +169,9 @@ namespace Assets.MobiSA.Scripts
         public float distanceAvg;
         public float distanceVar;
 
-        #endregion
+#endregion
 
-        #region trialadminstration
+#region trialadminstration
         //Constructor for test purposes
         /*   public Trial( string t, int i, Color c, float s, float v, float d)
            {
@@ -200,11 +208,13 @@ namespace Assets.MobiSA.Scripts
             return selected;
         }
     }
-    #endregion
+#endregion
 
     public class Config : ScriptableObject
     {
+
         public Setup setup = new Setup();
+        public Advanced advanced = new Advanced();
         public InstructionLists instructionlists = new InstructionLists();
         public Experiment experiment = new Experiment();
 
@@ -213,6 +223,7 @@ namespace Assets.MobiSA.Scripts
             new Block("second Level", secondTrialsSet(), 5),
            //new Block("third Level", new List<Trial>(), 5)
         };
+
 
         public static List<Trial> firstTrialsSet()
         {

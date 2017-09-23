@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Name: DefaultConfig
   m_EditorClassIdentifier: 
   setup:
-    releaseMode: 0
-    videoFilePath: C:\Users\sven\Ninja2\Assets\NinjaCaptureStreams
+    capturesStorePath: 
     environmentFilePath: 
     listOfBlocknames: []
-    useForceFeedback: 0
+  advanced:
+    displaySmiGazeCursor: 0
+    useAudio: 1
+    useForceFeedback: 1
   instructionlists:
     permanentWallTextonTop:
       instruction: Join VR and have some fun
@@ -51,7 +53,7 @@ MonoBehaviour:
       color: {r: 0, g: 0, b: 1, a: 1}
   experiment:
     maximumAngle: 260
-    parallelSpawns: 3
+    parallelSpawns: 2
     pausetime: 5
     pausetimeTimingJitter: 0.25
     distractorDestroyDistance: 1

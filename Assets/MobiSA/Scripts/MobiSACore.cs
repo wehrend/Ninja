@@ -96,6 +96,7 @@ namespace Assets.MobiSA.Scripts
             prefab = Resources.Load("BasicPrefab", typeof(MovingRigidbodyPhysics)) as MovingRigidbodyPhysics;
             if (prefab == null)
                 Debug.LogError("Coudn't load BasicPrefab");
+            prefab.GetComponent<FadeObjectOnCollision>().forceFeedback = expController.configAsset.advanced.useForceFeedback;
         }
 
 

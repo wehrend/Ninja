@@ -172,6 +172,11 @@ Prefab:
       propertyPath: _targetFramerate
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 81000011607292276, guid: 7fb4eb193786376458450101f3cdd3b3,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7fb4eb193786376458450101f3cdd3b3, type: 2}
   m_IsPrefabParent: 0

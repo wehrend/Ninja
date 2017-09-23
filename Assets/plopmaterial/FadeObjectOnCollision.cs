@@ -14,7 +14,8 @@ public class FadeObjectOnCollision : MonoBehaviour {
     public int frameSteps=10;
     public float waitTime;
     public float deltatime;
-    [Tooltip("Total Animation Time (ms)")]
+    public bool forceFeedback;
+    //[Tooltip("Total Animation Time (ms)")]
    // public float animationTimeDuration=0.1f;
     private Vector4 objPos;
     MeshRenderer renderer;
@@ -65,7 +66,8 @@ public class FadeObjectOnCollision : MonoBehaviour {
             //Debug.Log("DEBUG:"+collision);
             //renderer.material.SetVector("_Collision", collision);
             audio.Play();
-            SteamVR_Controller.Input(deviceID).TriggerHapticPulse(500);
+            if (forceFeedback)
+                SteamVR_Controller.Input(deviceID).TriggerHapticPulse(500);
             contact.thisCollider.enabled = false;
             StartCoroutine(FadeAlphaAndScale());
          }

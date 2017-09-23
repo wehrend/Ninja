@@ -19,12 +19,14 @@ using Assets.MobiSA.Scripts;
 
             //Generate default config asset
              configAsset = ScriptableObject.CreateInstance<Config>();
-            //Default setup
 
+            //Default setup
             Setup setup = new Setup();
 
-            //default instructions
-            InstructionLists instructionLists = new InstructionLists();
+        // with advanced settings
+        Advanced advanced = new Advanced();
+        //default instructions
+        InstructionLists instructionLists = new InstructionLists();
 
 
             //default experiment

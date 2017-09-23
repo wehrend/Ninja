@@ -1,10 +1,13 @@
 {
     "setup": {
-        "releaseMode": false,
-        "videoFilePath": "C:\\Users\\sven\\Ninja2\\Assets\\NinjaCaptureStreams",
+        "capturesStorePath": "",
         "environmentFilePath": "",
-        "listOfBlocknames": [],
-        "useForceFeedback": false
+        "listOfBlocknames": []
+    },
+    "advanced": {
+        "displaySmiGazeCursor": false,
+        "useAudio": true,
+        "useForceFeedback": true
     },
     "instructionlists": {
         "permanentWallTextonTop": {
@@ -81,7 +84,7 @@
     },
     "experiment": {
         "maximumAngle": 260,
-        "parallelSpawns": 3,
+        "parallelSpawns": 2,
         "pausetime": 5.0,
         "pausetimeTimingJitter": 0.25,
         "distractorDestroyDistance": 1.0,

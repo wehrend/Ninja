@@ -13,6 +13,7 @@ namespace Assets.MobiSA.Scripts
     {
         public Text wallText;
         public Text instructionsText;
+        public Config config;
 
         public GameObject money;
         public GameObject smallMoney;
@@ -62,7 +63,7 @@ namespace Assets.MobiSA.Scripts
             if (expGO)
             {
                 expSceneCon = expGO.GetComponent<ExperimentSceneController>();
-                Config config = expSceneCon.configAsset;
+                config = expSceneCon.configAsset;
                 instructionlists = config.instructionlists;
                 blockEnum = expSceneCon.blockEnum;
                 //Debug.LogWarning("["+scene.name +"] Count of loaded instructionlists " + instructionlists.onBaseline.Count());
@@ -105,13 +106,15 @@ namespace Assets.MobiSA.Scripts
         void incrementScore(object sender, MobiSACoreEventArgs eve)
         {
             score = score + 1;
-            showMoneyAfterScoreUpdate();
+            if(config.experiment.userinfoScore)
+                showMoneyAfterScoreUpdate();
         }
 
         void shrinkScore(object sender, MobiSACoreEventArgs eve)
         {
             score = score / 2;
-            showMoneyAfterScoreUpdate();
+            if (config.experiment.userinfoScore)
+                showMoneyAfterScoreUpdate();
         }
 
 
@@ -119,7 +122,7 @@ namespace Assets.MobiSA.Scripts
         void Update()
         {
            
-
+            
             for (int i =0; i < moneyClones.Count(); i++) {
                moneyClones[i].transform.Rotate( Vector3.forward,5f);
             }
@@ -156,8 +159,10 @@ namespace Assets.MobiSA.Scripts
                         showInstructions(instructionlists.onExperiment, "onExperiment");
                         instructionsText.fontSize = 80;
                         instructionsText.color = Color.white;
-                        instructionsText.text += "Block: "+ curBlock.name;
-                        instructionsText.text += "\n" + "Objects to go: "+curBlock.generatedTrials.Count;
+                        if(config.experiment.userinfoBlock)
+                            instructionsText.text += "Block: "+ curBlock.name;
+                        if(config.experiment.userinfoObjects)
+                            instructionsText.text += "\n" + "Objects to go: "+curBlock.generatedTrials.Count;
                     //healthBar.size = (float) NinjaGame.game.health / 1000f;
                 }
             
@@ -165,8 +170,24 @@ namespace Assets.MobiSA.Scripts
                 {
                     if ((instructionsText) && (!expSceneCon.waitflag)) 
                     {
-                        showInstructions(instructionlists.postExperiment, "postExperiment");
                         //"Ok. Experiment is finished. Thanks for being part of it";
+                        showInstructions(instructionlists.postExperiment, "postExperiment");
+                        if (config.experiment.userPostExperimentInfo)
+                        {
+                            if (ExperimentSceneController.scoreStorage != null)
+                            {
+                                var totals = ExperimentSceneController.scoreStorage.totalscores;
+
+                                int sum = 0;
+                                foreach (KeyValuePair<string, int> entry in totals)
+                                {
+                                    instructionsText.text += string.Format("{0}  - {1}", entry.Key, entry.Value);
+                                    sum = sum + entry.Value;
+                                }
+
+                                instructionsText.text += "\n You have achieved " + sum + " money Units!";
+                            }
+                        }
                     }
                 }
                 else if (expSceneCon.sceneFsm.State == ExperimentSceneController.SceneStates.PauseScene)

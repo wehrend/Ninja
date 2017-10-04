@@ -691,6 +691,12 @@ namespace RockVR.Video
         public bool Muxing()
         {
             filePath = PathConfig.saveFolder + StringUtils.GetMp4FileName(CaptureStringUtils.GetBlockName());
+            string msg = string.Format("Capture video {0} is written into {1}", StringUtils.GetMp4FileName(CaptureStringUtils.GetBlockName()), PathConfig.saveFolder);
+#if UNITY_EDITOR
+            Debug.LogError(msg);
+#else
+            Debug.Log(msg);
+#endif
             System.IntPtr libAPI = MuxingLib_Get(
                 videoCapture.bitrate,
                 filePath,
@@ -724,7 +730,7 @@ namespace RockVR.Video
             return true;
         }
 
-        #region Dll Import
+#region Dll Import
         [DllImport("VideoCaptureLib")]
         static extern System.IntPtr MuxingLib_Get(int rate, string path, string vpath, string apath, string ffpath);
 
@@ -733,6 +739,6 @@ namespace RockVR.Video
 
         [DllImport("VideoCaptureLib")]
         static extern void MuxingLib_Clean(System.IntPtr api);
-        #endregion // Dll Import
+#endregion // Dll Import
     }
 }

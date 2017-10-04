@@ -107,7 +107,7 @@ namespace Assets.MobiSA.Scripts
 
             Vector3 distanceToHead = (Camera.main.transform.position - transform.position);
             //Debug.Log(type);
-            if ((distanceToHead.magnitude < distractorDestroyDistance) && (type.Equals("distract")))
+            if ((distanceToHead.magnitude < distractorDestroyDistance) && (type.Equals("distract") || type.Equals("Distract")))
                 DestroyObject(Body.gameObject, 0.05f);
 
 

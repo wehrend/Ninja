@@ -17,3 +17,4 @@ Todo
 =====
 audio - not working
 force feedback - not working
+distractor destroy 

@@ -89,7 +89,11 @@
         "pausetimeTimingJitter": 0.25,
         "distractorDestroyDistance": 1.0,
         "animationDuration": 0,
-        "instructionsFilePath": ""
+        "instructionsFilePath": "",
+        "userinfoScore": false,
+        "userinfoBlock": true,
+        "userinfoObjects": false,
+        "userPostExperimentInfo": false
     },
     "blocks": [
         {

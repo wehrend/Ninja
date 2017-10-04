@@ -59,6 +59,10 @@ MonoBehaviour:
     distractorDestroyDistance: 1
     animationDuration: 0
     instructionsFilePath: 
+    userinfoScore: 0
+    userinfoBlock: 1
+    userinfoObjects: 0
+    userPostExperimentInfo: 0
   blocks:
   - name: first Level
     listOfTrials:

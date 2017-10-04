@@ -66,6 +66,7 @@ namespace Assets.MobiSA.Scripts
         public IEnumerator<Block> blockEnum;
         private Block curBlock;
         //Next todo: using singletones here 
+        public static ScoreStorage scoreStorage;
         public static ExperimentInfo experimentInfo;
         [HideInInspector]
         public bool preflag, postflag;
@@ -158,6 +159,7 @@ namespace Assets.MobiSA.Scripts
             vrCaptureGO = GameObject.Find("MainCapture").gameObject;
             ////
             experimentInfo = new ExperimentInfo();
+            scoreStorage = new ScoreStorage();
             rbControllerStream = GetComponent<RBControllerStream>();
             rbHmdStream = GetComponent<RBHmdStream>();
             experimentMarker = gameObject.GetComponent<LSLMarkerStream>();
@@ -561,6 +563,30 @@ namespace Assets.MobiSA.Scripts
         {
             startPausetime = (int) Time.realtimeSinceStartup;
             endPausetime = curBlock.blockPausetime * 60;
+            //save end score of last level in global scoreStorage for display at last scene
+            if ((scoreStorage != null))
+            {
+                //if (scoreStorage.totalscores == null)
+                //   scoreStorage.totalscores = new Dictionary<string, int>();
+                if (wallText != null) {
+                    if (wallText.moneyClones != null)
+                    {
+                        var money = wallText.moneyClones;
+
+                        //scoreStorage.totalscores.Add("test1", 2);
+                        //scoreStorage.totalscores.Add("test2", 4);
+                        scoreStorage.totalscores.Add(curBlock.name, wallText.moneyClones.Count);
+                        Debug.Log(string.Format("Added {0}, {1} to scores", curBlock.name, money.Count));
+                    }
+                    else { Debug.LogError("Money not found"); }
+                    
+                }
+                else {
+                    Debug.LogError(curBlock.name);
+                    Debug.LogError(wallText.moneyClones.Count);
+                }
+            } 
+            
         }
 
         void PauseScene_Update()
@@ -667,6 +693,12 @@ namespace Assets.MobiSA.Scripts
 
 
 
+    public class ScoreStorage
+    {
+        public Dictionary<String, int> totalscores = new Dictionary<string, int>();
+    }
+
+
     [Serializable]
     public class ExperimentInfo : ScriptableObject
     {
@@ -682,27 +714,4 @@ namespace Assets.MobiSA.Scripts
              game.ListOfTrials = trials;
          }*/
     }
-
-  /*  [Serializable]
-    public class ConfigValues 
-    {
-        //setup
-        public bool releaseMode;
-        public string videoFilePath;
-        public string environmentFilePath;
-        public int animationDuration;
-        public bool useForceFeedback;
-
-        //instructions 
-        public InstructionLists instructionlists; 
-
-        //Experiment
-        public int angle;
-        public int parallelSpawns;
-        public float pausetimeTimingJitter;
-        public float pausetime;
-        public List<Block> blocks;
-        public List<Trial> generatedTrials;
-    }
-    */
 }

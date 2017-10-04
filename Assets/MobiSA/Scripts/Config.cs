@@ -109,6 +109,11 @@ namespace Assets.MobiSA.Scripts
         public float distractorDestroyDistance;
         public int animationDuration;
         public String instructionsFilePath;
+        public bool userinfoScore;
+        public bool userinfoBlock;        
+        public bool userinfoObjects;
+
+        public bool userPostExperimentInfo;
 
         public Experiment() {
             this.maximumAngle = 260;
@@ -117,6 +122,10 @@ namespace Assets.MobiSA.Scripts
             this.pausetimeTimingJitter = 0.25f;
             this.distractorDestroyDistance = 1.0f;
             this.animationDuration = 0;
+            this.userinfoScore = false;
+            this.userinfoBlock = true;
+            this.userinfoObjects = false;
+            this.userPostExperimentInfo = false;
         }
     }
 

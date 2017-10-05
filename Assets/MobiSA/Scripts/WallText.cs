@@ -11,7 +11,7 @@ namespace Assets.MobiSA.Scripts
 {
     public class WallText : MonoBehaviour
     {
-        public Text wallText;
+        public Text permanentWallText;
         public Text instructionsText;
         public Config config;
 
@@ -121,7 +121,7 @@ namespace Assets.MobiSA.Scripts
 
         void Update()
         {
-           
+          
             
             for (int i =0; i < moneyClones.Count(); i++) {
                moneyClones[i].transform.Rotate( Vector3.forward,5f);
@@ -181,7 +181,7 @@ namespace Assets.MobiSA.Scripts
                                 int sum = 0;
                                 foreach (KeyValuePair<string, int> entry in totals)
                                 {
-                                    instructionsText.text += string.Format("{0}  - {1}", entry.Key, entry.Value);
+                                    instructionsText.text += string.Format("\n{0}  - {1} ", entry.Key, entry.Value);
                                     sum = sum + entry.Value;
                                 }
 
@@ -273,7 +273,6 @@ namespace Assets.MobiSA.Scripts
             }
             money.SetActive(true);
 
-          
         }
 
         void updateFruitCollision(object sender) {

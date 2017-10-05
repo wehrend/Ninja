@@ -60,7 +60,6 @@ namespace Assets.MobiSA.Scripts
         private float timeOfEnterRoomScene;
         private float timeInCalibrationScene;
         public float startCalibrationTime;
-        // public const string expMarkerStreamName = "ExperimentMarkerStream";
         public StateMachine<SceneStates> sceneFsm;
         ///private static int blockIndex;
         public IEnumerator<Block> blockEnum;
@@ -68,11 +67,12 @@ namespace Assets.MobiSA.Scripts
         //Next todo: using singletones here 
         public static ScoreStorage scoreStorage;
         public static ExperimentInfo experimentInfo;
+        public static WallText wallText;
         [HideInInspector]
         public bool preflag, postflag;
         RBControllerStream rbControllerStream;
         RBHmdStream rbHmdStream;
-        WallText wallText;
+
         public GameObject pauseScreen;
         public float startPausetime;
         public float endPausetime;
@@ -111,10 +111,6 @@ namespace Assets.MobiSA.Scripts
         // Use this for initialization
         void Awake()
         {
-            wallText = FindObjectsOfType(typeof(WallText)).FirstOrDefault() as WallText;
-            if (wallText != null)
-                Debug.Log("Found wallText " + wallText.ToString());
-            //configValues = LoadConfig();
             this.configAsset = LoadConfig();
 
             configureAudioSetting();
@@ -139,20 +135,7 @@ namespace Assets.MobiSA.Scripts
 
             RockVR.Video.PathConfig.fullpath = path;
           
-               
-
-
-            //Debug.Log("[Config] " + config.experiment.parallelSpawns);
-
-                /// <summary>
-                /// Caches the Camer Prefabs
-                /// </summary>
-                /// 
-                //player = GameObject.Find("Player (with Capturing)").gameObject; //ViveCamera_WithEyetracking
-
-                // now we have the root object, on  which DontDestroyOnLoad() works
-            Debug.Log(player.name);
-            //not the very best practice, but for the moment
+            //not the very best practice, but for the moment we got the gameobject all seperate
             var cameraRig=player.transform.Find("SteamVRObjects");
             controllerOne = cameraRig.transform.Find("Hand1").gameObject;
             controllerTwo = cameraRig.transform.Find("Hand2").gameObject;
@@ -170,12 +153,13 @@ namespace Assets.MobiSA.Scripts
             //calibViz = GameObject.FindObjectOfType(typeof(SMICalibrationVisualizer)) as SMICalibrationVisualizer;
             //Debug.Log("Found: "+calibViz.ToString());
 
+
+            ///The following game Objects are persistent in the scene 
             //experiment scene controller
             DontDestroyOnLoad(this.gameObject);
 
             //Whole CameraRig
             DontDestroyOnLoad(player.gameObject);
-
 
             DontDestroyOnLoad(vrCaptureGO);
     }
@@ -568,22 +552,19 @@ namespace Assets.MobiSA.Scripts
             {
                 //if (scoreStorage.totalscores == null)
                 //   scoreStorage.totalscores = new Dictionary<string, int>();
-                if (wallText != null) {
-                    if (wallText.moneyClones != null)
+                if (MobiSACore.wallText != null) {
+                    if (MobiSACore.wallText.moneyClones != null)
                     {
-                        var money = wallText.moneyClones;
-
-                        //scoreStorage.totalscores.Add("test1", 2);
-                        //scoreStorage.totalscores.Add("test2", 4);
-                        scoreStorage.totalscores.Add(curBlock.name, wallText.moneyClones.Count);
-                        Debug.Log(string.Format("Added {0}, {1} to scores", curBlock.name, money.Count));
+                        var moneyCounter = MobiSACore.wallText.moneyClones.Count;
+                        scoreStorage.totalscores.Add(curBlock.name, moneyCounter);
+                        //Debug.Log(string.Format("Added {0}, {1} to scores", curBlock.name, moneyCounter));
                     }
                     else { Debug.LogError("Money not found"); }
                     
                 }
                 else {
-                    Debug.LogError(curBlock.name);
-                    Debug.LogError(wallText.moneyClones.Count);
+                    //emit only for debug purposes
+                    Debug.LogError("WallText not found");
                 }
             } 
             

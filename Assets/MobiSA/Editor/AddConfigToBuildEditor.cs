@@ -11,16 +11,22 @@ namespace Assets.MobiSA.Scripts
 {
     public class AddConfigToBuildEditor
     {
+        static string  defaultConfig = Application.dataPath + "/MobiSA/Config/DefaultConfig";
+        static string configPathInBuild = Application.streamingAssetsPath + "/Config/";
+
         [PostProcessBuildAttribute(2)]
         public static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
         {
-            //Debug.Log(pathToBuiltProject);
-            if (!Directory.Exists(Application.streamingAssetsPath + "/Config/")) {
-                Directory.CreateDirectory(Application.streamingAssetsPath + "/Config/");
-                Debug.Log("[BUILD] Created Directory " + Application.streamingAssetsPath + "/Config/");
+            if (!Directory.Exists(configPathInBuild)) {
+                Directory.CreateDirectory(configPathInBuild);
+                Debug.Log(string.Format("[BUILD] Created Directory {0}", configPathInBuild));
             }
-            Debug.Log("[BUILD] Copy config directory from " + MobiSACore.configDataDirectory + "to " + Application.streamingAssetsPath + "/Config/");
-            FileUtil.CopyFileOrDirectory(MobiSACore.configDataDirectory, Application.streamingAssetsPath + "/Config/");
+            if ((File.Exists(defaultConfig)) && (Directory.Exists(configPathInBuild)))
+            {
+                Debug.Log(string.Format("[BUILD] Copy default config from {0} to {1}", defaultConfig, configPathInBuild));
+                FileUtil.CopyFileOrDirectory(defaultConfig, configPathInBuild);
+            }
+            
         }
 
     }

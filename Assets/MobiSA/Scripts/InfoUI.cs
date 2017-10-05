@@ -5,7 +5,7 @@ using RockVR.Video;
 
 namespace Assets.MobiSA.Scripts
 {
-    public class DiagnoseUI : MonoBehaviour {
+    public class InfoUI : MonoBehaviour {
 
         // Update is called once per frame
         void OnGUI() {

@@ -67,7 +67,10 @@ public class FadeObjectOnCollision : MonoBehaviour {
             //renderer.material.SetVector("_Collision", collision);
             audio.Play();
             if (forceFeedback)
-                SteamVR_Controller.Input(deviceID).TriggerHapticPulse(500);
+            {
+                SteamVR_Controller.Input(deviceID).TriggerHapticPulse(800);
+                Debug.Log("Triggered haptic pulse");
+            }
             contact.thisCollider.enabled = false;
             StartCoroutine(FadeAlphaAndScale());
          }

@@ -20,6 +20,12 @@ namespace Assets.MobiSA.Scripts
 
     public class ExperimentSceneController : MonoBehaviour
     {
+
+        const string calibrationScene = "BoxRoom";
+        const string preExperimentScene = "EmptyRoomScene";
+        const string experimentScene = "ExperimentScene";
+        const string postExperimentScene = "EmptyRoomScene";
+
         public enum SceneStates
         {
             //None,
@@ -48,10 +54,6 @@ namespace Assets.MobiSA.Scripts
         public String debugstring;
         ////
         public double rbStreamDataRate = 90.00;
-        public string calibrationScene;
-        public string preExperimentScene;
-        public string experimentScene;
-        public string postExperimentScene;
         public int waitTimeAfterLastTrialSpawn = 7;
         //public float userInitTime = 15.00f;
         private float startBaselineTime;
@@ -245,10 +247,7 @@ namespace Assets.MobiSA.Scripts
         {
 
             Debug.Log("MenuScene enter");
-            calibrationScene = "BoxRoom";
-            preExperimentScene = "Empty_room";
-            experimentScene = "experimentScene";
-            postExperimentScene = "Empty_room";
+
             Debug.Log("InitScene");
             preflag = false;
             postflag = false;

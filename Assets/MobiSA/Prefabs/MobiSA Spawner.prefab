@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 114426266581313586}
   - component: {fileID: 114352528970065522}
   m_Layer: 0
-  m_Name: NinjaGame Level2 (Spawner)
+  m_Name: MobiSA Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66,6 +66,7 @@ MonoBehaviour:
   objectScale: {x: 0.5, y: 0.5, z: 0.5}
   spawnerDistance: 5
   spawnerRange: 2
+  distractorDestroyDistance: 1
   height: 2
   gamePlaying: 0
   prefab: {fileID: 0}

@@ -257,7 +257,7 @@ namespace Assets.MobiSA.Scripts
 #if UNITY_EDITOR
                         Debug.Log("Trials:" + trialNumber + " " + selected.trial + ' ' + selected.color + ' ' + selected.distanceAvg);
 #else
-                        Debug.LogError("Trials:" + trialNumber + " " + selected.trial + ' ' + selected.color + ' ' + selected.distanceAvg);
+                       // Debug.LogError("Trials:" + trialNumber + " " + selected.trial + ' ' + selected.color + ' ' + selected.distanceAvg);
 #endif                        
                         var halfDistVar = selected.distanceVar / 2;
                         distance = selected.distanceAvg + Random.Range(-halfDistVar, halfDistVar);

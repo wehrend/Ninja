@@ -90,10 +90,10 @@
         "distractorDestroyDistance": 1.0,
         "animationDuration": 0,
         "instructionsFilePath": "",
-        "userinfoScore": true,
-        "userinfoBlock": false,
+        "userinfoScore": false,
+        "userinfoBlock": true,
         "userinfoObjects": false,
-        "userPostExperimentInfo": true
+        "userPostExperimentInfo": false
     },
     "blocks": [
         {

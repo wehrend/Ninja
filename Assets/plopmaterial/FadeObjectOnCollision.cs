@@ -11,6 +11,7 @@ public class FadeObjectOnCollision : MonoBehaviour {
     public float fade=1f;
     bool flag = false;
     float stepwidth;
+    public SteamVR_Controller controller;
     public int frameSteps=10;
     public float waitTime;
     public float deltatime;
@@ -66,21 +67,20 @@ public class FadeObjectOnCollision : MonoBehaviour {
             //Debug.Log("DEBUG:"+collision);
             //renderer.material.SetVector("_Collision", collision);
             audio.Play();
-            if (forceFeedback)
-            {
-                SteamVR_Controller.Input(deviceID).TriggerHapticPulse(800);
-                Debug.Log("Triggered haptic pulse");
-            }
+        
             contact.thisCollider.enabled = false;
             StartCoroutine(FadeAlphaAndScale());
          }
 
     }
 
-    void Update()
+    void OnCollisionStay()
     {
-        //if (deltatime > 0)
-        //    Debug.LogWarning("deltat:" + deltatime);
+        if (forceFeedback)
+        {
+            SteamVR_Controller.Input(deviceID);
+            Debug.Log("Triggered haptic pulse for controller" + deviceID);
+        }
     }
 
     IEnumerator FadeAlphaAndScale()

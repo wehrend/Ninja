@@ -11,6 +11,7 @@ using Assets.LSL4Unity.Scripts;
 using Assets.LSL4Unity.Scripts.Common;
 using Valve.VR;
 using SMI;
+using System;
 /// <summary>
 /// Code from LSL4Unity Demo Script 
 /// </summary>
@@ -18,12 +19,13 @@ using SMI;
 
 namespace Assets.MobiSA.Scripts
 {
+    [ExecuteAfter(typeof(SMIEyetracking))]
     public class RBeyetrackingStream : MonoBehaviour
     {
         public const string unique_source_id = "881A35BC64454035B52C9C518C250E69";
         public const string StreamName = "Rigid_Eyetracking";
 
-        public int ChannelCount = 19;
+        public int ChannelCount = 20;
         //smi
         private SMI.SMIGazeController gazeCon;
         private SMI.SMIGazeController.unity_SampleHMD sample;
@@ -86,65 +88,77 @@ namespace Assets.MobiSA.Scripts
                 // initialize the array once
                 currentSample = new double[ChannelCount];
 
-                /*var eyetracking = FindObjectOfType(typeof(SMIEyetracking)) as SMIEyetracking;
+                var eyetracking = FindObjectOfType(typeof(SMIEyetracking)) as SMIEyetracking;
                 if (eyetracking)
                 {
-                    Debug.Log("Found SMIEyetracking object");
+                    Debug.LogError("[RBEyetracking] Found SMIEyetracking object");
+                    foreach (var item in eyetracking.SMIEyeTracker.transform)
+                    {
+                        Debug.LogWarning("[RBEyetracking] Found child object:" + item.ToString());
+                    }
                 }
-                gazeCon = eyetracking.GetComponent<SMIGazeController>();
-                if (gazeCon != null)
+                    gazeCon = eyetracking.SMIEyeTracker.GetComponentInChildren<SMIGazeController>();
+     
+                //if (!gazeCon.isActiveAndEnabled)
+                //{
+                //    Debug.LogError("[RBEyetracking] Gaze controller from SMI Vive not found.Break up. ");
+                    //Application.Quit();
+                //} else   
+                if(gazeCon != null)
                 {
-                    Debug.Log("Get SMI GazeController");
+                    //initialize stream only if available
+                    Debug.LogError("[RBEyetracking] Got SMI GazeController, can build stream");
+                    //
+                    streamInfoGaze = new liblsl.StreamInfo(StreamName, StreamType, ChannelCount, dataRate, liblsl.channel_format_t.cf_float32, unique_source_id);
+                    //setup LSL stream metadata (code from smi-lsl-apps
+
+                    channels = streamInfoGaze.desc().append_child("synchronization").append_child_value("can_drop_samples", "false");
+                    channels.append_child("channel").append_child_value("label", "Screen_X_both").append_child_value("eye", "both").append_child_value("type", "ScreenX").append_child_value("unit", "pixels");
+                    channels.append_child("channel").append_child_value("label", "Screen_Y_both").append_child_value("eye", "both").append_child_value("type", "ScreenY").append_child_value("unit", "pixels");
+                    // per-eye scene image coordinates
+
+                    channels.append_child("channel").append_child_value("label", "Screen_X_left").append_child_value("eye", "left").append_child_value("type", "ScreenX").append_child_value("unit", "pixels");
+                    channels.append_child("channel").append_child_value("label", "Screen_Y_left").append_child_value("eye", "left").append_child_value("type", "ScreenY").append_child_value("unit", "pixels");
+                    channels.append_child("channel").append_child_value("label", "Screen_X_right").append_child_value("eye", "right").append_child_value("type", "ScreenX").append_child_value("unit", "pixels");
+                    channels.append_child("channel").append_child_value("label", "Screen_Y_right").append_child_value("eye", "right").append_child_value("type", "ScreenY").append_child_value("unit", "pixels");
+                    // pupil radii
+                    channels.append_child("channel").append_child_value("label", "PupilRadius_left").append_child_value("eye", "left").append_child_value("type", "Radius").append_child_value("unit", "millimeters");
+                    channels.append_child("channel").append_child_value("label", "PupilRadius_right").append_child_value("eye", "right").append_child_value("type", "Radius").append_child_value("unit", "millimeters");
+                    // 3d positions
+                    channels.append_child("channel").append_child_value("label", "EyePosition_X_left").append_child_value("eye", "left").append_child_value("type", "PositionX").append_child_value("unit", "millimeters");
+                    channels.append_child("channel").append_child_value("label", "EyePosition_Y_left").append_child_value("eye", "left").append_child_value("type", "PositionY").append_child_value("unit", "millimeters");
+                    channels.append_child("channel").append_child_value("label", "EyePosition_Z_left").append_child_value("eye", "left").append_child_value("type", "PositionZ").append_child_value("unit", "millimeters");
+                    channels.append_child("channel").append_child_value("label", "EyePosition_X_right").append_child_value("eye", "right").append_child_value("type", "PositionX").append_child_value("unit", "millimeters");
+                    channels.append_child("channel").append_child_value("label", "EyePosition_Y_right").append_child_value("eye", "right").append_child_value("type", "PositionY").append_child_value("unit", "millimeters");
+                    channels.append_child("channel").append_child_value("label", "EyePosition_Z_right").append_child_value("eye", "right").append_child_value("type", "PositionZ").append_child_value("unit", "millimeters");
+                    // 3d directions
+                    channels.append_child("channel").append_child_value("label", "EyeDirection_X_left").append_child_value("eye", "left").append_child_value("type", "DirectionX").append_child_value("unit", "normalized");
+                    channels.append_child("channel").append_child_value("label", "EyeDirection_Y_left").append_child_value("eye", "left").append_child_value("type", "DirectionY").append_child_value("unit", "normalized");
+                    channels.append_child("channel").append_child_value("label", "EyeDirection_Z_left").append_child_value("eye", "left").append_child_value("type", "DirectionZ").append_child_value("unit", "normalized");
+                    channels.append_child("channel").append_child_value("label", "EyeDirection_X_right").append_child_value("eye", "right").append_child_value("type", "DirectionX").append_child_value("unit", "normalized");
+                    channels.append_child("channel").append_child_value("label", "EyeDirection_Y_right").append_child_value("eye", "right").append_child_value("type", "DirectionY").append_child_value("unit", "normalized");
+                    channels.append_child("channel").append_child_value("label", "EyeDirection_Z_right").append_child_value("eye", "right").append_child_value("type", "DirectionZ").append_child_value("unit", "normalized");
+
+                    ///following not available, N/A
+
+                    // confidence values
+                    //channels.append_child("channel").append_child_value("label", "PupilConfidence_left").append_child_value("eye", "left").append_child_value("type", "Confidence").append_child_value("unit", "normalized");
+                    //channels.append_child("channel").append_child_value("label", "PupilConfidence_right").append_child_value("eye", "right").append_child_value("type", "Confidence").append_child_value("unit", "normalized");     
+                    // uncertainties
+                    // channels.append_child("channel").append_child_value("label", "EyeballUncertainty_left").append_child_value("eye", "left").append_child_value("type", "Uncertainty").append_child_value("unit", "custom")
+                    //     .append_child_value("description", "Measure of uncertainty of eyeball estimator. Lower is better. For ETG: -1.5 is very good, 1.0 is mediore, 4.0 is bad.");
+                    //  channels.append_child("channel").append_child_value("label", "EyeballUncertainty_right").append_child_value("eye", "right").append_child_value("type", "Uncertainty").append_child_value("unit", "custom")
+                    //     .append_child_value("description", "Measure of uncertainty of eyeball estimator. Lower is better. For ETG: -1.5 is very good, 1.0 is mediore, 4.0 is bad.");
+                    // frame numbers
+                    //channels.append_child("channel").append_child_value("label", "SceneFrameNumber").append_child_value("eye", "both").append_child_value("type", "FrameNumber").append_child_value("unit", "integer");
+                    //channels.append_child("channel").append_child_value("label", "EyeFrameNumber").append_child_value("eye", "both").append_child_value("type", "FrameNumber").append_child_value("unit", "integer");
+
+                    // misc information
+                    streamInfoGaze.desc().append_child("acquisition")
+                        .append_child_value("manufacturer", "SMI");
+                    // instantiate gaze data outlet
+                    outlet = new liblsl.StreamOutlet(streamInfoGaze);
                 }
-                */
-                //
-                streamInfoGaze = new liblsl.StreamInfo(StreamName, StreamType, ChannelCount, dataRate, liblsl.channel_format_t.cf_float32, unique_source_id);
-                //setup LSL stream metadata (code from smi-lsl-apps
-                streamInfoGaze.desc().append_child("synchronization").append_child_value("can_drop_samples", "false");
-                channels.append_child("channel").append_child_value("label", "Screen_X_both").append_child_value("eye", "both").append_child_value("type", "ScreenX").append_child_value("unit", "pixels");
-                channels.append_child("channel").append_child_value("label", "Screen_Y_both").append_child_value("eye", "both").append_child_value("type", "ScreenY").append_child_value("unit", "pixels");
-                // per-eye scene image coordinates
-                channels.append_child("channel").append_child_value("label", "Screen_X_left").append_child_value("eye", "left").append_child_value("type", "ScreenX").append_child_value("unit", "pixels");
-                channels.append_child("channel").append_child_value("label", "Screen_Y_left").append_child_value("eye", "left").append_child_value("type", "ScreenY").append_child_value("unit", "pixels");
-                channels.append_child("channel").append_child_value("label", "Screen_X_right").append_child_value("eye", "right").append_child_value("type", "ScreenX").append_child_value("unit", "pixels");
-                channels.append_child("channel").append_child_value("label", "Screen_Y_right").append_child_value("eye", "right").append_child_value("type", "ScreenY").append_child_value("unit", "pixels");
-                // pupil radii
-                channels.append_child("channel").append_child_value("label", "PupilRadius_left").append_child_value("eye", "left").append_child_value("type", "Radius").append_child_value("unit", "millimeters");
-                channels.append_child("channel").append_child_value("label", "PupilRadius_right").append_child_value("eye", "right").append_child_value("type", "Radius").append_child_value("unit", "millimeters");
-                // 3d positions
-                channels.append_child("channel").append_child_value("label", "EyePosition_X_left").append_child_value("eye", "left").append_child_value("type", "PositionX").append_child_value("unit", "millimeters");
-                channels.append_child("channel").append_child_value("label", "EyePosition_Y_left").append_child_value("eye", "left").append_child_value("type", "PositionY").append_child_value("unit", "millimeters");
-                channels.append_child("channel").append_child_value("label", "EyePosition_Z_left").append_child_value("eye", "left").append_child_value("type", "PositionZ").append_child_value("unit", "millimeters");
-                channels.append_child("channel").append_child_value("label", "EyePosition_X_right").append_child_value("eye", "right").append_child_value("type", "PositionX").append_child_value("unit", "millimeters");
-                channels.append_child("channel").append_child_value("label", "EyePosition_Y_right").append_child_value("eye", "right").append_child_value("type", "PositionY").append_child_value("unit", "millimeters");
-                channels.append_child("channel").append_child_value("label", "EyePosition_Z_right").append_child_value("eye", "right").append_child_value("type", "PositionZ").append_child_value("unit", "millimeters");
-                // 3d directions
-                channels.append_child("channel").append_child_value("label", "EyeDirection_X_left").append_child_value("eye", "left").append_child_value("type", "DirectionX").append_child_value("unit", "normalized");
-                channels.append_child("channel").append_child_value("label", "EyeDirection_Y_left").append_child_value("eye", "left").append_child_value("type", "DirectionY").append_child_value("unit", "normalized");
-                channels.append_child("channel").append_child_value("label", "EyeDirection_Z_left").append_child_value("eye", "left").append_child_value("type", "DirectionZ").append_child_value("unit", "normalized");
-                channels.append_child("channel").append_child_value("label", "EyeDirection_X_right").append_child_value("eye", "right").append_child_value("type", "DirectionX").append_child_value("unit", "normalized");
-                channels.append_child("channel").append_child_value("label", "EyeDirection_Y_right").append_child_value("eye", "right").append_child_value("type", "DirectionY").append_child_value("unit", "normalized");
-                channels.append_child("channel").append_child_value("label", "EyeDirection_Z_right").append_child_value("eye", "right").append_child_value("type", "DirectionZ").append_child_value("unit", "normalized");
-
-                ///following not available, N/A
-
-                // confidence values
-                //channels.append_child("channel").append_child_value("label", "PupilConfidence_left").append_child_value("eye", "left").append_child_value("type", "Confidence").append_child_value("unit", "normalized");
-                //channels.append_child("channel").append_child_value("label", "PupilConfidence_right").append_child_value("eye", "right").append_child_value("type", "Confidence").append_child_value("unit", "normalized");     
-                // uncertainties
-                // channels.append_child("channel").append_child_value("label", "EyeballUncertainty_left").append_child_value("eye", "left").append_child_value("type", "Uncertainty").append_child_value("unit", "custom")
-                //     .append_child_value("description", "Measure of uncertainty of eyeball estimator. Lower is better. For ETG: -1.5 is very good, 1.0 is mediore, 4.0 is bad.");
-                //  channels.append_child("channel").append_child_value("label", "EyeballUncertainty_right").append_child_value("eye", "right").append_child_value("type", "Uncertainty").append_child_value("unit", "custom")
-                //     .append_child_value("description", "Measure of uncertainty of eyeball estimator. Lower is better. For ETG: -1.5 is very good, 1.0 is mediore, 4.0 is bad.");
-                // frame numbers
-                //channels.append_child("channel").append_child_value("label", "SceneFrameNumber").append_child_value("eye", "both").append_child_value("type", "FrameNumber").append_child_value("unit", "integer");
-                //channels.append_child("channel").append_child_value("label", "EyeFrameNumber").append_child_value("eye", "both").append_child_value("type", "FrameNumber").append_child_value("unit", "integer");
-
-                // misc information
-                streamInfoGaze.desc().append_child("acquisition")
-                    .append_child_value("manufacturer", "SMI");
-                // instantiate gaze data outlet
-                outlet = new liblsl.StreamOutlet(streamInfoGaze);
             }
         }
 

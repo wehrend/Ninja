@@ -379,10 +379,9 @@ namespace Assets.MobiSA.Scripts
                     {
                         if (SMIGazeController.GazeModel.connectionRoutineDone)
                         {
-                            Debug.Log("SMI ConnectionRoutine done.");
                             if (SMIGazeController.GazeModel.ErrorID == 1) //no error 
                             {
-                                Debug.Log("SMI Vive");
+                                //Debug.Log("SMI Vive");
                             //Give timeslot for calibration
 
                                 if (Time.time > calibrationTimeSlot)
@@ -395,12 +394,12 @@ namespace Assets.MobiSA.Scripts
                             }
                             else if (SMIGazeController.GazeModel.ErrorID == 506)
                             {
-                                Debug.LogError("No SMI Vive connected! (ErrorID: 506)");
+                                Debug.LogError("[ExperimentSceneController] No SMI Vive connected! (ErrorID: 506)");
                                 //Direct Scene Load 
                                 LoadPreScene();
                             }
                             else {
-                                Debug.LogError("SMI Vive Error " + SMIGazeController.GazeModel.ErrorID);
+                                Debug.LogError("[ExperimentSceneController] SMI Vive Error " + SMIGazeController.GazeModel.ErrorID);
                                 //Direct Scene Load 
                                 LoadPreScene();
                             }

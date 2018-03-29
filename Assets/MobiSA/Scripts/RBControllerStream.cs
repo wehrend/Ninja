@@ -202,7 +202,7 @@ namespace Assets.MobiSA.Scripts
             currentSample[0] = firstDevice.transform.pos.x;
             currentSample[1] = firstDevice.transform.pos.y;
             currentSample[2] = firstDevice.transform.pos.z;
-            currentSample[2] = firstDevice.transform.rot.x;
+            currentSample[3] = firstDevice.transform.rot.x;
             currentSample[4] = firstDevice.transform.rot.y;
             currentSample[5] = firstDevice.transform.rot.z;
             currentSample[6] = firstDevice.transform.rot.w;

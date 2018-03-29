@@ -444,10 +444,6 @@ MonoBehaviour:
   debugColor: {r: 0, g: 1, b: 0, a: 1}
   debugstring: 
   rbStreamDataRate: 90
-  calibrationScene: BoxRoom
-  preExperimentScene: 
-  experimentScene: 
-  postExperimentScene: 
   waitTimeAfterLastTrialSpawn: 7
   calibrationTimeSlot: 30
   baselineDuration: 30
@@ -654,6 +650,16 @@ Prefab:
         type: 2}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114204163125428732, guid: 828af4de8ac223044865d68f24cfea31,
+        type: 2}
+      propertyPath: dataRate
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 114204163125428732, guid: 828af4de8ac223044865d68f24cfea31,
+        type: 2}
+      propertyPath: ChannelCount
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 828af4de8ac223044865d68f24cfea31, type: 2}

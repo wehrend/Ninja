@@ -143,7 +143,7 @@ namespace Assets.MobiSA.Scripts
                 currentSample[0] = cameraInfo.transform.position.x;
                 currentSample[1] = cameraInfo.transform.position.y;
                 currentSample[2] = cameraInfo.transform.position.z;
-                currentSample[2] = cameraInfo.transform.rotation.x;
+                currentSample[3] = cameraInfo.transform.rotation.x;
                 currentSample[4] = cameraInfo.transform.rotation.y;
                 currentSample[5] = cameraInfo.transform.rotation.z;
                 currentSample[6] = cameraInfo.transform.rotation.w;

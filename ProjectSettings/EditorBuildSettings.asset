@@ -7,19 +7,28 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 0
     path: Assets/VRTK/Examples/037_CameraRig_ClimbingFalling.unity
+    guid: 00000000000000000000000000000000
   - enabled: 0
     path: Assets/NinjaGame/Levels/1-160grad_oneObject.unity
+    guid: 00000000000000000000000000000000
   - enabled: 0
     path: Assets/NinjaGame/Levels/2-160grad_multipleObjects.unity
+    guid: 00000000000000000000000000000000
   - enabled: 0
     path: Assets/NinjaGame/Levels/5_SuperDifficult.unity
+    guid: 00000000000000000000000000000000
   - enabled: 0
     path: Assets/NinjaGame/Levels/2-160grad_multipleObjects_hand.unity
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/MainScene.unity
+    guid: 3f9db2d9ed41cef448ec6e39e49f0303
   - enabled: 1
     path: Assets/01_simpleGazeSelection/BoxRoom.unity
-  - enabled: 1
+    guid: 48bd6ea5ce6ad2d47bbf1b5f7f7063a4
+  - enabled: 0
     path: Assets/Empty_room.unity
+    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/experimentScene.unity
+    path: Assets/ExperimentScene.unity
+    guid: 80f6dc7d7ff32144ab033a7bd76b3064

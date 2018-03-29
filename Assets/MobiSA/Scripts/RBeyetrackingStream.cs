@@ -36,7 +36,7 @@ namespace Assets.MobiSA.Scripts
 
         public static RBeyetrackingStream instance;
 
-        //private liblsl.XMLElement objs, obj;
+        private liblsl.XMLElement objs, obj;
         private liblsl.XMLElement channels, chan;
         public liblsl.StreamInfo GetStreamInfo()
         {
@@ -112,7 +112,20 @@ namespace Assets.MobiSA.Scripts
                     streamInfoGaze = new liblsl.StreamInfo(StreamName, StreamType, ChannelCount, dataRate, liblsl.channel_format_t.cf_float32, unique_source_id);
                     //setup LSL stream metadata (code from smi-lsl-apps
 
-                    channels = streamInfoGaze.desc().append_child("synchronization").append_child_value("can_drop_samples", "false");
+
+                    ///For whatever reasons the foollowing doent work -- commented out
+                    //streamInfoGaze.desc().append_child("synchronization").append_child_value("can_drop_samples", "false");
+
+                    var setup = streamInfoGaze.desc().append_child("setup");
+                    setup.append_child_value("name", StreamName);
+                    // channels with position and orientation in quaternions
+                    objs = setup.append_child("objects");
+                    obj = objs.append_child("object");
+                    obj.append_child_value("label", StreamName);
+                    obj.append_child_value("id", StreamName);
+                    obj.append_child_value("type", "Eyetracking");
+                    
+                    channels = streamInfoGaze.desc().append_child("channels");
                     channels.append_child("channel").append_child_value("label", "Screen_X_both").append_child_value("eye", "both").append_child_value("type", "ScreenX").append_child_value("unit", "pixels");
                     channels.append_child("channel").append_child_value("label", "Screen_Y_both").append_child_value("eye", "both").append_child_value("type", "ScreenY").append_child_value("unit", "pixels");
                     // per-eye scene image coordinates

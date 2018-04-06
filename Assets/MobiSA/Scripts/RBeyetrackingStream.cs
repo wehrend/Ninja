@@ -85,9 +85,7 @@ namespace Assets.MobiSA.Scripts
                 instance = this;
                 DontDestroyOnLoad(gameObject);
 
-                // initialize the array once
-                currentSample = new double[ChannelCount];
-
+                
                 var eyetracking = FindObjectOfType(typeof(SMIEyetracking)) as SMIEyetracking;
                 if (eyetracking)
                 {
@@ -106,8 +104,11 @@ namespace Assets.MobiSA.Scripts
                 //} else   
                 if(gazeCon != null)
                 {
+                    // initialize the array once
+                    currentSample = new double[ChannelCount];
+
                     //initialize stream only if available
-                    Debug.LogError("[RBEyetracking] Got SMI GazeController, can build stream");
+                    Debug.LogWarning("[RBEyetracking] Got SMI GazeController, can build stream");
                     //
                     streamInfoGaze = new liblsl.StreamInfo(StreamName, StreamType, ChannelCount, dataRate, liblsl.channel_format_t.cf_float32, unique_source_id);
                     //setup LSL stream metadata (code from smi-lsl-apps
@@ -186,10 +187,10 @@ namespace Assets.MobiSA.Scripts
             {
                 sample = gazeCon.smi_getSample();
                 // assemble gaze sample
-                if (Time.time % 10==0)
-                {
-                    Debug.Log("Left POR: " + sample.left.por.x+","+ sample.right.por.y + "Right POR: "+sample.right.por.x +","+ sample.right.por.y);
-                }
+                //if (Time.time % 10==0)
+                //{
+                //    Debug.Log("Left POR: " + sample.left.por.x+","+ sample.right.por.y + "Right POR: "+sample.right.por.x +","+ sample.right.por.y);
+                //}
                 currentSample[0] = sample.por.x;
                 currentSample[1] = sample.por.y;
                 currentSample[2] = sample.left.por.x;

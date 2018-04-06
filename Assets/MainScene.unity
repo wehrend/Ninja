@@ -512,7 +512,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf81db5e8af04e54280dca36cce9cf1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataRate: 0
+  dataRate: 90
   StreamType: rigidBody
   ChannelCount: 7
   sampling: 0
@@ -528,7 +528,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f371fc5d7fbb10d47b73eee9c30308b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataRate: 0
+  dataRate: 90
   StreamType: rigidBody
   ChannelCount: 7
   sampling: 0
@@ -595,6 +595,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c0f4dca283004448b3c6521a6583bd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StreamType: Gaze
+  listOfStreams: []
 --- !u!1001 &1196618196
 Prefab:
   m_ObjectHideFlags: 0

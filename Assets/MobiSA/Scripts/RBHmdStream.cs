@@ -13,8 +13,9 @@ namespace Assets.MobiSA.Scripts
     {
         public const string unique_source_id = "A723E9DC2E5A4EA5959C2772DA1D3DB3";
         public const string StreamName = "Rigid_HMD";
-
         SteamVR_Camera cameraInfo;
+
+        public static RBHmdStream instance;
 
         private liblsl.StreamOutlet outlet;
         private liblsl.StreamInfo streamInfo;
@@ -30,7 +31,7 @@ namespace Assets.MobiSA.Scripts
         /// </summary>
         private float[] currentSample;
 
-        public double dataRate;
+        public double dataRate=90;
 
         public double GetDataRate()
         {
@@ -61,71 +62,80 @@ namespace Assets.MobiSA.Scripts
 
         public Transform sampleSource;
 
-        void Start()
+        void Awake()
         {
-            cameraInfo = gameObject.GetComponent<SteamVR_Camera>() as SteamVR_Camera;
+            if (!instance)
+            {
+                instance = this;
+                DontDestroyOnLoad(gameObject);
 
-            // initialize the array once
-            currentSample = new float[ChannelCount];
+                cameraInfo = FindObjectOfType(typeof(SteamVR_Camera)) as SteamVR_Camera;
+                if (cameraInfo != null)
+                {
+                    Debug.LogWarning("[RBEyetracking] Got HMD, can build stream");
+                    // initialize the array once
+                    currentSample = new float[ChannelCount];
 
-            //dataRate = LSLUtils.GetSamplingRateFor(sampling);
+                    //dataRate = LSLUtils.GetSamplingRateFor(sampling);
 
-            streamInfo = new liblsl.StreamInfo(StreamName, StreamType, ChannelCount, dataRate, liblsl.channel_format_t.cf_float32, unique_source_id);
-            //setup LSL stream metadata (code from vizard) 
-            streamInfo.desc().append_child("synchronization").append_child_value("can_drop_samples", "true");
-            var setup = streamInfo.desc().append_child("setup");
-            setup.append_child_value("name", StreamName);
-            // channels with position and orientation in quaternions
-            objs = setup.append_child("objects");
-            obj = objs.append_child("object");
-            obj.append_child_value("label", StreamName);
-            obj.append_child_value("id", StreamName);
-            obj.append_child_value("type", "Mocap");
+                    streamInfo = new liblsl.StreamInfo(StreamName, StreamType, ChannelCount, dataRate, liblsl.channel_format_t.cf_float32, unique_source_id);
+                    //setup LSL stream metadata (code from vizard) 
+                    //streamInfo.desc().append_child("synchronization").append_child_value("can_drop_samples", "true");
+                    var setup = streamInfo.desc().append_child("setup");
+                    setup.append_child_value("name", StreamName);
+                    // channels with position and orientation in quaternions
+                    objs = setup.append_child("objects");
+                    obj = objs.append_child("object");
+                    obj.append_child_value("label", StreamName);
+                    obj.append_child_value("id", StreamName);
+                    obj.append_child_value("type", "Mocap");
 
-            channels = streamInfo.desc().append_child("channels");
-            chan = channels.append_child("channel");
-            chan.append_child_value("label", StreamName + "_X");
-            chan.append_child_value("object", StreamName);
-            chan.append_child_value("type", "PositionX");
-            chan.append_child_value("unit", "meters");
+                    channels = streamInfo.desc().append_child("channels");
+                    chan = channels.append_child("channel");
+                    chan.append_child_value("label", StreamName + "_X");
+                    chan.append_child_value("object", StreamName);
+                    chan.append_child_value("type", "PositionX");
+                    chan.append_child_value("unit", "meters");
 
-            chan = channels.append_child("channel");
-            chan.append_child_value("label", StreamName + "_Y");
-            chan.append_child_value("object", StreamName);
-            chan.append_child_value("type", "PositionY");
-            chan.append_child_value("unit", "meters");
+                    chan = channels.append_child("channel");
+                    chan.append_child_value("label", StreamName + "_Y");
+                    chan.append_child_value("object", StreamName);
+                    chan.append_child_value("type", "PositionY");
+                    chan.append_child_value("unit", "meters");
 
-            chan = channels.append_child("channel");
-            chan.append_child_value("label", StreamName + "_Z");
-            chan.append_child_value("object", StreamName);
-            chan.append_child_value("type", "PositionZ");
-            chan.append_child_value("unit", "meters");
+                    chan = channels.append_child("channel");
+                    chan.append_child_value("label", StreamName + "_Z");
+                    chan.append_child_value("object", StreamName);
+                    chan.append_child_value("type", "PositionZ");
+                    chan.append_child_value("unit", "meters");
 
-            chan = channels.append_child("channel");
-            chan.append_child_value("label", StreamName + "_quat_X");
-            chan.append_child_value("object", StreamName);
-            chan.append_child_value("type", "OrientationX");
-            chan.append_child_value("unit", "quaternion");
+                    chan = channels.append_child("channel");
+                    chan.append_child_value("label", StreamName + "_quat_X");
+                    chan.append_child_value("object", StreamName);
+                    chan.append_child_value("type", "OrientationX");
+                    chan.append_child_value("unit", "quaternion");
 
-            chan = channels.append_child("channel");
-            chan.append_child_value("label", StreamName + "_quat_Y");
-            chan.append_child_value("object", StreamName);
-            chan.append_child_value("type", "OrientationY");
-            chan.append_child_value("unit", "quaternion");
+                    chan = channels.append_child("channel");
+                    chan.append_child_value("label", StreamName + "_quat_Y");
+                    chan.append_child_value("object", StreamName);
+                    chan.append_child_value("type", "OrientationY");
+                    chan.append_child_value("unit", "quaternion");
 
-            chan = channels.append_child("channel");
-            chan.append_child_value("label", StreamName + "_quat_Z");
-            chan.append_child_value("object", StreamName);
-            chan.append_child_value("type", "OrientationZ");
-            chan.append_child_value("unit", "quaternion");
+                    chan = channels.append_child("channel");
+                    chan.append_child_value("label", StreamName + "_quat_Z");
+                    chan.append_child_value("object", StreamName);
+                    chan.append_child_value("type", "OrientationZ");
+                    chan.append_child_value("unit", "quaternion");
 
-            chan = channels.append_child("channel");
-            chan.append_child_value("label", StreamName + "_quat_W");
-            chan.append_child_value("object", StreamName);
-            chan.append_child_value("type", "OrientationW");
-            chan.append_child_value("unit", "quaternion");
+                    chan = channels.append_child("channel");
+                    chan.append_child_value("label", StreamName + "_quat_W");
+                    chan.append_child_value("object", StreamName);
+                    chan.append_child_value("type", "OrientationW");
+                    chan.append_child_value("unit", "quaternion");
 
-            outlet = new liblsl.StreamOutlet(streamInfo);
+                    outlet = new liblsl.StreamOutlet(streamInfo);
+                }
+            }
         }
 
         private void pushSample()
@@ -168,6 +178,26 @@ namespace Assets.MobiSA.Scripts
         {
             if (sampling == MomentForSampling.LateUpdate)
                 pushSample();
+        }
+
+        public static RBHmdStream Instance
+        {
+
+            get
+            {
+                if (!instance)
+                {
+                    instance = (RBHmdStream)FindObjectOfType(typeof(RBHmdStream));
+                    if (!instance)
+                    {
+                        GameObject gameObject = new GameObject();
+                        gameObject.name = "RBHmdStream";
+                        instance = gameObject.AddComponent(typeof(RBHmdStream)) as RBHmdStream;
+
+                    }
+                }
+                return instance;
+            }
         }
     }
 }

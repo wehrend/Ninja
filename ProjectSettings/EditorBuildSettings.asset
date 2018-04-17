@@ -32,3 +32,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/ExperimentScene.unity
     guid: 80f6dc7d7ff32144ab033a7bd76b3064
+  - enabled: 1
+    path: Assets/EmptyRoomScene.unity
+    guid: c32757cbeb948a0419a32d0e115c812b

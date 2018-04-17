@@ -72,7 +72,8 @@ namespace Assets.MobiSA.Scripts
         public static WallText wallText;
         [HideInInspector]
         public bool preflag, postflag;
-        RBControllerStream rbControllerStream;
+        RBControllerConcreteStreamLeft rbControllerStreamLeft;
+        RBControllerConcreteStreamRight rbControllerStreamRight;
         RBHmdStream rbHmdStream;
 
         public GameObject pauseScreen;
@@ -145,7 +146,8 @@ namespace Assets.MobiSA.Scripts
             ////
             experimentInfo = new ExperimentInfo();
             scoreStorage = new ScoreStorage();
-            rbControllerStream = GetComponent<RBControllerStream>();
+            rbControllerStreamLeft = GetComponent<RBControllerConcreteStreamLeft>();
+            rbControllerStreamRight = GetComponent<RBControllerConcreteStreamRight>();
             rbHmdStream = GetComponent<RBHmdStream>();
             experimentMarker = gameObject.GetComponent<LSLMarkerStream>();
             sceneFsm = StateMachine<SceneStates>.Initialize(this, SceneStates.MenuScene);
@@ -259,10 +261,16 @@ namespace Assets.MobiSA.Scripts
 
 
 
-            if (rbControllerStream != null)
+            if (rbControllerStreamRight != null)
             {
-                rbControllerStream.SetDataRate(rbStreamDataRate);
-                if (rbControllerStream.GetDataRate() == rbStreamDataRate)
+                rbControllerStreamRight.SetDataRate(rbStreamDataRate);
+                if (rbControllerStreamRight.GetDataRate() == rbStreamDataRate)
+                    Debug.Log("Set LSL data rate for RB Controller set to " + rbStreamDataRate + "Hz.");
+            }
+            if (rbControllerStreamLeft != null)
+            {
+                rbControllerStreamLeft.SetDataRate(rbStreamDataRate);
+                if (rbControllerStreamLeft.GetDataRate() == rbStreamDataRate)
                     Debug.Log("Set LSL data rate for RB Controller set to " + rbStreamDataRate + "Hz.");
             }
             if (rbHmdStream != null)
@@ -467,6 +475,7 @@ namespace Assets.MobiSA.Scripts
         void PreScene_Update()
         {
             if (Input.GetKeyDown(KeyCode.Space))
+
                 startBaselineTime = Time.time;
             if (startBaselineTime > 1f)
             {

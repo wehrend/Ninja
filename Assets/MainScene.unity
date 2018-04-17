@@ -413,12 +413,13 @@ GameObject:
   m_Component:
   - component: {fileID: 847916924}
   - component: {fileID: 847916918}
-  - component: {fileID: 847916920}
   - component: {fileID: 847916921}
   - component: {fileID: 847916922}
   - component: {fileID: 847916923}
   - component: {fileID: 847916919}
   - component: {fileID: 847916925}
+  - component: {fileID: 847916927}
+  - component: {fileID: 847916926}
   m_Layer: 0
   m_Name: '[ExperimentSceneController]'
   m_TagString: MainController
@@ -501,22 +502,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &847916920
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 847916917}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf81db5e8af04e54280dca36cce9cf1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dataRate: 90
-  StreamType: rigidBody
-  ChannelCount: 7
-  sampling: 0
-  sampleSource: {fileID: 0}
 --- !u!114 &847916921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -597,6 +582,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StreamType: Gaze
   listOfStreams: []
+--- !u!114 &847916926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 847916917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19cee726303b04948a9629936b5c32fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dataRate: 90
+  StreamType: rigidBody
+  ChannelCount: 7
+  sampling: 0
+  sampleSource: {fileID: 0}
+--- !u!114 &847916927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 847916917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb9ac423ecdb2304da04ed2f4b693126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dataRate: 90
+  StreamType: rigidBody
+  ChannelCount: 7
+  sampling: 0
+  sampleSource: {fileID: 0}
 --- !u!1001 &1196618196
 Prefab:
   m_ObjectHideFlags: 0

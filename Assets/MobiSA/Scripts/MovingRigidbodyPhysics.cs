@@ -11,7 +11,10 @@ namespace Assets.MobiSA.Scripts
     [RequireComponent(typeof(Mesh))]
     public abstract class MovingRigidbodyPhysics : MonoBehaviour
     {
-
+        public AudioSource audio;
+        public AudioClip HitSound;
+        public AudioClip MissSound;
+        public AudioClip FalseAlarmSound;
 
         [HideInInspector]
         public Rigidbody Body { get; private set; }
@@ -43,6 +46,8 @@ namespace Assets.MobiSA.Scripts
 
         private void Awake()
         {
+            audio = GetComponent<AudioSource>();
+                   
             Body = GetComponent<Rigidbody>();
 
             meshrenderer = GetComponent<MeshRenderer>();
@@ -104,12 +109,19 @@ namespace Assets.MobiSA.Scripts
                  
             if (currentDistance.magnitude > hideMultiplier * distance)
                 DestroyObject(Body.gameObject, 0.01f);
+            
             //also destroy if its before eyes (and distractor)
 
             Vector3 distanceToHead = (Camera.main.transform.position - transform.position);
             //Debug.Log(type);
-            if ((distanceToHead.magnitude < distractorDestroyDistance) && (type.ToLowerInvariant().Equals("distract")))
+            if ((distanceToHead.magnitude < distractorDestroyDistance) && (type.ToLowerInvariant().Equals("target"))) {
+                audio.clip = MissSound;
+                audio.Play();
+                Debug.Log("playMiss");
+                experimentMarker.PlaySound("Miss");
                 DestroyObject(Body.gameObject, 0.05f);
+            }
+               
 
 
             Body.transform.LookAt(target);
@@ -159,6 +171,7 @@ namespace Assets.MobiSA.Scripts
 
             if ((collision.collider.name.Contains("HandCursor_edited")))
             {
+
                 //We want markers only for these targets touched by controller.
                 if (experimentMarker != null)
                     experimentMarker.Touch(collision.gameObject);
@@ -166,6 +179,20 @@ namespace Assets.MobiSA.Scripts
                 {
                     Debug.LogError("Some trial touched, but no Instance of experimentMarker found ");
                 }
+                if (this.type.ToLowerInvariant().Equals("target"))
+                {
+                    audio.clip = HitSound;
+                    Debug.Log("playHit");
+                    experimentMarker.PlaySound("Hit");
+                }
+                if (this.type.ToLowerInvariant().Equals("distract"))
+                {
+                    audio.clip = FalseAlarmSound;
+                    Debug.Log("playFalseAlarm");
+                    experimentMarker.PlaySound("FalseAlarm");
+                }
+                audio.Play();
+
                 Debug.LogWarning("Controller or Hands collision: " + collision.collider.name);
                 return 100 * 1.2f;
             }

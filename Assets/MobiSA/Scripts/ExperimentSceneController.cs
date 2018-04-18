@@ -331,7 +331,7 @@ namespace Assets.MobiSA.Scripts
 
             if (!initflag)
             {
-                experimentMarker.StartExperiment();
+                experimentMarker.StartExperiment(configAsset.experiment);
                 experimentMarker.StartBaseline();
                 recordingflag = true;
                 initflag = true;
@@ -520,7 +520,7 @@ namespace Assets.MobiSA.Scripts
             //if ((curBlock.generatedTrials != null) && (curBlock.generatedTrials.Count == 0)){...}
             if(curBlock.generatedTrials.Count == 0)
             {
-                var activeObjects = FindObjectsOfType<Object>();
+                var activeObjects = FindObjectsOfType<MovingObject>();
                 if (activeObjects.Count() == 0)
                 {
                     sceneFsm.ChangeState(SceneStates.PauseScene);

@@ -29,7 +29,7 @@ GameObject:
   - component: {fileID: 199301125846173626}
   - component: {fileID: 82577174040989556}
   m_Layer: 0
-  m_Name: BasicPrefab
+  m_Name: 10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,7 +73,7 @@ Transform:
   m_GameObject: {fileID: 1044568800333810}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -9.735066, y: 2.155848, z: 7.650001}
-  m_LocalScale: {x: 0.30440834, y: 0.30440834, z: 0.30440834}
+  m_LocalScale: {x: 0.3000893, y: 0.3000893, z: 0.3000893}
   m_Children:
   - {fileID: 4559039295980096}
   m_Father: {fileID: 0}
@@ -141,7 +141,8 @@ AudioSource:
   m_GameObject: {fileID: 1044568800333810}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300001, guid: 95096f29d1ddcd647ace66f3641d42f5,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: c8ff56c13a334b84688365eca02f8830, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.495
@@ -240,11 +241,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5f5ff8ebc1ca944eb87dcc341be4d71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audio: {fileID: 82577174040989556}
+  HitSound: {fileID: 8300000, guid: c8ff56c13a334b84688365eca02f8830, type: 3}
+  MissSound: {fileID: 8300000, guid: df281ecc38a3e6e40a0b75f5868b38ae, type: 3}
+  FalseAlarmSound: {fileID: 8300000, guid: f801c5d9763664b419434321d0950c0c, type: 3}
   ninjaEvents: {fileID: 0}
-  distance: 7.9149303
-  velocity: 4.8819165
+  distance: 9.030006
+  velocity: 2.9822912
   distractorDestroyDistance: 0
-  startPoint: {x: -1.9147949, y: 1.6, z: 7.679823}
+  startPoint: {x: -4.650798, y: 1.6, z: 7.740226}
   color:
     serializedVersion: 2
     rgba: 4278190335

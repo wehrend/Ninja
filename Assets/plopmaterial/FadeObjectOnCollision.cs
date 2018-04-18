@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Assets.VREF.Scripts;
 using Valve.VR;
+using Assets.MobiSA.Scripts;
 
 public class FadeObjectOnCollision : MonoBehaviour {
 
@@ -23,7 +24,7 @@ public class FadeObjectOnCollision : MonoBehaviour {
     Color rendererColor;
     Color alphaColor;
     Rigidbody body;
-    AudioSource audio;
+    
     private Vector3 statictransformScale;
 
     int deviceID;
@@ -31,7 +32,7 @@ public class FadeObjectOnCollision : MonoBehaviour {
     //[RequireComponent(typeof(AudioSource))]
     // Use this for initialization
     void Start () {
-        audio = GetComponent<AudioSource>();
+
         deviceID = SteamVR_Controller.GetDeviceIndex(SteamVR_Controller.DeviceRelation.Rightmost);
         if (deviceID == -1)
             Debug.LogWarning("No Controller");
@@ -66,8 +67,9 @@ public class FadeObjectOnCollision : MonoBehaviour {
             //var collision = new Vector4(contact.point.x, contact.point.y, contact.point.z, time);
             //Debug.Log("DEBUG:"+collision);
             //renderer.material.SetVector("_Collision", collision);
-            audio.Play();
-        
+
+            //var collisionObject = collisionInfo.gameObject.GetComponent(typeof(MovingObject)) as MovingObject;
+           
             contact.thisCollider.enabled = false;
             StartCoroutine(FadeAlphaAndScale());
          }
@@ -79,7 +81,7 @@ public class FadeObjectOnCollision : MonoBehaviour {
         if (forceFeedback)
         {
             SteamVR_Controller.Input(deviceID);
-            Debug.Log("Triggered haptic pulse for controller" + deviceID);
+            //Debug.Log("Triggered haptic pulse for controller" + deviceID);
         }
     }
 

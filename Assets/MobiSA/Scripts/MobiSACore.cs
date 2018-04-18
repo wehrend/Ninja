@@ -248,7 +248,7 @@ namespace Assets.MobiSA.Scripts
                 {
 
                     var selected = Trial.PickAndDelete(curBlock);
-                    Debug.LogWarning(coloredLogString(selected.trial, selected.color));
+                    //Debug.LogWarning(coloredLogString(selected.trial, selected.color));
                     if (selected != null)
                     {
                         var position = Vector3.one + Vector3.up * (selected.heigth - 1);

@@ -22,15 +22,15 @@ namespace Assets.MobiSA.Scripts
         public const string pauseCondition = "pause";
 
         public LSLMarkerStream markerStream;
-        public Experiment experiment;
+        //public Experiment experiment;
 
         public ExperimentMarker(LSLMarkerStream markerStream, Experiment experiment)
         {
             this.markerStream = markerStream;
-            this.experiment = experiment;
+            //this.experiment = experiment;
         }
 
-        public void StartExperiment()
+        public void StartExperiment(Experiment experiment)
         {
             StartMarker(experimentCondition);
             InfoMarker(experiment);
@@ -46,16 +46,17 @@ namespace Assets.MobiSA.Scripts
             GameObjectMarker(spawnCondition, spawnedObject);
         }
 
-        public void PlaySound()
+        public void PlaySound(string playcondition)
         {
-            markerStream.Write("play_sound");
+            var playMarker = "play_sound:" + playcondition;
+            markerStream.Write(playMarker);
         }
 
         public void NewGazedObject(GameObject gazedObject)
         {
             string markerString;
             var condition = "newgazedobject";
-            var _object = gazedObject.GetComponent(typeof(Object)) as Object;
+            var _object = gazedObject.GetComponent(typeof(MovingObject)) as MovingObject;
             if (_object != null)
             {
                 Color color = _object.color;
@@ -112,19 +113,20 @@ namespace Assets.MobiSA.Scripts
 
         public void InfoMarker(object configClassOrBlock)
         {
+            
             if (configClassOrBlock != null)
             {
                 //Get field info by reflection to simply iterate over all
                 //and append to strings
                 StringBuilder builder = new StringBuilder();
                 FieldInfo[] fields = configClassOrBlock.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
+                Debug.Log(string.Format("InfoMarker; field# {0}", fields.Length));
                 foreach (var fieldInfo in fields)
                 {
                     builder.Append(string.Format("{0}:{1}", fieldInfo.Name, fieldInfo.GetValue(configClassOrBlock)));
                     builder.Append("\n"); //newline
                 }
                 markerStream.Write(builder.ToString());
-                Debug.Log(builder.ToString());
             }
             else
             {
@@ -135,20 +137,21 @@ namespace Assets.MobiSA.Scripts
 
         public void GameObjectMarker(string condition, GameObject gameobject)
         {
-            var _object = gameobject.GetComponent(typeof(Object)) as Object;
+            var _object = gameobject.GetComponent(typeof(MovingObject)) as MovingObject;
+            if (_object != null)
+            {
+                Color color = _object.color;
+                Vector3 spawnPointVector = _object.startPoint;
+                var formattedColor = string.Format("[{0:0.0#},{1:0.0#},{2:0.0#},{3:0.0#}]", color.r, color.g, color.b, color.a);
+                var spawnPoint = string.Format("[{0:0.00#},{1:0.00#},{2:0.00#}]", spawnPointVector.x, spawnPointVector.y, spawnPointVector.z);
+                string markerString = string.Format("{0}, type:{1}, color {2}, speed:{3}, spawnPoint: {4}, instance#: {5}", condition, _object.type, formattedColor, _object.velocity, spawnPoint, _object.name);
 
-            Color color = _object.color;
-            Vector3 spawnPointVector = _object.startPoint;
-            var formattedColor = string.Format("[{0:0.0#},{1:0.0#},{2:0.0#},{3:0.0#}]", color.r, color.g, color.b, color.a);
-            var spawnPoint = string.Format("[{0:0.00#},{1:0.00#},{2:0.00#}]", spawnPointVector.x, spawnPointVector.y, spawnPointVector.z);
-            string markerString = string.Format("{0}, type:{1}, color {2}, speed:{3}, spawnPoint: {4}, instance#: {5}", condition, _object.type, formattedColor, _object.velocity, spawnPoint, _object.name);
-
-            Debug.Log(markerString);
-            if (condition.Equals(spawnCondition))
-                markerStream.WriteBeforeFrameIsDisplayed(markerString);
-            else
-                markerStream.Write(markerString);
-
+                Debug.Log(markerString);
+                if (condition.Equals(spawnCondition))
+                    markerStream.WriteBeforeFrameIsDisplayed(markerString);
+                else
+                    markerStream.Write(markerString);
+            }
         }
 
 

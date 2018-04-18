@@ -6,7 +6,7 @@ using System.Collections;
 namespace Assets.MobiSA.Scripts
 {
 
-    public class Object : MovingRigidbodyPhysics
+    public class MovingObject : MovingRigidbodyPhysics
     {
         private MobiSACoreEventArgs eve;
         //public float fruitBreakForce = 50f;  

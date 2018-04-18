@@ -58,7 +58,6 @@ namespace Assets.MobiSA.Scripts
         //public float userInitTime = 15.00f;
         private float startBaselineTime;
         public float calibrationTimeSlot = 30.0f;
-        public float baselineDuration = 180.00f;
         private float timeOfEnterRoomScene;
         private float timeInCalibrationScene;
         public float startCalibrationTime;
@@ -86,10 +85,8 @@ namespace Assets.MobiSA.Scripts
         //public Config configValues;
         public static List<Trial> generatedTrials;
 
-
-
-
-        public static LSLMarkerStream experimentMarker;
+        public static LSLMarkerStream markerStream;
+        public static ExperimentMarker experimentMarker;
         //private bool initialized;
         public bool startGame=false;
         private int deviceIndex;
@@ -147,7 +144,8 @@ namespace Assets.MobiSA.Scripts
             scoreStorage = new ScoreStorage();
             rbControllerStream = GetComponent<RBControllerStream>();
             rbHmdStream = GetComponent<RBHmdStream>();
-            experimentMarker = gameObject.GetComponent<LSLMarkerStream>();
+            markerStream = gameObject.GetComponent<LSLMarkerStream>();
+            experimentMarker = new ExperimentMarker(markerStream, configAsset.experiment);
             sceneFsm = StateMachine<SceneStates>.Initialize(this, SceneStates.MenuScene);
             //blockIndex = 0;
             if (sceneFsm!=null)
@@ -186,8 +184,7 @@ namespace Assets.MobiSA.Scripts
 #else
             configDataDirectory = Application.streamingAssetsPath + "/Config/";
 #endif
-            jsonConfig = configDataDirectory + "DefaultConfig.txt";
-            saveTrialsConfig = configDataDirectory + "DefaultConfig.txt";
+            jsonConfig = configDataDirectory + "config.txt";
 
 
             Debug.Log("[Exp controller] load config...");
@@ -234,13 +231,17 @@ namespace Assets.MobiSA.Scripts
                 }*/
 
                 var trialsMax = b.generatedTrials.Count;
-                Debug.Log("[Config] " + configAsset.experiment.parallelSpawns);
                 Debug.Log("Config for Block" + b.name + " with " + b.generatedTrials.Count + " trials successfully loaded!");
                 b.trialsMax = trialsMax;
                    
 
             }
         return configAsset;
+        }
+
+        public ExperimentMarker GetExperimentMarker()
+        {
+            return experimentMarker;
         }
 
         void MenuScene_Enter()
@@ -330,16 +331,11 @@ namespace Assets.MobiSA.Scripts
 
             if (!initflag)
             {
-
-                Debug.Log("Init baseline...");
+                experimentMarker.StartExperiment();
+                experimentMarker.StartBaseline();
                 recordingflag = true;
-
-                if (experimentMarker != null)
-                {
-                    experimentMarker.Write("begin_baseline_condition");
-                    Debug.Log("begin_baseline_condition");
-                }
                 initflag = true;
+
             }
 
         }
@@ -349,14 +345,7 @@ namespace Assets.MobiSA.Scripts
 
             if (!endflag)
             {
-
-                Debug.Log("End baseline...");
-                if (experimentMarker != null)
-                {
-                    experimentMarker.Write("end_baseline_condition");
-                    Debug.Log("end_baseline_condition");
-                }
-
+                experimentMarker.EndBaseline();
                 endflag = true;
                 recordingflag = false;
             }
@@ -473,7 +462,7 @@ namespace Assets.MobiSA.Scripts
                     //Debug.Log(Time.time);
                     InitBaseline();
 
-                    if ((Time.time - startBaselineTime) > baselineDuration)
+                    if ((Time.time - startBaselineTime) > configAsset.experiment.baselineDuration)
 
                         EndBaseline();
 
@@ -497,7 +486,6 @@ namespace Assets.MobiSA.Scripts
                 //Debug.Log("trigger status: " + triggerPressed);
                 if (triggerPressed)
                 {
-                    Debug.Log("Start Experiment");
                     sceneFsm.ChangeState(SceneStates.ExperimentScene);
                 }
             }
@@ -509,10 +497,11 @@ namespace Assets.MobiSA.Scripts
             configureGaze();
             Debug.Log(blockEnum.Current.name);
             curBlock = blockEnum.Current;
-            Debug.LogError(" to " + blockEnum.Current.name);
+            Debug.LogError(" to " + curBlock.name);
             ExperimentSceneController.experimentInfo.triggerPressed = false;
 
             Debug.Log("Load ExperimentScene");
+            experimentMarker.StartBlock(curBlock);
             SceneManager.LoadSceneAsync(experimentScene, LoadSceneMode.Single);
             //pauseScreen =GameObject.FindGameObjectWithTag("PauseScreen").gameObject;
             //if (pauseScreen!=null)
@@ -535,6 +524,7 @@ namespace Assets.MobiSA.Scripts
                 if (activeObjects.Count() == 0)
                 {
                     sceneFsm.ChangeState(SceneStates.PauseScene);
+                    experimentMarker.EndBlock();
                     if (capScene)
                         capScene.FinishCapture();
                 }
@@ -543,6 +533,7 @@ namespace Assets.MobiSA.Scripts
 
         void PauseScene_Enter()
         {
+            experimentMarker.StartPause();
             startPausetime = (int) Time.realtimeSinceStartup;
             endPausetime = curBlock.blockPausetime * 60;
             //save end score of last level in global scoreStorage for display at last scene
@@ -580,16 +571,15 @@ namespace Assets.MobiSA.Scripts
                 bool canceledBySubject = SteamVR_Controller.Input(deviceIndex).GetPressDown(SteamVR_Controller.ButtonMask.Trigger);
                 if ( pauseEnded || canceledBySubject)
                 {
-                    Debug.LogError("Change state from " + curBlock.name);
-
+                    experimentMarker.EndPause();
                     if (blockEnum.MoveNext())
                     {
-                        Debug.LogError(" to " + blockEnum.Current.name);
+                        Debug.LogError(string.Format("Change state from {0} to {1}",  curBlock.name , blockEnum.Current.name));
                         sceneFsm.ChangeState(SceneStates.ExperimentScene);
                     }
                     else
                     {
-                        Debug.LogError(" to last Scene");
+                        Debug.LogError(string.Format("Change state from {0} to last Scene", curBlock.name));
                         sceneFsm.ChangeState(SceneStates.PostScene);
                     }
                 }
@@ -610,12 +600,8 @@ namespace Assets.MobiSA.Scripts
             waitflag = false;
             Debug.Log("Load post experiment scene");
             SceneManager.LoadSceneAsync(postExperimentScene, LoadSceneMode.Single);
-            
-           // CheckDeactivates();
-            if (experimentMarker != null)
-                Debug.Log("Should Write Marker: end_experiment_condition");
-            experimentMarker.Write("end_experiment_condition");
-            Debug.Log("End Application!");
+
+            experimentMarker.EndExperiment();
            // Application.Quit();
         }
 

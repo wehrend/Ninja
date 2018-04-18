@@ -191,6 +191,11 @@ namespace Assets.MobiSA.Scripts
                 //{
                 //    Debug.Log("Left POR: " + sample.left.por.x+","+ sample.right.por.y + "Right POR: "+sample.right.por.x +","+ sample.right.por.y);
                 //}
+               /* GameObject gameObjectInFocus = gazeCon.smi_getGameObjectInFocus();
+                if (gameObjectInFocus != null)
+                {
+                    Debug.Log(gameObjectInFocus.name, gameObject.GetComponent);
+                }*/
                 currentSample[0] = sample.por.x;
                 currentSample[1] = sample.por.y;
                 currentSample[2] = sample.left.por.x;

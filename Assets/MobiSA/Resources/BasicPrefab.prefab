@@ -28,7 +28,6 @@ GameObject:
   - component: {fileID: 198463350606820118}
   - component: {fileID: 199301125846173626}
   - component: {fileID: 82577174040989556}
-  - component: {fileID: 82634483418335742}
   m_Layer: 0
   m_Name: BasicPrefab
   m_TagString: Untagged
@@ -74,7 +73,7 @@ Transform:
   m_GameObject: {fileID: 1044568800333810}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -9.735066, y: 2.155848, z: 7.650001}
-  m_LocalScale: {x: 0.2987872, y: 0.2987872, z: 0.2987872}
+  m_LocalScale: {x: 0.30440834, y: 0.30440834, z: 0.30440834}
   m_Children:
   - {fileID: 4559039295980096}
   m_Father: {fileID: 0}
@@ -214,86 +213,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!82 &82634483418335742
-AudioSource:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1044568800333810}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 5ab91a2740f8b4476a8946f20def321f, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 0.495
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
 --- !u!114 &114041624342328210
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -322,10 +241,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ninjaEvents: {fileID: 0}
-  distance: 9.936209
-  velocity: 3.0107224
+  distance: 7.9149303
+  velocity: 4.8819165
   distractorDestroyDistance: 0
-  startPoint: {x: -7.6115766, y: 1.6, z: -6.386873}
+  startPoint: {x: -1.9147949, y: 1.6, z: 7.679823}
   color:
     serializedVersion: 2
     rgba: 4278190335

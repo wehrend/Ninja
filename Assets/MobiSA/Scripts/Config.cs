@@ -102,25 +102,17 @@ namespace Assets.MobiSA.Scripts
     [Serializable]
     public class Experiment
     {
-        public int maximumAngle;
-        public int parallelSpawns;
-        public float pausetime;
-        public float pausetimeTimingJitter;
-        public float distractorDestroyDistance;
+        public int baselineDuration;
         public int animationDuration;
         public String instructionsFilePath;
         public bool userinfoScore;
         public bool userinfoBlock;        
         public bool userinfoObjects;
-
+  
         public bool userPostExperimentInfo;
 
         public Experiment() {
-            this.maximumAngle = 260;
-            this.parallelSpawns = 2;
-            this.pausetime = 5.0f;
-            this.pausetimeTimingJitter = 0.25f;
-            this.distractorDestroyDistance = 1.0f;
+            this.baselineDuration = 30;
             this.animationDuration = 0;
             this.userinfoScore = false;
             this.userinfoBlock = true;
@@ -133,7 +125,11 @@ namespace Assets.MobiSA.Scripts
     public class Block
     {
         //TODO adding instructions
-
+        public int maximumAngle;
+        public int parallelSpawns;
+        public float pausetime;
+        public float pausetimeTimingJitter;
+        public float distractorDestroyDistance;
         public String name;
         public List<Trial> listOfTrials;
         public int blockPausetime;
@@ -145,6 +141,11 @@ namespace Assets.MobiSA.Scripts
             this.name = name;
             this.listOfTrials = trialslist;
             this.blockPausetime = pausetime;
+            this.maximumAngle = 260;
+            this.parallelSpawns = 2;
+            this.pausetime = 5.0f;
+            this.pausetimeTimingJitter = 0.25f;
+            this.distractorDestroyDistance = 1.0f;
         }
 
 

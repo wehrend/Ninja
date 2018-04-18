@@ -19,7 +19,7 @@ namespace Assets.MobiSA.Scripts
     [RequireComponent(typeof(MobiSACoreEventController))]
     public class MobiSACore : MonoBehaviour
     {
-        public static ExperimentSceneController expController;
+        public static ExperimentSceneController expSceneController;
         public static WallText wallText;
         [HideInInspector]
         public static string configDataDirectory;
@@ -50,7 +50,7 @@ namespace Assets.MobiSA.Scripts
         public int startScore = 0;
 
         public MobiSACoreEventController ninjaControl;
-        LSLMarkerStream experimentMarker;
+        ExperimentMarker experimentMarker;
 
         string jsonConfig;
         string saveJsonConfig;
@@ -67,36 +67,38 @@ namespace Assets.MobiSA.Scripts
 
         void Awake()
         {
+            expSceneController = FindObjectOfType(typeof(ExperimentSceneController)) as ExperimentSceneController;
+            if (expSceneController) //Get gloabl config if we are in multi scenes
+            {
+                val = expSceneController.configAsset;
+                curBlock = expSceneController.blockEnum.Current;
+
+                //Debug.Log("Loaded ExpController Config" + val.ToString());
+                experiment = val.experiment;
+
+
+                // }else {
+                //  val=LoadConfig(); //local load config function for single scene
+                //Debug.Log("Loaded Ninja Config" + val.ToString());
+
+            }
+
             wallText = FindObjectsOfType(typeof(WallText)).FirstOrDefault() as WallText;
             if (wallText!= null)
                 Debug.Log("Found wallText " + wallText.ToString());
 
-            experimentMarker = FindObjectsOfType(typeof(LSLMarkerStream)).FirstOrDefault() as LSLMarkerStream;
+            experimentMarker = expSceneController.GetExperimentMarker();
             if (experimentMarker != null)
-                Debug.Log("Found LSL Stream"+experimentMarker.lslStreamName);
+                Debug.Log("Found LSL Stream"+experimentMarker.markerStream.lslStreamName);
 
 
-            expController = FindObjectOfType(typeof(ExperimentSceneController)) as ExperimentSceneController;
-            if (expController) //Get gloabl config if we are in multi scenes
-            {
-                val = expController.configAsset;
-                curBlock = expController.blockEnum.Current;
-
-                //Debug.Log("Loaded ExpController Config" + val.ToString());
-                experiment = val.experiment;
-                distractorDestroyDistance = experiment.distractorDestroyDistance;
-
-            // }else {
-            //  val=LoadConfig(); //local load config function for single scene
-            //Debug.Log("Loaded Ninja Config" + val.ToString());
-
-            }
+           
             Debug.Log("BLOCK " +  curBlock.name + " with " + curBlock.generatedTrials.Count+" Trials/Objects");
 
             prefab = Resources.Load("BasicPrefab", typeof(MovingRigidbodyPhysics)) as MovingRigidbodyPhysics;
             if (prefab == null)
                 Debug.LogError("Coudn't load BasicPrefab");
-            prefab.GetComponent<FadeObjectOnCollision>().forceFeedback = expController.configAsset.advanced.useForceFeedback;
+            prefab.GetComponent<FadeObjectOnCollision>().forceFeedback = expSceneController.configAsset.advanced.useForceFeedback;
         }
 
 
@@ -108,8 +110,7 @@ namespace Assets.MobiSA.Scripts
 #else
             configDataDirectory = Application.dataPath + "/MobiSA/Config/";
 #endif
-            jsonConfig = configDataDirectory + "DefaultConfig";
-            saveJsonConfig = configDataDirectory + "DefaultConfig";
+            jsonConfig = configDataDirectory + "config";
 
             if (config == null)
             {
@@ -140,7 +141,6 @@ namespace Assets.MobiSA.Scripts
                     {
                         Debug.LogWarning(t.trial + " " + t.color);
                     }*/
-
                     var trialsMax = b.generatedTrials.Count;
                     Debug.Log("Config from" + jsonConfig + "with " + b.generatedTrials.Count + " trials successfully loaded!");
                     b.trialsMax = trialsMax;
@@ -231,7 +231,7 @@ namespace Assets.MobiSA.Scripts
             while (gamePlaying)
             {
                 StartCoroutine(FireFruit());
-                var totalPausetime = experiment.pausetime + Random.Range(-experiment.pausetimeTimingJitter / 2, experiment.pausetimeTimingJitter / 2);
+                var totalPausetime = curBlock.pausetime + Random.Range(-curBlock.pausetimeTimingJitter / 2, curBlock.pausetimeTimingJitter / 2);
                 yield return new WaitForSeconds(totalPausetime);
             }
         }
@@ -241,7 +241,7 @@ namespace Assets.MobiSA.Scripts
             if (experiment != null)
             {
                 //Debug.Log("parallelspawns "+experiment.parallelSpawns);
-                List<Transform> spawnerInstances = Enumerable.Repeat(transform, experiment.parallelSpawns).ToList();
+                List<Transform> spawnerInstances = Enumerable.Repeat(transform, curBlock.parallelSpawns).ToList();
                 //Debug.Log(spawnerInstances.Count);
 
                 foreach (var spawner in spawnerInstances)
@@ -253,7 +253,7 @@ namespace Assets.MobiSA.Scripts
                     {
                         var position = Vector3.one + Vector3.up * (selected.heigth - 1);
                         center = new Vector3(0, selected.heigth, 0);
-                        trialNumber = expController.blockEnum.Current.trialsMax - expController.blockEnum.Current.generatedTrials.Count;
+                        trialNumber = expSceneController.blockEnum.Current.trialsMax - expSceneController.blockEnum.Current.generatedTrials.Count;
 #if UNITY_EDITOR
                         Debug.Log("Trials:" + trialNumber + " " + selected.trial + ' ' + selected.color + ' ' + selected.distanceAvg);
 #else
@@ -262,7 +262,7 @@ namespace Assets.MobiSA.Scripts
                         var halfDistVar = selected.distanceVar / 2;
                         distance = selected.distanceAvg + Random.Range(-halfDistVar, halfDistVar);
                         spawner.position = (position - center).normalized * distance + center;
-                        float currentAngle = Random.Range(-experiment.maximumAngle / 2, experiment.maximumAngle / 2) - angleAlignment;
+                        float currentAngle = Random.Range(-curBlock.maximumAngle / 2, curBlock.maximumAngle / 2) - angleAlignment;
                         var halfVelVar = selected.velocityVar / 2;
                         velocity = selected.velocityAvg + Random.Range(-halfVelVar,halfVelVar);
 
@@ -283,11 +283,10 @@ namespace Assets.MobiSA.Scripts
                         prefab.name = trialNumber.ToString();
                         prefab.type = selected.trial;
                         // now, after all assigns, we can spawn! 
-                        Instantiate(prefab, spawner.position, Quaternion.identity);
-
+                        var spawned = Instantiate(prefab, spawner.position, Quaternion.identity);
                         if (experimentMarker != null)
                         {
-                            experimentMarker.Write("spawn_trial_" + trialNumber + ": name:" + selected.trial + ",color:" + selected.color + ", spawn point:" + spawner.position + ",velocity:" + velocity);
+                            experimentMarker.Spawn(spawned.gameObject);
                         }
                         yield return new WaitForFixedUpdate();
                         //Debug.Log("Object " + prefab.transform.name + " instantiated");

@@ -83,6 +83,7 @@
         ]
     },
     "experiment": {
+		"baselineDuration": 4,
         "animationDuration": 0,
         "instructionsFilePath": "",
         "userinfoScore": false,

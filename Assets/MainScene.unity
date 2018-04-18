@@ -446,7 +446,6 @@ MonoBehaviour:
   rbStreamDataRate: 90
   waitTimeAfterLastTrialSpawn: 7
   calibrationTimeSlot: 30
-  baselineDuration: 30
   startCalibrationTime: 0
   preflag: 0
   postflag: 0
@@ -545,7 +544,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lslStreamName: ExperimentMarkerStream
-  lslStreamType: LSL_Marker_Strings
+  lslStreamType: Marker
 --- !u!223 &847916923
 Canvas:
   m_ObjectHideFlags: 0

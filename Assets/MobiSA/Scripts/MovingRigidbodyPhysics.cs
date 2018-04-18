@@ -39,7 +39,7 @@ namespace Assets.MobiSA.Scripts
         [HideInInspector]
         public int layermask = 1 << 8;
         public float breakForce=50f;
-        LSLMarkerStream experimentMarker;
+        ExperimentMarker experimentMarker;
 
         private void Awake()
         {
@@ -55,7 +55,8 @@ namespace Assets.MobiSA.Scripts
 
         void Start()
         {
-            experimentMarker = FindObjectsOfType(typeof(LSLMarkerStream)).FirstOrDefault() as LSLMarkerStream;
+            var experimentSceneController = FindObjectsOfType(typeof(ExperimentSceneController)).FirstOrDefault() as ExperimentSceneController;
+            experimentMarker = experimentSceneController.GetExperimentMarker();
             //if (experimentMarker != null)
             // Debug.Log("Found expMarker for touch trial");
             //meshrenderer.enabled = false;
@@ -107,7 +108,7 @@ namespace Assets.MobiSA.Scripts
 
             Vector3 distanceToHead = (Camera.main.transform.position - transform.position);
             //Debug.Log(type);
-            if ((distanceToHead.magnitude < distractorDestroyDistance) && (type.Equals("distract") || type.Equals("Distract")))
+            if ((distanceToHead.magnitude < distractorDestroyDistance) && (type.ToLowerInvariant().Equals("distract")))
                 DestroyObject(Body.gameObject, 0.05f);
 
 
@@ -160,7 +161,7 @@ namespace Assets.MobiSA.Scripts
             {
                 //We want markers only for these targets touched by controller.
                 if (experimentMarker != null)
-                    experimentMarker.Write("touch_trial_" + name + ": name: N/A" + ",color:" + color + " ,distance:" + distance + ",velocity:" + velocity);
+                    experimentMarker.Touch(collision.gameObject);
                 else
                 {
                     Debug.LogError("Some trial touched, but no Instance of experimentMarker found ");

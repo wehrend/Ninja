@@ -13,6 +13,9 @@ namespace Assets.MobiSA.Scripts
         public const string start = "start";
         public const string end = "end";
 
+        public const string touchCondition = "touch";
+        public const string spawnCondition = "spawn";
+
         public const string experimentCondition = "experiment";
         public const string baselineCondition = "baseline";
         public const string blockCondition = "block";
@@ -35,14 +38,12 @@ namespace Assets.MobiSA.Scripts
 
         public void Touch(GameObject touchedObject)
         {
-            string condition = "touch";
-            GameObjectMarker(condition, touchedObject);
+            GameObjectMarker(touchCondition, touchedObject);
         }
 
         public void Spawn(GameObject spawnedObject)
         {
-            string condition = "spawn";
-            GameObjectMarker(condition, spawnedObject);
+            GameObjectMarker(spawnCondition, spawnedObject);
         }
 
         public void PlaySound()
@@ -143,7 +144,10 @@ namespace Assets.MobiSA.Scripts
             string markerString = string.Format("{0}, type:{1}, color {2}, speed:{3}, spawnPoint: {4}, instance#: {5}", condition, _object.type, formattedColor, _object.velocity, spawnPoint, _object.name);
 
             Debug.Log(markerString);
-            markerStream.Write(markerString);
+            if (condition.Equals(spawnCondition))
+                markerStream.WriteBeforeFrameIsDisplayed(markerString);
+            else
+                markerStream.Write(markerString);
 
         }
 

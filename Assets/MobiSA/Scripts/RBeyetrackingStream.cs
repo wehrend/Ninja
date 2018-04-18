@@ -12,6 +12,7 @@ using Assets.LSL4Unity.Scripts.Common;
 using Valve.VR;
 using SMI;
 using System;
+using System.Linq;
 /// <summary>
 /// Code from LSL4Unity Demo Script 
 /// </summary>
@@ -35,6 +36,7 @@ namespace Assets.MobiSA.Scripts
        
 
         public static RBeyetrackingStream instance;
+        private GameObject lastGameObjectInFocus;
 
         private liblsl.XMLElement objs, obj;
         private liblsl.XMLElement channels, chan;
@@ -43,7 +45,7 @@ namespace Assets.MobiSA.Scripts
             return streamInfoGaze;
         }
 
-   
+        public static ExperimentMarker experimentMarker;
         /// <summary>
         /// Use a array to reduce allocation costs
         /// </summary>
@@ -77,6 +79,7 @@ namespace Assets.MobiSA.Scripts
 
         public Transform sampleSource;
 
+
         void Awake()
         {
 
@@ -85,7 +88,9 @@ namespace Assets.MobiSA.Scripts
                 instance = this;
                 DontDestroyOnLoad(gameObject);
 
-                
+                lastGameObjectInFocus = new GameObject();
+                var experimentSceneController = FindObjectsOfType(typeof(ExperimentSceneController)).FirstOrDefault() as ExperimentSceneController;
+                experimentMarker = experimentSceneController.GetExperimentMarker();
                 var eyetracking = FindObjectOfType(typeof(SMIEyetracking)) as SMIEyetracking;
                 if (eyetracking)
                 {
@@ -191,11 +196,11 @@ namespace Assets.MobiSA.Scripts
                 //{
                 //    Debug.Log("Left POR: " + sample.left.por.x+","+ sample.right.por.y + "Right POR: "+sample.right.por.x +","+ sample.right.por.y);
                 //}
-               /* GameObject gameObjectInFocus = gazeCon.smi_getGameObjectInFocus();
-                if (gameObjectInFocus != null)
+                GameObject gameObjectInFocus = gazeCon.smi_getGameObjectInFocus();
+                if (gameObjectInFocus != null && gameObjectInFocus != lastGameObjectInFocus )
                 {
-                    Debug.Log(gameObjectInFocus.name, gameObject.GetComponent);
-                }*/
+                    experimentMarker.NewGazedObject(gameObjectInFocus);
+                }
                 currentSample[0] = sample.por.x;
                 currentSample[1] = sample.por.y;
                 currentSample[2] = sample.left.por.x;
@@ -229,6 +234,7 @@ namespace Assets.MobiSA.Scripts
 
 
                 outlet.push_sample(currentSample, liblsl.local_clock());
+                lastGameObjectInFocus = gameObjectInFocus;
             }
 
         }
